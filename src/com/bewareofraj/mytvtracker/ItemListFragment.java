@@ -10,8 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.android.navigationdrawerexample.R;
-import com.example.android.navigationdrawerexample.dummy.DummyContent;
+import com.bewareofraj.mytvtracker.R;
 
 /**
  * A list fragment representing a list of Items. This fragment also supports

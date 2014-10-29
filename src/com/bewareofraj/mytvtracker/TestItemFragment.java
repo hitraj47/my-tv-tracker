@@ -1,6 +1,6 @@
 package com.bewareofraj.mytvtracker;
 
-import com.example.android.navigationdrawerexample.R;
+import com.bewareofraj.mytvtracker.R;
 
 import android.app.Fragment;
 import android.os.Bundle;

@@ -1,6 +1,6 @@
 package com.bewareofraj.mytvtracker;
 
-import com.example.android.navigationdrawerexample.R;
+import com.bewareofraj.mytvtracker.R;
 
 import android.app.Activity;
 import android.app.ActionBar;
