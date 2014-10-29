@@ -19,7 +19,7 @@
 
     <string name="app_name">My TV Tracker</string>
 
-    <string-array name="planets_array">
+    <string-array name="main_menu_items">
         <item>Watch List</item>
         <item>Search</item>
     </string-array>

@@ -6,13 +6,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.android.navigationdrawerexample.TestItemContainerActivity$PlaceholderFragment" >
+    tools:context="com.bewareofraj.mytvtracker.TestItemContainerActivity$PlaceholderFragment" >
     
     <FrameLayout
     android:id="@+id/item_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.navigationdrawerexample.ItemDetailActivity"
+    tools:context="com.bewareofraj.mytvtracker.ItemDetailActivity"
     tools:ignore="MergeRootFrame" />
 
 </RelativeLayout>
