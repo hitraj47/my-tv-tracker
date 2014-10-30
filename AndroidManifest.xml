@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,14 +22,15 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="21" />
 
     <application
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         <activity
-            android:name="com.bewareofraj.mytvtracker.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,36 +39,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.ItemListActivity"
-            android:label="@string/title_item_list"
-            android:parentActivityName="com.bewareofraj.mytvtracker.MainActivity" >
+            android:name=".ItemListActivity"
+            android:label="@string/title_item_list" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.MainActivity" />
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.ItemDetailActivity"
-            android:label="@string/title_item_detail"
-            android:parentActivityName="com.bewareofraj.mytvtracker.ItemListActivity" >
+            android:name=".ItemDetailActivity"
+            android:label="@string/title_item_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemFragment"
-            android:label="@string/title_item_detail"
-            android:parentActivityName="com.bewareofraj.mytvtracker.ItemListActivity" >
+            android:name=".TestItemFragment"
+            android:label="@string/title_item_detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemFragmentContainerActivity"
+            android:name=".TestItemFragmentContainerActivity"
             android:label="@string/title_activity_test_item_fragment_container" >
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemContainerActivity"
+            android:name=".TestItemContainerActivity"
             android:label="@string/title_activity_test_item_container" >
+        </activity>
+        <activity
+            android:name="com.bewareofraj.mytvtracker.tvshow.ShowListActivity"
+            android:label="@string/title_show_list" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bewareofraj.mytvtracker.MainActivity" />
         </activity>
     </application>
 
