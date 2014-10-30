@@ -33,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.bewareofraj.mytvtracker.search.SearchFragment;
+import com.bewareofraj.mytvtracker.watchlist.WatchListFragment;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the
@@ -125,6 +126,7 @@ public class MainActivity extends Activity {
 			selectItem(0);
 		}
 
+		// Load Watch List by default
 		WatchListFragment fragment = new WatchListFragment();
 		FragmentManager fm = getFragmentManager();
 		fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -159,6 +161,7 @@ public class MainActivity extends Activity {
 		case R.id.action_search:
 			//TODO: This selects the search screen, not good code, fix later
 			//selectItem(1);
+			
 			Intent intent = new Intent(MainActivity.this, ItemListActivity.class);
 			startActivity(intent);
 			return true;

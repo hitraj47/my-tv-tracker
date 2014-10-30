@@ -5,7 +5,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 
@@ -33,6 +33,7 @@ public class ItemDetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments().containsKey(ARG_ITEM_ID)) {
+			Toast.makeText(getActivity(), "test", Toast.LENGTH_LONG).show();
 		}
 	}
 

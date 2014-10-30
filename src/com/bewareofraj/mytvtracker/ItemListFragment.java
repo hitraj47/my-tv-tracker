@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.bewareofraj.mytvtracker.R;
 
 /**
@@ -32,12 +30,6 @@ public class ItemListFragment extends ListFragment {
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
 	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
-	 */
-	private Callbacks mCallbacks = sDummyCallbacks;
-
-	/**
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
@@ -53,16 +45,6 @@ public class ItemListFragment extends ListFragment {
 		 */
 		public void onItemSelected(String id);
 	}
-
-	/**
-	 * A dummy implementation of the {@link Callbacks} interface that does
-	 * nothing. Used only when this fragment is not attached to an activity.
-	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() {
-		@Override
-		public void onItemSelected(String id) {
-		}
-	};
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -103,16 +85,11 @@ public class ItemListFragment extends ListFragment {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-
-		mCallbacks = (Callbacks) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-
-		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
 	}
 
 	@Override
@@ -123,7 +100,6 @@ public class ItemListFragment extends ListFragment {
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		//mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-		Toast.makeText(getActivity(), "You clicked on " + items[position], Toast.LENGTH_LONG).show();
 		if (position == 0) {
 			TestItemFragment fragment = new TestItemFragment();
 			FragmentManager fm = getFragmentManager();
