@@ -37,5 +37,7 @@
     <string name="txt_search_hint">Enter search terms&#8230;</string>
     <string name="title_show_list">Shows</string>
     <string name="title_show_detail">Show Detail</string>
+    <string name="lbl_watch_list_empty">Your Watch List is currently empty</string>
+    <string name="btn_add">Add Show</string>
 
 </resources>
