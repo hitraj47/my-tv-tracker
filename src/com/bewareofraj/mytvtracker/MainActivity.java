@@ -16,11 +16,9 @@
 
 package com.bewareofraj.mytvtracker;
 
-import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.search.SearchFragment;
-
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -33,6 +31,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.bewareofraj.mytvtracker.search.SearchFragment;
 
 /**
  * This example illustrates a common usage of the DrawerLayout widget in the
@@ -158,7 +158,9 @@ public class MainActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.action_search:
 			//TODO: This selects the search screen, not good code, fix later
-			selectItem(1);
+			//selectItem(1);
+			Intent intent = new Intent(MainActivity.this, ItemListActivity.class);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
