@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
@@ -92,6 +93,10 @@ public class WatchListFragment extends Fragment {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				// TODO Auto-generated method stub
+				WatchListGroup group = mWatchListItems.get(groupPosition);
+				ArrayList<WatchListChild> child = group.getItems();
+				WatchListChild show = child.get(childPosition);
+				Toast.makeText(getActivity(), "Show: " + show.getName(), Toast.LENGTH_LONG).show();
 				return false;
 			}
 		});
@@ -126,13 +131,17 @@ public class WatchListFragment extends Fragment {
 		for (int i = 0; i < numShows; i++) {
 			String firstLetter = showNames[i].substring(0, 1).toUpperCase(
 					Locale.ENGLISH);
+			String dummyApiId = "test id";
 			if (groups.containsKey(firstLetter)) {
 				WatchListGroup watchListGroup = groups.get(firstLetter);
+				
 				ArrayList<WatchListChild> watchListItems = watchListGroup
 						.getItems();
 				WatchListChild child = createWatchListChild(images[i],
-						showNames[i], showTimes[i]);
+						showNames[i], showTimes[i], dummyApiId);
+				
 				watchListItems.add(child);
+				
 				watchListGroup.setItems(watchListItems);
 				groups.put(firstLetter, watchListGroup);
 			} else {
@@ -140,7 +149,7 @@ public class WatchListFragment extends Fragment {
 				watchListGroup.setName(firstLetter);
 
 				WatchListChild child = createWatchListChild(images[i],
-						showNames[i], showTimes[i]);
+						showNames[i], showTimes[i], dummyApiId);
 
 				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
 				watchListItems.add(child);
@@ -161,11 +170,12 @@ public class WatchListFragment extends Fragment {
 	}
 
 	private WatchListChild createWatchListChild(int image, String name,
-			String time) {
+			String time, String apiId) {
 		WatchListChild child = new WatchListChild();
 		child.setImage(image);
 		child.setName(name);
 		child.setShowTime(time);
+		child.setApiId(apiId);
 		return child;
 	}
 }

@@ -12,6 +12,7 @@ public class WatchListChild {
 	private String mShowName;
 	private int mShowImage;
 	private String mShowTime;
+	private String mApiId;
 
 	public String getName() {
 		return mShowName;
@@ -35,5 +36,13 @@ public class WatchListChild {
 
 	public void setShowTime(String mShowTime) {
 		this.mShowTime = mShowTime;
+	}
+
+	public String getApiId() {
+		return mApiId;
+	}
+
+	public void setApiId(String mApiId) {
+		this.mApiId = mApiId;
 	}
 }
