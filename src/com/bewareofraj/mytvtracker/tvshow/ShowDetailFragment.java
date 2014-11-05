@@ -28,6 +28,12 @@ public class ShowDetailFragment extends Fragment {
 	 * The dummy content this fragment is presenting.
 	 */
 	private DummyContent.DummyItem mItem;
+	
+	public static final String SHOW_ID = "show_id";
+	public static final String SHOW_NAME = "show_name";
+	public static final String SHOW_TIME = "show_time";
+	
+	private String mShowId, mShowName, mShowTime;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,14 +45,7 @@ public class ShowDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (getArguments().containsKey(ARG_ITEM_ID)) {
-			// Load the dummy content specified by the fragment
-			// arguments. In a real-world scenario, use a Loader
-			// to load content from a content provider.
-			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
-					ARG_ITEM_ID));
-		}
+		
 	}
 
 	@Override
@@ -54,13 +53,15 @@ public class ShowDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
-
-		// Show the dummy content as text in a TextView.
-		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.show_detail))
-					.setText(mItem.content);
-		}
-
+		mShowId = savedInstanceState.getString(SHOW_ID);
+		mShowName = savedInstanceState.getString(SHOW_NAME);
+		mShowTime = savedInstanceState.getString(SHOW_TIME);
+		TextView txtShowName = (TextView) rootView.findViewById(R.id.txtShowName);
+		txtShowName.setText(mShowName);
+		
+		TextView txtShowTime = (TextView) rootView.findViewById(R.id.txtShowTime);
+		txtShowTime.setText(mShowTime);
+		
 		return rootView;
 	}
 }

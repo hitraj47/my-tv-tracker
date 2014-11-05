@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
+import com.bewareofraj.mytvtracker.tvshow.ShowDetailActivity;
+import com.bewareofraj.mytvtracker.tvshow.ShowDetailFragment;
 
 public class WatchListFragment extends Fragment {
 
@@ -97,6 +100,13 @@ public class WatchListFragment extends Fragment {
 				ArrayList<WatchListChild> child = group.getItems();
 				WatchListChild show = child.get(childPosition);
 				Toast.makeText(getActivity(), "Show: " + show.getName(), Toast.LENGTH_LONG).show();
+				
+				Intent intent = new Intent(getActivity(), ShowDetailActivity.class);
+				intent.putExtra(ShowDetailFragment.SHOW_ID, show.getApiId());
+				intent.putExtra(ShowDetailFragment.SHOW_NAME, show.getName());
+				intent.putExtra(ShowDetailFragment.SHOW_TIME, show.getShowTime());
+				startActivity(intent);
+				
 				return false;
 			}
 		});

@@ -27,6 +27,11 @@ public class ShowDetailActivity extends Activity {
 
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		ShowDetailFragment fragment = new ShowDetailFragment();
+		fragment.setArguments(savedInstanceState);
+		getFragmentManager().beginTransaction()
+				.add(R.id.show_detail_container, fragment).commit();
 
 		// savedInstanceState is non-null when there is fragment state
 		// saved from previous configurations of this activity
@@ -41,8 +46,8 @@ public class ShowDetailActivity extends Activity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(ShowDetailFragment.ARG_ITEM_ID, getIntent()
-					.getStringExtra(ShowDetailFragment.ARG_ITEM_ID));
+			arguments.putString(ShowDetailFragment.SHOW_ID, getIntent()
+					.getStringExtra(ShowDetailFragment.SHOW_ID));
 			ShowDetailFragment fragment = new ShowDetailFragment();
 			fragment.setArguments(arguments);
 			getFragmentManager().beginTransaction()

@@ -1,10 +1,36 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/show_detail"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context="com.bewareofraj.mytvtracker.tvshow.ShowDetailFragment" />
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgBoxArt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/ic_launcher" android:contentDescription="@string/box_art_placeholder"/>
+
+    <TextView
+        android:id="@+id/txtShowName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imgBoxArt"
+        android:layout_marginLeft="21dp"
+        android:layout_toRightOf="@+id/imgBoxArt"
+        android:text="@string/show_name_placeholder"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txtShowTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtShowName"
+        android:layout_below="@+id/txtShowName"
+        android:text="@string/show_time_placeholder"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+</RelativeLayout>
 
