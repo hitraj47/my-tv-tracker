@@ -7,25 +7,31 @@
     android:paddingBottom="4dp"
     android:layout_marginLeft="50dp">
 
-    <TextView
-        android:id="@+id/show_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/show_boxart"
-        android:layout_marginBottom="14dp"
-        android:layout_marginLeft="29dp"
-        android:layout_toRightOf="@+id/show_boxart"
-        android:text="TextView"
-        android:textSize="20sp" />
-
     <ImageView
         android:id="@+id/show_boxart"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="27dp"
-        android:src="@drawable/ic_launcher"
-        android:contentDescription="Box art" />
+        android:contentDescription="@string/box_art_placeholder"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/show_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/show_boxart"
+        android:layout_toRightOf="@+id/show_boxart"
+        android:text="@string/show_name_placeholder"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/show_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/show_boxart"
+        android:layout_alignLeft="@+id/show_name"
+        android:text="@string/show_time_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

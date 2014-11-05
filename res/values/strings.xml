@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -39,7 +39,7 @@
     <string name="title_show_detail">Show Detail</string>
     <string name="lbl_watch_list_empty">Your Watch List is currently empty</string>
     <string name="btn_add">Add Show</string>
-    
+
     <string-array name="days">
         <item>Monday</item>
         <item>Tuesday</item>
@@ -49,5 +49,9 @@
         <item>Saturday</item>
         <item>Sunday</item>
     </string-array>
+
+    <string name="show_name_placeholder">Show Name</string>
+    <string name="show_time_placeholder">Show Time</string>
+    <string name="box_art_placeholder">Box art</string>
 
 </resources>

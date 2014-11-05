@@ -14,87 +14,101 @@ import android.widget.TextView;
 
 public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context mContext;
-    private ArrayList<WatchListGroup> mGroups;
+	private Context mContext;
+	private ArrayList<WatchListGroup> mGroups;
 
-    public WatchListExpandableListAdapter(Context context, ArrayList<WatchListGroup> groups) {
-        this.mContext = context;
-        this.mGroups = groups;
-    }
+	public WatchListExpandableListAdapter(Context context,
+			ArrayList<WatchListGroup> groups) {
+		this.mContext = context;
+		this.mGroups = groups;
+	}
 
-    @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        ArrayList<WatchListChild> chList = mGroups.get(groupPosition).getItems();
-        return chList.get(childPosition);
-    }
+	@Override
+	public Object getChild(int groupPosition, int childPosition) {
+		ArrayList<WatchListChild> chList = mGroups.get(groupPosition)
+				.getItems();
+		return chList.get(childPosition);
+	}
 
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
+	@Override
+	public long getChildId(int groupPosition, int childPosition) {
+		return childPosition;
+	}
 
-    @Override
-    public View getChildView(int groupPosition, int childPosition,
-            boolean isLastChild, View convertView, ViewGroup parent) {
+	/**
+	 * This is the method that will assign the layout elements of the child view
+	 * with their data.
+	 */
+	@Override
+	public View getChildView(int groupPosition, int childPosition,
+			boolean isLastChild, View convertView, ViewGroup parent) {
 
-    	WatchListChild child = (WatchListChild) getChild(groupPosition, childPosition);
-        if (convertView == null) {
-        	LayoutInflater inf = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inf.inflate(R.layout.watch_list_item, null);
-        }
-        TextView tv = (TextView) convertView.findViewById(R.id.show_name);
-        ImageView iv = (ImageView) convertView.findViewById(R.id.show_boxart);
+		WatchListChild child = (WatchListChild) getChild(groupPosition,
+				childPosition);
+		if (convertView == null) {
+			LayoutInflater inf = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inf.inflate(R.layout.watch_list_item, null);
+		}
+		TextView lblShowName = (TextView) convertView.findViewById(R.id.show_name);
+		ImageView imgBoxArt = (ImageView) convertView.findViewById(R.id.show_boxart);
+		TextView lblShowTime = (TextView) convertView.findViewById(R.id.show_time);
 
-        tv.setText(child.getName().toString());
-        iv.setImageResource(child.getImage());
+		lblShowName.setText(child.getName().toString());
+		imgBoxArt.setImageResource(child.getImage());
+		lblShowTime.setText(child.getShowTime().toString());
 
-        return convertView;
-    }
+		return convertView;
+	}
 
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        ArrayList<WatchListChild> chList = mGroups.get(groupPosition).getItems();
-        return chList.size();
-    }
+	@Override
+	public int getChildrenCount(int groupPosition) {
+		ArrayList<WatchListChild> chList = mGroups.get(groupPosition)
+				.getItems();
+		return chList.size();
+	}
 
-    @Override
-    public Object getGroup(int groupPosition) {
-        return mGroups.get(groupPosition);
-    }
+	@Override
+	public Object getGroup(int groupPosition) {
+		return mGroups.get(groupPosition);
+	}
 
-    @Override
-    public int getGroupCount() {
-        return mGroups.size();
-    }
+	@Override
+	public int getGroupCount() {
+		return mGroups.size();
+	}
 
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
+	@Override
+	public long getGroupId(int groupPosition) {
+		return groupPosition;
+	}
 
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-            View convertView, ViewGroup parent) {
-        WatchListGroup group = (WatchListGroup) getGroup(groupPosition);
-        if (convertView == null) {
-            LayoutInflater inf = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inf.inflate(R.layout.watch_list_group, null);
-        }
-        TextView tv = (TextView) convertView.findViewById(R.id.watch_list_day);
-        tv.setText(group.getName());
-        return convertView;
-    }
+	/**
+	 * This method sets the title of the parent group in the expandable list
+	 */
+	@Override
+	public View getGroupView(int groupPosition, boolean isExpanded,
+			View convertView, ViewGroup parent) {
+		WatchListGroup group = (WatchListGroup) getGroup(groupPosition);
+		if (convertView == null) {
+			LayoutInflater inf = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inf.inflate(R.layout.watch_list_group, null);
+		}
+		TextView tv = (TextView) convertView
+				.findViewById(R.id.watch_list_group);
+		tv.setText(group.getName());
+		return convertView;
+	}
 
-    @Override
-    public boolean hasStableIds() {
-        return true;
-    }
+	@Override
+	public boolean hasStableIds() {
+		return true;
+	}
 
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
-    }
+	@Override
+	public boolean isChildSelectable(int groupPosition, int childPosition) {
+		return true;
+	}
 
 }
