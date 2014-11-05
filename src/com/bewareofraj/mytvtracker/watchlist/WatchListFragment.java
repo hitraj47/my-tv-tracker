@@ -2,6 +2,7 @@ package com.bewareofraj.mytvtracker.watchlist;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -104,26 +105,28 @@ public class WatchListFragment extends Fragment {
 
 		ArrayList<WatchListGroup> list = new ArrayList<WatchListGroup>();
 
-		ArrayList<WatchListChild> watchListItem;
-
-		int size = 4;
-		int j = 0;
-
-		for (String group_name : groupHeadings) {
-			WatchListGroup gru = new WatchListGroup();
-			gru.setName(group_name);
-
-			watchListItem = new ArrayList<WatchListChild>();
-			for (; j < size; j++) {
-				WatchListChild ch = new WatchListChild();
-				ch.setName(country_names[j]);
-				ch.setImage(images[j]);
-				watchListItem.add(ch);
+		HashMap<String, WatchListGroup> groups = new HashMap<String, WatchListGroup>();
+		
+		for (int i = 0; i < numShows; i++) {
+			String firstLetter = showNames[i].substring(0).toUpperCase();
+			if (groups.containsKey(firstLetter)) {
+				
+			} else {
+				WatchListGroup watchListGroup = new WatchListGroup();
+				watchListGroup.setName(firstLetter);
+				
+				WatchListChild child = new WatchListChild();
+				child.setImage(images[i]);
+				child.setName(showNames[i]);
+				child.setShowTime(showTimes[i]);
+				
+				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
+				watchListItems.add(child);
+				
+				watchListGroup.setItems(watchListItems);
+				
+				groups.put(firstLetter, watchListGroup);
 			}
-			gru.setItems(watchListItem);
-			list.add(gru);
-
-			size = size + 4;
 		}
 
 		return list;
