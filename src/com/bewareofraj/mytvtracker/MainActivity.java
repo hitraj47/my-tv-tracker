@@ -18,7 +18,6 @@ package com.bewareofraj.mytvtracker;
 
 import android.app.Activity;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -70,18 +69,23 @@ import com.bewareofraj.mytvtracker.watchlist.WatchListFragment;
  */
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
+	public static ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private String[] menuItems;
+	private static String[] menuItems;
 
+	/**
+	 * The search screen id
+	 */
+	public static final int SCREEN_SEARCH = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
 		mTitle = mDrawerTitle = getTitle();
 		menuItems = getResources().getStringArray(R.array.main_menu_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -159,11 +163,8 @@ public class MainActivity extends Activity {
 		// Handle action buttons
 		switch (item.getItemId()) {
 		case R.id.action_search:
-			//TODO: This selects the search screen, not good code, fix later
-			//selectItem(1);
-			
-			Intent intent = new Intent(MainActivity.this, ItemListActivity.class);
-			startActivity(intent);
+			// TODO: This selects the search screen, not good code, fix later
+			selectItem(SCREEN_SEARCH);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -224,5 +225,4 @@ public class MainActivity extends Activity {
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-
 }
