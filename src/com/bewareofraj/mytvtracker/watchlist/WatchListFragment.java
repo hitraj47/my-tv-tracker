@@ -3,6 +3,7 @@ package com.bewareofraj.mytvtracker.watchlist;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -108,7 +109,7 @@ public class WatchListFragment extends Fragment {
 		HashMap<String, WatchListGroup> groups = new HashMap<String, WatchListGroup>();
 		
 		for (int i = 0; i < numShows; i++) {
-			String firstLetter = showNames[i].substring(0).toUpperCase();
+			String firstLetter = showNames[i].substring(0).toUpperCase(Locale.ENGLISH);
 			if (groups.containsKey(firstLetter)) {
 				
 			} else {
