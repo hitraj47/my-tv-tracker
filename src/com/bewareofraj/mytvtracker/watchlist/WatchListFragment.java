@@ -17,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
@@ -52,13 +53,9 @@ public class WatchListFragment extends Fragment {
 			mWatchListEmpty = false;
 			View inflatedView = inflater.inflate(R.layout.fragment_watch_list,
 					container, false);
-
 			mExpandableList = (ExpandableListView) inflatedView
 					.findViewById(R.id.watch_list_expandable);
-			mWatchListItems = makeDummyData();
-			mWatchListAdapter = new WatchListExpandableListAdapter(
-					getActivity(), mWatchListItems);
-			mExpandableList.setAdapter(mWatchListAdapter);
+			setupExpandableList();
 
 			return inflatedView;
 		} else {
@@ -82,6 +79,22 @@ public class WatchListFragment extends Fragment {
 			});
 			return inflatedView;
 		}
+	}
+
+	private void setupExpandableList() {
+		mWatchListItems = makeDummyData();
+		mWatchListAdapter = new WatchListExpandableListAdapter(getActivity(),
+				mWatchListItems);
+		mExpandableList.setAdapter(mWatchListAdapter);
+		mExpandableList.setOnChildClickListener(new OnChildClickListener() {
+
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
 	}
 
 	// temporary method for testing
@@ -111,7 +124,7 @@ public class WatchListFragment extends Fragment {
 		TreeMap<String, WatchListGroup> groups = new TreeMap<String, WatchListGroup>();
 
 		for (int i = 0; i < numShows; i++) {
-			String firstLetter = showNames[i].substring(0,1).toUpperCase(
+			String firstLetter = showNames[i].substring(0, 1).toUpperCase(
 					Locale.ENGLISH);
 			if (groups.containsKey(firstLetter)) {
 				WatchListGroup watchListGroup = groups.get(firstLetter);
@@ -137,11 +150,12 @@ public class WatchListFragment extends Fragment {
 				groups.put(firstLetter, watchListGroup);
 			}
 		}
-		
-		Iterator<Entry<String, WatchListGroup>> it = groups.entrySet().iterator();
+
+		Iterator<Entry<String, WatchListGroup>> it = groups.entrySet()
+				.iterator();
 		while (it.hasNext()) {
 			Map.Entry pairs = (Map.Entry) it.next();
-	        list.add((WatchListGroup) pairs.getValue());
+			list.add((WatchListGroup) pairs.getValue());
 		}
 		return list;
 	}
