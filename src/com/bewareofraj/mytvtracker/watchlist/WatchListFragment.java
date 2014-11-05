@@ -35,29 +35,12 @@ public class WatchListFragment extends Fragment {
 
 		mDbHelper = new MyTvTrackerDatabaseHelper(getActivity());
 
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-		String[] projection = { WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING,
-				WatchListEntry.COLUMN_NAME_ENTRY_ID,
-				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY,
-				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME,
-				WatchListEntry.COLUMN_NAME_TVDB_ID, };
-
-		String sortOrder = WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY
-				+ " DESC";
-
-		Cursor c = db.query(WatchListEntry.TABLE_NAME, // The table to query
-				projection, // The columns to return
-				null, // The columns for the WHERE clause
-				null, // The values for the WHERE clause
-				null, // don't group the rows
-				null, // don't filter by row groups
-				sortOrder // The sort order
-				);
+		Cursor c = mDbHelper.getWatchList();
 		
 		if (c.getCount() > 0) {
 			mWatchListEmpty = false;
-			return inflater.inflate(R.layout.fragment_watch_list, container, false);
+			View inflatedView = inflater.inflate(R.layout.fragment_watch_list, container, false);
+			return inflatedView;
 		} else {
 			mWatchListEmpty = true;
 			View inflatedView = null;
@@ -78,4 +61,5 @@ public class WatchListFragment extends Fragment {
 			return inflatedView;
 		}
 	}
+	
 }

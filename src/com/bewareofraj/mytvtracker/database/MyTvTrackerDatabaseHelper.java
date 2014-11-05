@@ -1,6 +1,9 @@
 package com.bewareofraj.mytvtracker.database;
 
+import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -42,6 +45,30 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
+	}
+
+	public Cursor getWatchList() {
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		String[] projection = { WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING,
+				WatchListEntry.COLUMN_NAME_ENTRY_ID,
+				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY,
+				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME,
+				WatchListEntry.COLUMN_NAME_TVDB_ID, };
+
+		String sortOrder = WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY
+				+ " DESC";
+
+		Cursor cursor = db.query(WatchListEntry.TABLE_NAME, // The table to query
+				projection, // The columns to return
+				null, // The columns for the WHERE clause
+				null, // The values for the WHERE clause
+				null, // don't group the rows
+				null, // don't filter by row groups
+				sortOrder // The sort order
+				);
+		
+		return cursor;
 	}
 
 }
