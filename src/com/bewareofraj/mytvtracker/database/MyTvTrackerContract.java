@@ -17,6 +17,7 @@ public final class MyTvTrackerContract {
 		public static final String COLUMN_NAME_CURRENTLY_AIRING = "currently_airing";
 		public static final String COLUMN_NAME_NEXT_EPISODE_DAY = "next_episode_day";
 		public static final String COLUMN_NAME_NEXT_EPISODE_TIME = "next_episode_time";
+		public static final String COLUMN_NAME_SHOW_NAME = "show_name";
 	}
 	
 }

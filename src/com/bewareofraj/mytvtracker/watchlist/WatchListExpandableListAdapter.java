@@ -95,9 +95,9 @@ public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inf.inflate(R.layout.watch_list_group, null);
 		}
-		TextView tv = (TextView) convertView
+		TextView headingTextView = (TextView) convertView
 				.findViewById(R.id.watch_list_group);
-		tv.setText(group.getName());
+		headingTextView.setText(group.getName());
 		return convertView;
 	}
 

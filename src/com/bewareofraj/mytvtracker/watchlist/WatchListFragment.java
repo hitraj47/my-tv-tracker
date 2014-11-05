@@ -1,6 +1,7 @@
 package com.bewareofraj.mytvtracker.watchlist;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -48,11 +49,11 @@ public class WatchListFragment extends Fragment {
 			View inflatedView = inflater.inflate(R.layout.fragment_watch_list,
 					container, false);
 
-			mExpandableList = (ExpandableListView) inflatedView.findViewById(
-					R.id.watch_list_expandable);
+			mExpandableList = (ExpandableListView) inflatedView
+					.findViewById(R.id.watch_list_expandable);
 			mWatchListItems = SetStandardGroups();
-			mWatchListAdapter = new WatchListExpandableListAdapter(getActivity(),
-					mWatchListItems);
+			mWatchListAdapter = new WatchListExpandableListAdapter(
+					getActivity(), mWatchListItems);
 			mExpandableList.setAdapter(mWatchListAdapter);
 
 			return inflatedView;
@@ -79,55 +80,47 @@ public class WatchListFragment extends Fragment {
 		}
 	}
 
+	// temporary method for testing
 	public ArrayList<WatchListGroup> SetStandardGroups() {
 
-		String group_names[] = getActivity().getResources().getStringArray(
-				R.array.days);
+		int numShows = 10;
 
-		String country_names[] = { "Brazil", "Mexico", "Croatia", "Cameroon",
-				"Netherlands", "chile", "Spain", "Australia", "Colombia",
-				"Greece", "Ivory Coast", "Japan", "Costa Rica", "Uruguay",
-				"Italy", "England", "France", "Switzerland", "Ecuador",
-				"Honduras", "Agrentina", "Nigeria", "Bosnia and Herzegovina",
-				"Iran", "Germany", "United States", "Portugal", "Ghana",
-				"Belgium", "Algeria", "Russia", "Korea Republic" };
+		String groupHeadings[] = new String[numShows];
 
-		int Images[] = { R.drawable.action_search, R.drawable.action_search,
+		String[] showNames = { "The Walking Dead", "The Americans",
+				"American Horror Story", "Game of Thrones",
+				"The Big Bang Theory", "Grimm", "CSI: Miami", "Modern Family", "Homeland", "24" };
+		Arrays.sort(showNames);
+		
+		String[] showTimes = { "Sunday, 9pm", "Monday 8pm",
+				"Sunday, 10pm", "Sunday, 8:30pm",
+				"Wednesday, 7pm", "Thursday, 8:30pm", "Show ended", "Monday, 6pm", "Sunday, 9pm", "On break" };
+
+		int images[] = { R.drawable.action_search, R.drawable.action_search,
 				R.drawable.action_search, R.drawable.action_search,
 				R.drawable.action_search, R.drawable.action_search,
 				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search };
+				R.drawable.action_search, R.drawable.action_search, };
 
 		ArrayList<WatchListGroup> list = new ArrayList<WatchListGroup>();
 
-		ArrayList<WatchListChild> ch_list;
+		ArrayList<WatchListChild> watchListItem;
 
 		int size = 4;
 		int j = 0;
 
-		for (String group_name : group_names) {
+		for (String group_name : groupHeadings) {
 			WatchListGroup gru = new WatchListGroup();
 			gru.setName(group_name);
 
-			ch_list = new ArrayList<WatchListChild>();
+			watchListItem = new ArrayList<WatchListChild>();
 			for (; j < size; j++) {
 				WatchListChild ch = new WatchListChild();
 				ch.setName(country_names[j]);
-				ch.setImage(Images[j]);
-				ch_list.add(ch);
+				ch.setImage(images[j]);
+				watchListItem.add(ch);
 			}
-			gru.setItems(ch_list);
+			gru.setItems(watchListItem);
 			list.add(gru);
 
 			size = size + 4;
@@ -135,5 +128,4 @@ public class WatchListFragment extends Fragment {
 
 		return list;
 	}
-
 }

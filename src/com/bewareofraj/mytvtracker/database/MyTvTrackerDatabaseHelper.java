@@ -21,6 +21,8 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ MyTvTrackerContract.WatchListEntry._ID + " INTEGER PRIMARY KEY,"
 			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_ENTRY_ID
 			+ TEXT_TYPE + COMMA_SEP
+			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_SHOW_NAME
+			+ TEXT_TYPE + COMMA_SEP
 			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_TVDB_ID
 			+ TEXT_TYPE + COMMA_SEP
 			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING
@@ -54,12 +56,13 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				WatchListEntry.COLUMN_NAME_ENTRY_ID,
 				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY,
 				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME,
-				WatchListEntry.COLUMN_NAME_TVDB_ID, };
+				WatchListEntry.COLUMN_NAME_TVDB_ID,
+				WatchListEntry.COLUMN_NAME_SHOW_NAME };
 
-		String sortOrder = WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY
-				+ " DESC";
+		String sortOrder = WatchListEntry.COLUMN_NAME_SHOW_NAME + " ASC";
 
-		Cursor cursor = db.query(WatchListEntry.TABLE_NAME, // The table to query
+		Cursor cursor = db.query(WatchListEntry.TABLE_NAME, // The table to
+															// query
 				projection, // The columns to return
 				null, // The columns for the WHERE clause
 				null, // The values for the WHERE clause
@@ -67,7 +70,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				null, // don't filter by row groups
 				sortOrder // The sort order
 				);
-		
+
 		return cursor;
 	}
 
