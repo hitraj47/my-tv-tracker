@@ -1,9 +1,11 @@
 package com.bewareofraj.mytvtracker.watchlist;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -53,7 +55,7 @@ public class WatchListFragment extends Fragment {
 
 			mExpandableList = (ExpandableListView) inflatedView
 					.findViewById(R.id.watch_list_expandable);
-			mWatchListItems = SetStandardGroups();
+			mWatchListItems = makeDummyData();
 			mWatchListAdapter = new WatchListExpandableListAdapter(
 					getActivity(), mWatchListItems);
 			mExpandableList.setAdapter(mWatchListAdapter);
@@ -83,7 +85,7 @@ public class WatchListFragment extends Fragment {
 	}
 
 	// temporary method for testing
-	public ArrayList<WatchListGroup> SetStandardGroups() {
+	public ArrayList<WatchListGroup> makeDummyData() {
 
 		int numShows = 10;
 
@@ -91,12 +93,12 @@ public class WatchListFragment extends Fragment {
 
 		String[] showNames = { "The Walking Dead", "The Americans",
 				"American Horror Story", "Game of Thrones",
-				"The Big Bang Theory", "Grimm", "CSI: Miami", "Modern Family", "Homeland", "24" };
-		Arrays.sort(showNames);
-		
-		String[] showTimes = { "Sunday, 9pm", "Monday 8pm",
-				"Sunday, 10pm", "Sunday, 8:30pm",
-				"Wednesday, 7pm", "Thursday, 8:30pm", "Show ended", "Monday, 6pm", "Sunday, 9pm", "On break" };
+				"The Big Bang Theory", "Grimm", "CSI: Miami", "Modern Family",
+				"Homeland", "24" };
+
+		String[] showTimes = { "Sunday, 9pm", "Monday 8pm", "Sunday, 10pm",
+				"Sunday, 8:30pm", "Wednesday, 7pm", "Thursday, 8:30pm",
+				"Show ended", "Monday, 6pm", "Sunday, 9pm", "On break" };
 
 		int images[] = { R.drawable.action_search, R.drawable.action_search,
 				R.drawable.action_search, R.drawable.action_search,
@@ -106,30 +108,50 @@ public class WatchListFragment extends Fragment {
 
 		ArrayList<WatchListGroup> list = new ArrayList<WatchListGroup>();
 
-		HashMap<String, WatchListGroup> groups = new HashMap<String, WatchListGroup>();
-		
+		TreeMap<String, WatchListGroup> groups = new TreeMap<String, WatchListGroup>();
+
 		for (int i = 0; i < numShows; i++) {
-			String firstLetter = showNames[i].substring(0).toUpperCase(Locale.ENGLISH);
+			String firstLetter = showNames[i].substring(0,1).toUpperCase(
+					Locale.ENGLISH);
 			if (groups.containsKey(firstLetter)) {
-				
+				WatchListGroup watchListGroup = groups.get(firstLetter);
+				ArrayList<WatchListChild> watchListItems = watchListGroup
+						.getItems();
+				WatchListChild child = createWatchListChild(images[i],
+						showNames[i], showTimes[i]);
+				watchListItems.add(child);
+				watchListGroup.setItems(watchListItems);
+				groups.put(firstLetter, watchListGroup);
 			} else {
 				WatchListGroup watchListGroup = new WatchListGroup();
 				watchListGroup.setName(firstLetter);
-				
-				WatchListChild child = new WatchListChild();
-				child.setImage(images[i]);
-				child.setName(showNames[i]);
-				child.setShowTime(showTimes[i]);
-				
+
+				WatchListChild child = createWatchListChild(images[i],
+						showNames[i], showTimes[i]);
+
 				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
 				watchListItems.add(child);
-				
+
 				watchListGroup.setItems(watchListItems);
-				
+
 				groups.put(firstLetter, watchListGroup);
 			}
 		}
-
+		
+		Iterator<Entry<String, WatchListGroup>> it = groups.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+	        list.add((WatchListGroup) pairs.getValue());
+		}
 		return list;
+	}
+
+	private WatchListChild createWatchListChild(int image, String name,
+			String time) {
+		WatchListChild child = new WatchListChild();
+		child.setImage(image);
+		child.setName(name);
+		child.setShowTime(time);
+		return child;
 	}
 }
