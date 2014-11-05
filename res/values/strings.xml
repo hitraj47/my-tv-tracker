@@ -39,5 +39,15 @@
     <string name="title_show_detail">Show Detail</string>
     <string name="lbl_watch_list_empty">Your Watch List is currently empty</string>
     <string name="btn_add">Add Show</string>
+    
+    <string-array name="days">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
+    </string-array>
 
 </resources>
