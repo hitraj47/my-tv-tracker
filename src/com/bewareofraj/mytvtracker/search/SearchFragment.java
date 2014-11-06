@@ -7,8 +7,10 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 
@@ -25,6 +27,13 @@ public class SearchFragment extends Fragment {
 		View inflatedView = inflater.inflate(R.layout.fragment_search, container, false);
 		
 		mListView = (ListView) inflatedView.findViewById(R.id.search_results_list);
+		mListView.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getActivity(), "testing", Toast.LENGTH_SHORT).show();				
+			}
+		});
 		mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
 		mListView.setAdapter(mAdapter);
 		

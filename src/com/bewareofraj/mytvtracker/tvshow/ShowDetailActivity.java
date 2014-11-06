@@ -31,7 +31,6 @@ public class ShowDetailActivity extends Activity {
 		Bundle arguments = new Bundle();
 		arguments.putString(ShowDetailFragment.SHOW_NAME, intent.getStringExtra(ShowDetailFragment.SHOW_NAME));
 		arguments.putString(ShowDetailFragment.SHOW_TIME, intent.getStringExtra(ShowDetailFragment.SHOW_TIME));
-		Toast.makeText(this, arguments.getString(ShowDetailFragment.SHOW_NAME), Toast.LENGTH_LONG).show();
 
 		ShowDetailFragment fragment = new ShowDetailFragment();
 		fragment.setArguments(savedInstanceState);
