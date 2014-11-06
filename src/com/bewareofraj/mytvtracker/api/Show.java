@@ -18,6 +18,7 @@ public class Show {
 	private String mAirTime;
 	private String mTvdbId;
 	private String mPosterUrl;
+	private int mSeasons;
 	
 	public Show() {
 		
@@ -109,6 +110,14 @@ public class Show {
 
 	public void setPosterUrl(String mPosterUrl) {
 		this.mPosterUrl = mPosterUrl;
+	}
+
+	public int getSeasons() {
+		return mSeasons;
+	}
+
+	public void setSeasons(int mSeasons) {
+		this.mSeasons = mSeasons;
 	}
 
 }
