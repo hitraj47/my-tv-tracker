@@ -1,14 +1,16 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.R.id;
-import com.bewareofraj.mytvtracker.R.layout;
-
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.NavUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.TestItemContainerActivity;
 
 /**
  * An activity representing a list of Shows. This activity has different
@@ -27,12 +29,22 @@ import android.view.MenuItem;
  */
 public class ShowListActivity extends Activity implements
 		ShowListFragment.Callbacks {
+	
+	/**
+	 * The id to pass to the API. Right now this is the TVDB ID
+	 */
+	public static final String EXTRA_SHOW_ID = "show_id";
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
 	private boolean mTwoPane;
+	
+	/**
+	 * The Show ID, used to pass to the API to retrieve information
+	 */
+	private static String mShowId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +65,15 @@ public class ShowListActivity extends Activity implements
 			((ShowListFragment) getFragmentManager().findFragmentById(
 					R.id.show_list)).setActivateOnItemClick(true);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
+		
+		// Show TV show information as default/first screen
+		Intent intent = getIntent();
+		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
+		
+	}
+	
+	public static String getShowId() {
+		return mShowId;
 	}
 
 	@Override

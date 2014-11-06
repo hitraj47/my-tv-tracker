@@ -27,7 +27,7 @@ public class ShowDetailFragment extends Fragment {
 	public static final String SHOW_TIME = "show_time";
 	
 	private String mShowName, mShowTime;
-
+	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).

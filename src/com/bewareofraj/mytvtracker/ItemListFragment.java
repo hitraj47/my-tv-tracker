@@ -145,4 +145,12 @@ public class ItemListFragment extends ListFragment {
 
 		mActivatedPosition = position;
 	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		//set first item activated by default
+        onListItemClick(getListView(), getView(), 0, 0);
+	}
 }
