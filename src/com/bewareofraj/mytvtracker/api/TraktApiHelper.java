@@ -2,6 +2,7 @@ package com.bewareofraj.mytvtracker.api;
 
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class TraktApiHelper {
@@ -30,17 +31,25 @@ public class TraktApiHelper {
 		query.append(API_FORMAT);
 		query.append(mApiKey);
 		query.append(id + "/");
+		
+		Show show = new Show();
 		try {
 			JSONObject result = new RetrieveTraktJSONTask().execute(query.toString()).get();
+			
+			show.setTitle(result.getString("title"));
+			show.setYear(result.getInt("year"));
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		return null;
+		return show;
 	}
 
 	public String getApiKey() {
