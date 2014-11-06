@@ -2,15 +2,14 @@ package com.bewareofraj.mytvtracker.search;
 
 public class SearchResultItem {
 	
-	private String mName, mTime, mId;
+	private String mName, mId;
 	
 	public SearchResultItem() {
 		
 	}
 	
-	public SearchResultItem(String name, String time, String id) {
+	public SearchResultItem(String name, String id) {
 		this.setName(name);
-		this.setTime(time);
 		this.setId(id);
 	}
 
@@ -20,14 +19,6 @@ public class SearchResultItem {
 
 	public void setName(String mName) {
 		this.mName = mName;
-	}
-
-	public String getTime() {
-		return mTime;
-	}
-
-	public void setTime(String mTime) {
-		this.mTime = mTime;
 	}
 
 	public String getId() {
