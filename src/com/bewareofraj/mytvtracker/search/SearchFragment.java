@@ -29,7 +29,7 @@ public class SearchFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View inflatedView = inflater.inflate(R.layout.fragment_search,
 				container, false);
-
+		
 		mResultList
 				.add(new SearchResultItem("The Walking Dead", "walkingdead"));
 		mResultList.add(new SearchResultItem("The Big Bang Theory", "tbbt"));
