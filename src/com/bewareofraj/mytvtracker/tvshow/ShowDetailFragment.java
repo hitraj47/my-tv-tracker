@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.dummy.DummyContent;
 
 /**
  * A fragment representing a single Show detail screen. This fragment is either
@@ -23,16 +22,11 @@ public class ShowDetailFragment extends Fragment {
 	 */
 	public static final String ARG_ITEM_ID = "item_id";
 
-	/**
-	 * The dummy content this fragment is presenting.
-	 */
-	private DummyContent.DummyItem mItem;
-	
 	public static final String SHOW_ID = "show_id";
 	public static final String SHOW_NAME = "show_name";
 	public static final String SHOW_TIME = "show_time";
 	
-	private String mShowId, mShowName, mShowTime;
+	private String mShowName, mShowTime;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
