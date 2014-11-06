@@ -1,5 +1,7 @@
 package com.bewareofraj.mytvtracker.api;
 
+import java.util.Date;
+
 /**
  * A Show class represents a TV show.
  * @author Rajesh
@@ -9,7 +11,7 @@ public class Show {
 	
 	private String mTitle;
 	private int mYear;
-	private String mFirstAired;
+	private Date mFirstAired;
 	private String mCountry;
 	private String mOverview;
 	private String mStatus;
@@ -40,11 +42,11 @@ public class Show {
 		this.mYear = mYear;
 	}
 
-	public String getFirstAired() {
+	public Date getFirstAired() {
 		return mFirstAired;
 	}
 
-	public void setFirstAired(String mFirstAired) {
+	public void setFirstAired(Date mFirstAired) {
 		this.mFirstAired = mFirstAired;
 	}
 
