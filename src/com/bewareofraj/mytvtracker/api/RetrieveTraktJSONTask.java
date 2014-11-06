@@ -12,11 +12,11 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
-public class RetrieveTraktJSONTask extends AsyncTask<String, Void, JSONObject> {
+public class RetrieveTraktJSONTask extends AsyncTask<String, Void, String> {
 
 	@Override
-	protected JSONObject doInBackground(String... queries) {
-		JSONObject result = null;
+	protected String doInBackground(String... queries) {
+		String result = null;
 		try {
 			URL url = new URL(queries[0]);
 			InputStream is = url.openStream();
@@ -31,14 +31,11 @@ public class RetrieveTraktJSONTask extends AsyncTask<String, Void, JSONObject> {
     		br.close();
     		is.close();
     		
-    		result = new JSONObject(jsonStringBuilder.toString());
+    		result = jsonStringBuilder.toString();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
