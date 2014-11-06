@@ -74,6 +74,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bewareofraj.mytvtracker.MainActivity" />
         </activity>
+        <activity android:name=".tvshow.ShowDetailActivity"></activity>
     </application>
 
 </manifest>

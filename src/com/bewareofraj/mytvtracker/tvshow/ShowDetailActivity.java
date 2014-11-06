@@ -1,14 +1,13 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.R.id;
-import com.bewareofraj.mytvtracker.R.layout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 /**
  * An activity representing a single Show detail screen. This activity is only
@@ -28,31 +27,16 @@ public class ShowDetailActivity extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
+		Intent intent = getIntent();
+		Bundle arguments = new Bundle();
+		arguments.putString(ShowDetailFragment.SHOW_NAME, intent.getStringExtra(ShowDetailFragment.SHOW_NAME));
+		arguments.putString(ShowDetailFragment.SHOW_TIME, intent.getStringExtra(ShowDetailFragment.SHOW_TIME));
+		Toast.makeText(this, arguments.getString(ShowDetailFragment.SHOW_NAME), Toast.LENGTH_LONG).show();
+
 		ShowDetailFragment fragment = new ShowDetailFragment();
 		fragment.setArguments(savedInstanceState);
-		getFragmentManager().beginTransaction()
-				.add(R.id.show_detail_container, fragment).commit();
-
-		// savedInstanceState is non-null when there is fragment state
-		// saved from previous configurations of this activity
-		// (e.g. when rotating the screen from portrait to landscape).
-		// In this case, the fragment will automatically be re-added
-		// to its container so we don't need to manually add it.
-		// For more information, see the Fragments API guide at:
-		//
-		// http://developer.android.com/guide/components/fragments.html
-		//
-		if (savedInstanceState == null) {
-			// Create the detail fragment and add it to the activity
-			// using a fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(ShowDetailFragment.SHOW_ID, getIntent()
-					.getStringExtra(ShowDetailFragment.SHOW_ID));
-			ShowDetailFragment fragment = new ShowDetailFragment();
-			fragment.setArguments(arguments);
-			getFragmentManager().beginTransaction()
-					.add(R.id.show_detail_container, fragment).commit();
-		}
+		FragmentManager fm = getFragmentManager();
+		fm.beginTransaction().add(R.id.show_detail_container, fragment).commit();
 	}
 
 	@Override

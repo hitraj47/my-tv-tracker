@@ -1,15 +1,14 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.R.id;
-import com.bewareofraj.mytvtracker.R.layout;
 import com.bewareofraj.mytvtracker.dummy.DummyContent;
 
 /**
@@ -45,7 +44,9 @@ public class ShowDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		Intent intent = getActivity().getIntent();
+		mShowName = intent.getStringExtra(SHOW_NAME);
+		mShowTime = intent.getStringExtra(SHOW_TIME);
 	}
 
 	@Override
@@ -53,9 +54,7 @@ public class ShowDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
-		mShowId = savedInstanceState.getString(SHOW_ID);
-		mShowName = savedInstanceState.getString(SHOW_NAME);
-		mShowTime = savedInstanceState.getString(SHOW_TIME);
+		
 		TextView txtShowName = (TextView) rootView.findViewById(R.id.txtShowName);
 		txtShowName.setText(mShowName);
 		

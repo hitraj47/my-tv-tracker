@@ -19,8 +19,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
-
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
@@ -39,11 +37,6 @@ public class WatchListFragment extends Fragment {
 	 */
 	private MyTvTrackerDatabaseHelper mDbHelper;
 
-	/**
-	 * Flag to determine if watch list is empty
-	 */
-	private boolean mWatchListEmpty;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -54,7 +47,6 @@ public class WatchListFragment extends Fragment {
 
 		// TODO: change this back to > 0
 		if (c.getCount() == 0) {
-			mWatchListEmpty = false;
 			View inflatedView = inflater.inflate(R.layout.fragment_watch_list,
 					container, false);
 			mExpandableList = (ExpandableListView) inflatedView
@@ -63,7 +55,6 @@ public class WatchListFragment extends Fragment {
 
 			return inflatedView;
 		} else {
-			mWatchListEmpty = true;
 			View inflatedView = null;
 			inflatedView = inflater.inflate(R.layout.fragment_wach_list_empty,
 					container, false);
@@ -99,10 +90,8 @@ public class WatchListFragment extends Fragment {
 				WatchListGroup group = mWatchListItems.get(groupPosition);
 				ArrayList<WatchListChild> child = group.getItems();
 				WatchListChild show = child.get(childPosition);
-				Toast.makeText(getActivity(), "Show: " + show.getName(), Toast.LENGTH_LONG).show();
 				
 				Intent intent = new Intent(getActivity(), ShowDetailActivity.class);
-				intent.putExtra(ShowDetailFragment.SHOW_ID, show.getApiId());
 				intent.putExtra(ShowDetailFragment.SHOW_NAME, show.getName());
 				intent.putExtra(ShowDetailFragment.SHOW_TIME, show.getShowTime());
 				startActivity(intent);
@@ -116,8 +105,6 @@ public class WatchListFragment extends Fragment {
 	public ArrayList<WatchListGroup> makeDummyData() {
 
 		int numShows = 10;
-
-		String groupHeadings[] = new String[numShows];
 
 		String[] showNames = { "The Walking Dead", "The Americans",
 				"American Horror Story", "Game of Thrones",
