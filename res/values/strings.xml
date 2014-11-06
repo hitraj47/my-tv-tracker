@@ -54,5 +54,10 @@
     <string name="show_time_placeholder">Show Time</string>
     <string name="box_art_placeholder">Box art</string>
     <string name="results">Results:</string>
+    <string name="show_year_placeholder">Year</string>
+    <string name="first_aired_placeholder">First aired</string>
+    <string name="watch_list_button_placeholder">Add to Watch List</string>
+    <string name="heading_overview">Overview:</string>
+    <string name="overview_placeholder">Overview</string>
 
 </resources>

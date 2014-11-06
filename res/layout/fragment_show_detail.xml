@@ -9,9 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="22dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="18dp"
-        android:src="@drawable/ic_launcher" android:contentDescription="@string/box_art_placeholder"/>
+        android:contentDescription="@string/box_art_placeholder"
+        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/txtShowName"
@@ -24,12 +25,60 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/txtShowTime"
+        android:id="@+id/txtShowYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/txtShowName"
         android:layout_below="@+id/txtShowName"
+        android:text="@string/show_year_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtShowTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtShowYear"
+        android:layout_below="@+id/imgBoxArt"
         android:text="@string/show_time_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/txtFirstAired"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtShowTime"
+        android:layout_below="@+id/txtShowTime"
+        android:text="@string/first_aired_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <Button
+        android:id="@+id/btnWatchList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imgBoxArt"
+        android:layout_below="@+id/txtFirstAired"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/watch_list_button_placeholder" />
+
+    <TextView
+        android:id="@+id/lblOverview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnWatchList"
+        android:layout_below="@+id/btnWatchList"
+        android:layout_marginTop="14dp"
+        android:text="@string/heading_overview"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/lblOverviewBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblOverview"
+        android:layout_below="@+id/lblOverview"
+        android:text="@string/overview_placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
 </RelativeLayout>
