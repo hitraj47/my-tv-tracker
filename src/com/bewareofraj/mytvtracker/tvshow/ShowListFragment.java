@@ -1,8 +1,11 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
+import com.bewareofraj.mytvtracker.R;
+
 import android.app.Activity;
-import android.os.Bundle;
+import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,12 +28,6 @@ public class ShowListFragment extends ListFragment {
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
 	/**
-	 * The fragment's current callback object, which is notified of list item
-	 * clicks.
-	 */
-	private Callbacks mCallbacks = sDummyCallbacks;
-
-	/**
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
@@ -46,16 +43,6 @@ public class ShowListFragment extends ListFragment {
 		 */
 		public void onItemSelected(String id);
 	}
-
-	/**
-	 * A dummy implementation of the {@link Callbacks} interface that does
-	 * nothing. Used only when this fragment is not attached to an activity.
-	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() {
-		@Override
-		public void onItemSelected(String id) {
-		}
-	};
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -101,22 +88,23 @@ public class ShowListFragment extends ListFragment {
 			throw new IllegalStateException(
 					"Activity must implement fragment's callbacks.");
 		}
-
-		mCallbacks = (Callbacks) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-
-		// Reset the active callbacks interface to the dummy implementation.
-		mCallbacks = sDummyCallbacks;
 	}
 
 	@Override
 	public void onListItemClick(ListView listView, View view, int position,
 			long id) {
 		super.onListItemClick(listView, view, position, id);
+		//TODO: implement what happens when user clicks on list item here
+		if (position == 0) {
+			ShowDetailFragment fragment = new ShowDetailFragment();
+			FragmentManager fm = getFragmentManager();
+			fm.beginTransaction().replace(R.id.show_detail_container, fragment).commit();
+		}
 
 	}
 

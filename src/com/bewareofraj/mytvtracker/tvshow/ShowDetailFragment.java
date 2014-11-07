@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
@@ -55,7 +56,7 @@ public class ShowDetailFragment extends Fragment {
 			lblShowName.setText(show.getTitle());
 			
 			TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
-			lblShowYear.setText(show.getYear());
+			lblShowYear.setText(Integer.toString(show.getYear()));
 			
 			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
 			lblShowTime.setText(show.getAirDay() + ", " + show.getAirTime());

@@ -62,7 +62,7 @@ public class ShowListActivity extends Activity implements
 		setContentView(R.layout.activity_show_list);
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		
 		if (findViewById(R.id.show_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
@@ -81,6 +81,7 @@ public class ShowListActivity extends Activity implements
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
 		try {
+			//mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
 			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
