@@ -59,5 +59,6 @@
     <string name="watch_list_button_placeholder">Add to Watch List</string>
     <string name="heading_overview">Overview:</string>
     <string name="overview_placeholder">Overview</string>
+    <string name="show_network_placeholder">Network</string>
 
 </resources>

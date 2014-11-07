@@ -41,13 +41,22 @@
         android:layout_below="@+id/imgBoxArt"
         android:text="@string/show_time_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
+    
+    <TextView
+        android:id="@+id/lblNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblShowYear"
+        android:layout_below="@+id/lblShowTime"
+        android:text="@string/show_network_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/lblFirstAired"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lblShowTime"
-        android:layout_below="@+id/lblShowTime"
+        android:layout_below="@+id/lblNetwork"
         android:text="@string/first_aired_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
