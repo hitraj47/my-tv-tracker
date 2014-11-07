@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
@@ -61,6 +62,14 @@ public class ShowDetailFragment extends Fragment {
 			
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
 			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
+			
+			Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
+			String buttonText = isOnWatchList(ShowListActivity.getShowId()) ? "Remove from Watch List" : "Add to Watch List";
+			btnWatchList.setText(buttonText);
+			//TODO: Add button listener
+			
+			TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
+			lblOverviewBody.setText(show.getOverview());
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -73,6 +82,11 @@ public class ShowDetailFragment extends Fragment {
 		}
 		
 		return rootView;
+	}
+
+	private boolean isOnWatchList(String showId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private String makeFirstAiredDated(Date date) {
