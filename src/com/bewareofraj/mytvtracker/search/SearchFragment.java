@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.bewareofraj.mytvtracker.ItemListActivity;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
 
@@ -31,9 +30,9 @@ public class SearchFragment extends Fragment {
 				container, false);
 		
 		mResultList
-				.add(new SearchResultItem("The Walking Dead", "walkingdead"));
-		mResultList.add(new SearchResultItem("The Big Bang Theory", "tbbt"));
-		mResultList.add(new SearchResultItem("The Americans", "theamericans"));
+				.add(new SearchResultItem("The Walking Dead", "153021"));
+		mResultList.add(new SearchResultItem("The Big Bang Theory", "153021"));
+		mResultList.add(new SearchResultItem("The Americans", "153021"));
 
 		mListView = (ListView) inflatedView
 				.findViewById(R.id.search_results_list);
