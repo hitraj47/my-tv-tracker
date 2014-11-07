@@ -53,8 +53,8 @@ public class TraktApiHelper {
 		show.setOverview(result.getString("overview"));
 		show.setStatus(result.getString("status"));
 		show.setNetwork(result.getString("network"));
-		show.setAirDay(result.getString("air_day_utc"));
-		show.setAirTime(result.getString("air_time_utc"));
+		show.setAirDay(result.getString("air_day"));	// EST
+		show.setAirTime(result.getString("air_time"));	// EST
 		show.setTvdbId(Integer.toString(result.getInt("tvdb_id")));
 		show.setPosterUrl(result.getString("poster"));
 		show.setSeasons(getNumberOfSeasons(id));
