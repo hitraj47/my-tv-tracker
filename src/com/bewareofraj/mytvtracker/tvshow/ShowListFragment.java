@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.bewareofraj.mytvtracker.dummy.DummyContent;
-
 /**
  * A list fragment representing a list of Shows. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
@@ -120,9 +118,6 @@ public class ShowListFragment extends ListFragment {
 			long id) {
 		super.onListItemClick(listView, view, position, id);
 
-		// Notify the active callbacks interface (the activity, if the
-		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
 	}
 
 	@Override

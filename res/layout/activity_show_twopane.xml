@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/show_list"
-        android:name="com.bewareofraj.mytvtracker.tvshow.ShowListFragmentragment"
+        android:name="com.bewareofraj.mytvtracker.tvshow.ShowListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
