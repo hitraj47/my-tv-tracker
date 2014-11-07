@@ -1,5 +1,9 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -11,6 +15,7 @@ import android.view.View;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.TestItemContainerActivity;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 
 /**
  * An activity representing a list of Shows. This activity has different
@@ -34,6 +39,11 @@ public class ShowListActivity extends Activity implements
 	 * The id to pass to the API. Right now this is the TVDB ID
 	 */
 	public static final String EXTRA_SHOW_ID = "show_id";
+	
+	/**
+	 * Number of seasons for generating the list
+	 */
+	public static final String EXTRA_SEASON_COUNT = "season_count";
 
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -45,6 +55,11 @@ public class ShowListActivity extends Activity implements
 	 * The Show ID, used to pass to the API to retrieve information
 	 */
 	private static String mShowId;
+	
+	/**
+	 * The number of seasons + 1 will be the size of the list
+	 */
+	private static int mNumberOfSeasons;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +84,27 @@ public class ShowListActivity extends Activity implements
 		// Show TV show information as default/first screen
 		Intent intent = getIntent();
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
-		
+		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+		try {
+			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static String getShowId() {
 		return mShowId;
+	}
+	
+	public static int getNumberOfSeasons() {
+		return mNumberOfSeasons;
 	}
 
 	@Override
@@ -103,10 +134,7 @@ public class ShowListActivity extends Activity implements
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(ShowDetailFragment.ARG_ITEM_ID, id);
 			ShowDetailFragment fragment = new ShowDetailFragment();
-			fragment.setArguments(arguments);
 			getFragmentManager().beginTransaction()
 					.replace(R.id.show_detail_container, fragment).commit();
 
@@ -114,7 +142,6 @@ public class ShowListActivity extends Activity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, ShowDetailActivity.class);
-			detailIntent.putExtra(ShowDetailFragment.ARG_ITEM_ID, id);
 			startActivity(detailIntent);
 		}
 	}

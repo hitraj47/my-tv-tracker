@@ -25,6 +25,7 @@ import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
 import com.bewareofraj.mytvtracker.tvshow.ShowDetailActivity;
 import com.bewareofraj.mytvtracker.tvshow.ShowDetailFragment;
+import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
 
 public class WatchListFragment extends Fragment {
 
@@ -91,9 +92,8 @@ public class WatchListFragment extends Fragment {
 				ArrayList<WatchListChild> child = group.getItems();
 				WatchListChild show = child.get(childPosition);
 				
-				Intent intent = new Intent(getActivity(), ShowDetailActivity.class);
-				intent.putExtra(ShowDetailFragment.SHOW_NAME, show.getName());
-				intent.putExtra(ShowDetailFragment.SHOW_TIME, show.getShowTime());
+				Intent intent = new Intent(getActivity(), ShowListActivity.class);
+				intent.putExtra(ShowListActivity.EXTRA_SHOW_ID, show.getApiId());
 				startActivity(intent);
 				
 				return false;
@@ -128,7 +128,7 @@ public class WatchListFragment extends Fragment {
 		for (int i = 0; i < numShows; i++) {
 			String firstLetter = showNames[i].substring(0, 1).toUpperCase(
 					Locale.ENGLISH);
-			String dummyApiId = "test id";
+			String dummyApiId = "153021";
 			if (groups.containsKey(firstLetter)) {
 				WatchListGroup watchListGroup = groups.get(firstLetter);
 				

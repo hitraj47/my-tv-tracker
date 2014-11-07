@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.dummy.DummyContent;
 
 /**
@@ -70,10 +71,16 @@ public class ShowListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// TODO: replace with a real list adapter.
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, DummyContent.ITEMS));
+		//TODO: Populate list
+		String[] items = new String[ShowListActivity.getNumberOfSeasons() + 1];
+		// first menu item is for show info
+		items[0] = "Summary";
+		for (int i = 1; i < items.length; i++) {
+			items[i] = "Season " + i;
+		}
+		ArrayAdapter<String> adapter;
+		adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, items);
+		setListAdapter(adapter);
 	}
 
 	@Override

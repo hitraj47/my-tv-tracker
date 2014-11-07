@@ -15,7 +15,7 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/txtShowName"
+        android:id="@+id/lblShowName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imgBoxArt"
@@ -25,29 +25,29 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/txtShowYear"
+        android:id="@+id/lblShowYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtShowName"
-        android:layout_below="@+id/txtShowName"
+        android:layout_alignLeft="@+id/lblShowName"
+        android:layout_below="@+id/lblShowName"
         android:text="@string/show_year_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/txtShowTime"
+        android:id="@+id/lblShowTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtShowYear"
+        android:layout_alignLeft="@+id/lblShowYear"
         android:layout_below="@+id/imgBoxArt"
         android:text="@string/show_time_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/txtFirstAired"
+        android:id="@+id/lblFirstAired"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtShowTime"
-        android:layout_below="@+id/txtShowTime"
+        android:layout_alignLeft="@+id/lblShowTime"
+        android:layout_below="@+id/lblShowTime"
         android:text="@string/first_aired_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/imgBoxArt"
-        android:layout_below="@+id/txtFirstAired"
+        android:layout_below="@+id/lblFirstAired"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="15dp"

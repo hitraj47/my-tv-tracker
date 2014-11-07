@@ -1,7 +1,13 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.Show;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 
 /**
  * A fragment representing a single Show detail screen. This fragment is either
@@ -16,18 +24,7 @@ import com.bewareofraj.mytvtracker.R;
  * {@link ShowDetailActivity} on handsets.
  */
 public class ShowDetailFragment extends Fragment {
-	/**
-	 * The fragment argument representing the item ID that this fragment
-	 * represents.
-	 */
-	public static final String ARG_ITEM_ID = "item_id";
 
-	public static final String SHOW_ID = "show_id";
-	public static final String SHOW_NAME = "show_name";
-	public static final String SHOW_TIME = "show_time";
-	
-	private String mShowName, mShowTime;
-	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -38,9 +35,6 @@ public class ShowDetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent intent = getActivity().getIntent();
-		mShowName = intent.getStringExtra(SHOW_NAME);
-		mShowTime = intent.getStringExtra(SHOW_TIME);
 	}
 
 	@Override
@@ -48,13 +42,46 @@ public class ShowDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
-		
-		TextView txtShowName = (TextView) rootView.findViewById(R.id.txtShowName);
-		txtShowName.setText(mShowName);
-		
-		TextView txtShowTime = (TextView) rootView.findViewById(R.id.txtShowTime);
-		txtShowTime.setText(mShowTime);
+
+		// TODO: Get data from web using show id, then use the Show object to
+		// display info in layout components
+		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+		Show show;
+		try {
+			show = helper.getShow(ShowListActivity.getShowId());
+			
+			TextView lblShowName = (TextView) rootView.findViewById(R.id.lblShowName);
+			lblShowName.setText(show.getTitle());
+			
+			TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
+			lblShowYear.setText(show.getYear());
+			
+			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
+			lblShowTime.setText(show.getAirDay() + ", " + show.getAirTime());
+			
+			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
+			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		return rootView;
+	}
+
+	private String makeFirstAiredDated(Date date) {
+		// TODO Auto-generated method stub
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+		String dayOfMonth = c.getDisplayName(Calendar.DATE, Calendar.LONG, Locale.ENGLISH);
+		String year = c.getDisplayName(Calendar.YEAR, Calendar.LONG, Locale.ENGLISH);
+		return month + " " + dayOfMonth + ", " + year;
 	}
 }

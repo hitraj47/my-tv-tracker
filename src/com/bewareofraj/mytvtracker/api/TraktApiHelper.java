@@ -62,7 +62,7 @@ public class TraktApiHelper {
 		return show;
 	}
 
-	private int getNumberOfSeasons(String id) throws InterruptedException, ExecutionException, JSONException {
+	public int getNumberOfSeasons(String id) throws InterruptedException, ExecutionException, JSONException {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_SHOW);

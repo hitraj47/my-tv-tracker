@@ -27,11 +27,6 @@ public class ShowDetailActivity extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		Intent intent = getIntent();
-		Bundle arguments = new Bundle();
-		arguments.putString(ShowDetailFragment.SHOW_NAME, intent.getStringExtra(ShowDetailFragment.SHOW_NAME));
-		arguments.putString(ShowDetailFragment.SHOW_TIME, intent.getStringExtra(ShowDetailFragment.SHOW_TIME));
-
 		ShowDetailFragment fragment = new ShowDetailFragment();
 		fragment.setArguments(savedInstanceState);
 		FragmentManager fm = getFragmentManager();
