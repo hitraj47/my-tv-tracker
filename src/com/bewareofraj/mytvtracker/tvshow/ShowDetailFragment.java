@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.images.ImageLoader;
 
 /**
  * A fragment representing a single Show detail screen. This fragment is either
@@ -49,6 +51,11 @@ public class ShowDetailFragment extends Fragment {
 		Show show;
 		try {
 			show = helper.getShow(ShowListActivity.getShowId());
+			
+			ImageView imgPoster = (ImageView) rootView.findViewById(R.id.imgPoster);
+			ImageLoader imgLoader = new ImageLoader(getActivity());
+			int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
+			imgLoader.DisplayImage(show.getPosterUrl(), loadingImage, imgPoster);
 			
 			TextView lblShowName = (TextView) rootView.findViewById(R.id.lblShowName);
 			lblShowName.setText(show.getTitle());
