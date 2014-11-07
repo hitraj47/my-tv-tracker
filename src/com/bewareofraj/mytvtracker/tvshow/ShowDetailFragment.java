@@ -95,8 +95,8 @@ public class ShowDetailFragment extends Fragment {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
-		String dayOfMonth = c.getDisplayName(Calendar.DATE, Calendar.LONG, Locale.ENGLISH);
-		String year = c.getDisplayName(Calendar.YEAR, Calendar.LONG, Locale.ENGLISH);
+		String dayOfMonth = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+		String year = Integer.toString(c.get(Calendar.YEAR));
 		return month + " " + dayOfMonth + ", " + year;
 	}
 }

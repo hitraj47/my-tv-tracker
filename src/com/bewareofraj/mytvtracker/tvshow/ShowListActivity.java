@@ -29,12 +29,12 @@ import com.bewareofraj.mytvtracker.api.TraktApiHelper;
  */
 public class ShowListActivity extends Activity implements
 		ShowListFragment.Callbacks {
-	
+
 	/**
 	 * The id to pass to the API. Right now this is the TVDB ID
 	 */
 	public static final String EXTRA_SHOW_ID = "show_id";
-	
+
 	/**
 	 * Number of seasons for generating the list
 	 */
@@ -45,12 +45,12 @@ public class ShowListActivity extends Activity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
-	
+
 	/**
 	 * The Show ID, used to pass to the API to retrieve information
 	 */
 	private static String mShowId;
-	
+
 	/**
 	 * The number of seasons + 1 will be the size of the list
 	 */
@@ -59,10 +59,31 @@ public class ShowListActivity extends Activity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Show TV show information as default/first screen
+		Intent intent = getIntent();
+		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
+		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
+				R.string.trakt_api_key));
+		try {
+			// mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
+			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		setContentView(R.layout.activity_show_list);
+		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		if (findViewById(R.id.show_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and
@@ -75,30 +96,12 @@ public class ShowListActivity extends Activity implements
 			((ShowListFragment) getFragmentManager().findFragmentById(
 					R.id.show_list)).setActivateOnItemClick(true);
 		}
-		
-		// Show TV show information as default/first screen
-		Intent intent = getIntent();
-		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
-		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
-		try {
-			//mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
-			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
-	
+
 	public static String getShowId() {
 		return mShowId;
 	}
-	
+
 	public static int getNumberOfSeasons() {
 		return mNumberOfSeasons;
 	}
