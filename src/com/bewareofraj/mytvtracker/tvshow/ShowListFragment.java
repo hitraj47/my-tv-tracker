@@ -1,14 +1,15 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import com.bewareofraj.mytvtracker.R;
-
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.bewareofraj.mytvtracker.R;
 
 /**
  * A list fragment representing a list of Shows. This fragment also supports
@@ -101,9 +102,15 @@ public class ShowListFragment extends ListFragment {
 		super.onListItemClick(listView, view, position, id);
 		//TODO: implement what happens when user clicks on list item here
 		if (position == 0) {
-			ShowDetailFragment fragment = new ShowDetailFragment();
-			FragmentManager fm = getFragmentManager();
-			fm.beginTransaction().replace(R.id.show_detail_container, fragment).commit();
+			if (ShowListActivity.isTwoPane()) {
+				ShowDetailFragment fragment = new ShowDetailFragment();
+				FragmentManager fm = getFragmentManager();
+				fm.beginTransaction().replace(R.id.show_detail_container, fragment).commit();
+			} else {
+				Intent intent = new Intent(getActivity(), ShowDetailActivity.class);
+				getActivity().startActivity(intent);
+			}
+			
 		}
 
 	}
@@ -143,7 +150,10 @@ public class ShowListFragment extends ListFragment {
 	public void onStart() {
 		super.onStart();
 		
-		//set first item activated by default
-        onListItemClick(getListView(), getView(), 0, 0);
+		//set first item activated by default, only for two pane mode
+		if (ShowListActivity.isTwoPane()) {
+			onListItemClick(getListView(), getView(), 0, 0);
+		}
+        
 	}
 }

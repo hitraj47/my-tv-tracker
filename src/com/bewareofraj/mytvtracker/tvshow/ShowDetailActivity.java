@@ -44,8 +44,9 @@ public class ShowDetailActivity extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpTo(this,
-					new Intent(this, ShowListActivity.class));
+			Intent intent = new Intent(this, ShowListActivity.class);
+			intent.putExtra(ShowListActivity.EXTRA_SHOW_ID, ShowListActivity.getShowId());
+			NavUtils.navigateUpTo(this, intent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

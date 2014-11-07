@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 
@@ -36,15 +37,10 @@ public class ShowListActivity extends Activity implements
 	public static final String EXTRA_SHOW_ID = "show_id";
 
 	/**
-	 * Number of seasons for generating the list
-	 */
-	public static final String EXTRA_SEASON_COUNT = "season_count";
-
-	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	private boolean mTwoPane;
+	private static boolean mTwoPane;
 
 	/**
 	 * The Show ID, used to pass to the API to retrieve information
@@ -141,7 +137,12 @@ public class ShowListActivity extends Activity implements
 			// In single-pane mode, simply start the detail activity
 			// for the selected item ID.
 			Intent detailIntent = new Intent(this, ShowDetailActivity.class);
+			detailIntent.putExtra(EXTRA_SHOW_ID, mShowId);
 			startActivity(detailIntent);
 		}
+	}
+	
+	public static boolean isTwoPane() {
+		return mTwoPane;
 	}
 }
