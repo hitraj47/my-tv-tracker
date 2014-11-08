@@ -20,6 +20,18 @@ public class TraktApiHelper {
 	public static final String API_METHOD_SEARCH = "search/";
 	public static final String API_ARGUMENT_SEARCH_SHOWS = "shows";
 	public static final String API_SEARCH_LIMIT = "10";
+	
+	public static final String API_KEY_SHOW_NAME = "title";
+	public static final String API_KEY_YEAR = "year";
+	public static final String API_KEY_FIRST_AIRED_UTC = "first_aired_utc";
+	public static final String API_KEY_COUNTRY = "country";
+	public static final String API_KEY_OVERVIEW = "overview";
+	public static final String API_KEY_STATUS = "status";
+	public static final String API_KEY_NETWORK = "network";
+	public static final String API_KEY_AIR_DAY = "air_day";
+	public static final String API_KEY_AIR_TIME = "air_time";
+	public static final String API_KEY_TVDBID = "tvdb_id";
+	public static final String API_KEY_POSTER_URL = "poster";
 
 	private String mApiKey = "";
 
@@ -49,8 +61,23 @@ public class TraktApiHelper {
 
 		JSONObject result = new JSONObject(new RetrieveTraktJSONTask().execute(
 				query.toString()).get());
+		
+		Show show = new Show();
+		show.setTitle(result.getString(API_KEY_SHOW_NAME));
+		show.setYear(result.getInt(API_KEY_YEAR));
+		show.setFirstAired(getDateFromUnixTimestamp(result
+				.getInt(API_KEY_FIRST_AIRED_UTC)));
+		show.setCountry(result.getString(API_KEY_COUNTRY));
+		show.setOverview(result.getString(API_KEY_COUNTRY));
+		show.setStatus(result.getString(API_KEY_STATUS));
+		show.setNetwork(result.getString(API_KEY_NETWORK));
+		show.setAirDay(result.getString(API_KEY_AIR_DAY));
+		show.setAirTime(result.getString(API_KEY_AIR_TIME));
+		show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
+		show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
+		show.setSeasons(getNumberOfSeasons(Integer.toString(result.getInt(API_KEY_TVDBID))));
 
-		return createShowFromJSONObject(result);
+		return show;
 	}
 
 	public int getNumberOfSeasons(String id) throws InterruptedException, ExecutionException, JSONException {
@@ -82,13 +109,14 @@ public class TraktApiHelper {
 		this.mApiKey = mApiKey + "/";
 	}
 	
-	public ArrayList<Show> getSearchResults(String terms) throws JSONException, InterruptedException, ExecutionException {
+	public ArrayList<Show> getShowSearchResults(String terms) throws JSONException, InterruptedException, ExecutionException {
 		JSONArray results = searchShows(terms, API_SEARCH_LIMIT);
 		ArrayList<Show> resultsAsShows = new ArrayList<Show>();
 		if (results.length() > 0) {
 			for (int i = 0; i < results.length(); i++) {
 				JSONObject object = results.getJSONObject(i);
-				Show show = getShow( Integer.toString( object.getInt("tvdb_id")));
+				Show show = new Show();
+				show.setTitle(object.getString("title"));
 				resultsAsShows.add(show);
 			}
 		}
@@ -111,24 +139,4 @@ public class TraktApiHelper {
 		return new JSONArray(new RetrieveTraktJSONTask().execute(
 				query.toString()).get());
 	}
-	
-	private Show createShowFromJSONObject(JSONObject obj) throws JSONException, InterruptedException, ExecutionException {
-		Show show = new Show();
-		show.setTitle(obj.getString("title"));
-		show.setYear(obj.getInt("year"));
-		show.setFirstAired(getDateFromUnixTimestamp(obj
-				.getInt("first_aired_utc")));
-		show.setCountry(obj.getString("country"));
-		show.setOverview(obj.getString("overview"));
-		show.setStatus(obj.getString("status"));
-		show.setNetwork(obj.getString("network"));
-		show.setAirDay(obj.getString("air_day"));	// EST
-		show.setAirTime(obj.getString("air_time"));	// EST
-		show.setTvdbId(Integer.toString(obj.getInt("tvdb_id")));
-		show.setPosterUrl(obj.getString("poster"));
-		show.setSeasons(getNumberOfSeasons(Integer.toString(obj.getInt("tvdb_id"))));
-		
-		return show;
-	}
-
 }

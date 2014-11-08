@@ -94,7 +94,7 @@ public class SearchFragment extends Fragment {
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
 				R.string.trakt_api_key));
 		try {
-			ArrayList<Show> results = helper.getSearchResults(terms);
+			ArrayList<Show> results = helper.getShowSearchResults(terms);
 			if (results.size() == 0) {
 				Toast.makeText(getActivity(), "Sorry, no results found :(",
 						Toast.LENGTH_LONG).show();
