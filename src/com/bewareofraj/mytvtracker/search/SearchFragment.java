@@ -28,11 +28,9 @@ public class SearchFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View inflatedView = inflater.inflate(R.layout.fragment_search,
 				container, false);
-		
-		mResultList
-				.add(new SearchResultItem("The Walking Dead", "153021"));
-		mResultList.add(new SearchResultItem("The Big Bang Theory", "153021"));
-		mResultList.add(new SearchResultItem("The Americans", "153021"));
+
+		//TODO: remove this some time!
+		createDummyData();
 
 		mListView = (ListView) inflatedView
 				.findViewById(R.id.search_results_list);
@@ -43,16 +41,23 @@ public class SearchFragment extends Fragment {
 					int position, long id) {
 				Intent showIntent = new Intent(getActivity(),
 						ShowListActivity.class);
-				showIntent.putExtra(ShowListActivity.EXTRA_SHOW_ID, mResultList.get(position).getId());
+				showIntent.putExtra(ShowListActivity.EXTRA_SHOW_ID, mResultList
+						.get(position).getId());
 				getActivity().startActivity(showIntent);
 
 			}
 
 		});
-		mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
-		mListView.setAdapter(mAdapter);
+		//mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
+		//mListView.setAdapter(mAdapter);
 
 		return inflatedView;
+	}
+
+	private void createDummyData() {
+		mResultList.add(new SearchResultItem("The Walking Dead", "153021"));
+		mResultList.add(new SearchResultItem("The Big Bang Theory", "153021"));
+		mResultList.add(new SearchResultItem("The Americans", "153021"));
 	}
 
 }

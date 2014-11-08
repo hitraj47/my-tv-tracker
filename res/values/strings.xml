@@ -60,5 +60,6 @@
     <string name="heading_overview">Overview:</string>
     <string name="overview_placeholder">Overview</string>
     <string name="show_network_placeholder">Network</string>
+    <string name="search_button">Search</string>
 
 </resources>
