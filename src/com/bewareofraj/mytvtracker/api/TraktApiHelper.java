@@ -16,6 +16,7 @@ public class TraktApiHelper {
 	public static final String API_ARGUMENT_SHOW_SEASONS = "seasons";
 	public static final String API_FORMAT = ".json/";
 	public static final String API_POSTER_SIZE_MEDIUM = "-300";
+	public static final String API_POSTER_SIZE_SMALL = "-138";
 	public static final String API_METHOD_SEARCH = "search/";
 	public static final String API_ARGUMENT_SEARCH_SHOWS = "shows";
 	public static final String API_SEARCH_LIMIT = "10";
@@ -87,7 +88,7 @@ public class TraktApiHelper {
 		if (results.length() > 0) {
 			for (int i = 0; i < results.length(); i++) {
 				JSONObject object = results.getJSONObject(i);
-				Show show = createShowFromJSONObject(object);
+				Show show = getShow( Integer.toString( object.getInt("tvdb_id")));
 				resultsAsShows.add(show);
 			}
 		}

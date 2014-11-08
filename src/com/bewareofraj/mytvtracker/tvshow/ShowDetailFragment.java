@@ -72,7 +72,7 @@ public class ShowDetailFragment extends Fragment {
 			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
 			lblShowTime.setText(show.getAirDay() + ", " + show.getAirTime());
 			
-			TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblNetwork);
+			TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblSearchNetwork);
 			lblShowNetwork.setText(show.getNetwork());
 			
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);

@@ -5,10 +5,10 @@
     android:layout_height="match_parent" 
     android:paddingTop="4dp"
     android:paddingBottom="4dp"
-    android:layout_marginLeft="50dp">
+    android:layout_marginLeft="10dp">
 
     <ImageView
-        android:id="@+id/show_boxart"
+        android:id="@+id/imgSearchPoster"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
@@ -17,12 +17,30 @@
         android:src="@drawable/ic_launcher" />
 
     <TextView
-        android:id="@+id/show_name"
+        android:id="@+id/lblSearchTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/show_boxart"
-        android:layout_toRightOf="@+id/show_boxart"
+        android:layout_alignTop="@+id/imgSearchPoster"
+        android:layout_toRightOf="@+id/imgSearchPoster"
         android:text="@string/show_name_placeholder"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/lblSearchYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblSearchTitle"
+        android:layout_below="@+id/lblSearchTitle"
+        android:text="@string/show_year_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/lblSearchNetwork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lblSearchYear"
+        android:layout_below="@+id/lblSearchYear"
+        android:text="@string/show_network_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

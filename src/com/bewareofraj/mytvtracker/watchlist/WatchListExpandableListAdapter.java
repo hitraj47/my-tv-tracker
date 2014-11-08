@@ -50,8 +50,8 @@ public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inf.inflate(R.layout.watch_list_item, null);
 		}
-		TextView lblShowName = (TextView) convertView.findViewById(R.id.show_name);
-		ImageView imgBoxArt = (ImageView) convertView.findViewById(R.id.show_boxart);
+		TextView lblShowName = (TextView) convertView.findViewById(R.id.lblSearchTitle);
+		ImageView imgBoxArt = (ImageView) convertView.findViewById(R.id.imgSearchPoster);
 		TextView lblShowTime = (TextView) convertView.findViewById(R.id.show_time);
 
 		lblShowName.setText(child.getName().toString());

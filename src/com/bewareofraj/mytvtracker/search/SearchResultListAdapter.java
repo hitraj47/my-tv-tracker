@@ -2,15 +2,23 @@ package com.bewareofraj.mytvtracker.search;
 
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.images.ImageLoader;
 
 public class SearchResultListAdapter extends BaseAdapter {
 
@@ -49,11 +57,35 @@ public class SearchResultListAdapter extends BaseAdapter {
 			convertView = mInflater.inflate(R.layout.search_result_item, null);
 		}
 		
-		TextView showName = (TextView) convertView.findViewById(R.id.show_name);
 		SearchResultItem result = mResultItems.get(position);
-		showName.setText(result.getName());
+		
+		TextView lblShowTitle = (TextView) convertView.findViewById(R.id.lblSearchTitle);
+		lblShowTitle.setText(result.getName());
+		
+		TextView lblYear = (TextView) convertView.findViewById(R.id.lblSearchYear);
+		lblYear.setText(result.getYear());
+		
+		TextView lblNetwork = (TextView) convertView.findViewById(R.id.lblSearchNetwork);
+		lblNetwork.setText(result.getNetwork());
+		
+		ImageView imgPoster = (ImageView) convertView.findViewById(R.id.imgSearchPoster);
+		ImageLoader imgLoader = new ImageLoader(parent.getContext(), determineBestImageWidth(parent.getContext()));
+		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
+		imgLoader.DisplayImage(result.getImageUrl(), loadingImage, imgPoster);
 		
 		return convertView;
+	}
+
+	private int determineBestImageWidth(Context context) {
+		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		int width = metrics.widthPixels;
+		
+		if (width > 300) {
+			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_SMALL.substring(TraktApiHelper.API_POSTER_SIZE_SMALL.lastIndexOf('-') + 1));
+			return posterSize;
+		} else {
+			return 60;
+		}
 	}
 
 }

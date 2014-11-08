@@ -3,10 +3,10 @@ package com.bewareofraj.mytvtracker.search;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.app.Fragment;
@@ -40,31 +40,11 @@ public class SearchFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View inflatedView = inflater.inflate(R.layout.fragment_search,
 				container, false);
-		
+
 		// init ui components for searching
-		final EditText txtSearch = (EditText) inflatedView.findViewById(R.id.txtSearch);		
-		Button btnSearch = (Button) inflatedView.findViewById(R.id.btnSearch);
-		btnSearch.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String searchTerms = txtSearch.getText().toString();
-				if (searchTerms.equals("")) {
-					Toast.makeText(getActivity(), "Please enter something to search for...", Toast.LENGTH_LONG).show();
-				} else {
-					try {
-						search(URLEncoder.encode(searchTerms, "UTF-8"));
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}				
-			}
-		});
+		initSearchUi(inflatedView);
 
-		//TODO: remove this some time!
-		createDummyData();
-
+		// results list view
 		mListView = (ListView) inflatedView
 				.findViewById(R.id.search_results_list);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
@@ -81,20 +61,46 @@ public class SearchFragment extends Fragment {
 			}
 
 		});
-		//mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
-		//mListView.setAdapter(mAdapter);
 
 		return inflatedView;
 	}
 
+	private void initSearchUi(View inflatedView) {
+		final EditText txtSearch = (EditText) inflatedView
+				.findViewById(R.id.txtSearch);
+		Button btnSearch = (Button) inflatedView.findViewById(R.id.btnSearch);
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String searchTerms = txtSearch.getText().toString();
+				if (searchTerms.equals("")) {
+					Toast.makeText(getActivity(),
+							"Please enter something to search for...",
+							Toast.LENGTH_LONG).show();
+				} else {
+					try {
+						search(URLEncoder.encode(searchTerms, "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+
 	protected void search(String terms) {
-		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
+				R.string.trakt_api_key));
 		try {
 			ArrayList<Show> results = helper.getSearchResults(terms);
 			if (results.size() == 0) {
-				Toast.makeText(getActivity(), "Sorry, no results found :(", Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "Sorry, no results found :(",
+						Toast.LENGTH_LONG).show();
 			} else {
-				
+				createResultItemsFromShows(results);
+				mAdapter.notifyDataSetChanged();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -108,10 +114,23 @@ public class SearchFragment extends Fragment {
 		}
 	}
 
-	private void createDummyData() {
-		mResultList.add(new SearchResultItem("The Walking Dead", "153021"));
-		mResultList.add(new SearchResultItem("The Big Bang Theory", "153021"));
-		mResultList.add(new SearchResultItem("The Americans", "153021"));
+	private void createResultItemsFromShows(ArrayList<Show> results) {
+		Iterator<Show> it = results.iterator();
+		while (it.hasNext()) {
+			Show show = it.next();
+			String title = show.getTitle();
+			String id = show.getTvdbId();
+			String image = show
+					.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
+			String year = Integer.toString(show.getYear());
+			String network = show.getNetwork();
+			mResultList.add(new SearchResultItem(title, id, image, year,
+					network));
+
+			// set adapter
+			mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
+			mListView.setAdapter(mAdapter);
+		}
 	}
 
 }
