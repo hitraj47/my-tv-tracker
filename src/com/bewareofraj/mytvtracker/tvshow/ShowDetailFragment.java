@@ -7,14 +7,19 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
@@ -53,9 +58,9 @@ public class ShowDetailFragment extends Fragment {
 			show = helper.getShow(ShowListActivity.getShowId());
 			
 			ImageView imgPoster = (ImageView) rootView.findViewById(R.id.imgPoster);
-			ImageLoader imgLoader = new ImageLoader(getActivity());
+			ImageLoader imgLoader = new ImageLoader(getActivity(), determineBestImageWidth());
 			int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
-			imgLoader.DisplayImage(show.getPosterUrl(), loadingImage, imgPoster);
+			imgLoader.DisplayImage(show.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_MEDIUM), loadingImage, imgPoster);
 			
 			TextView lblShowName = (TextView) rootView.findViewById(R.id.lblShowName);
 			lblShowName.setText(show.getTitle());
@@ -91,6 +96,29 @@ public class ShowDetailFragment extends Fragment {
 		}
 		
 		return rootView;
+	}
+
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	private int determineBestImageWidth() {
+		Display display = getActivity().getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		int width;
+		if (android.os.Build.VERSION.SDK_INT >= 13) {
+			display.getSize(size);
+			width = size.x;
+		} else {
+			width = display.getWidth();
+		}
+		
+		if (width > 500) {
+			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-')));
+			return posterSize;
+		} else if (width > 300) {
+			return 100;
+		} else {
+			return 60;
+		}
 	}
 
 	private boolean isOnWatchList(String showId) {

@@ -29,10 +29,12 @@ public class ImageLoader {
 	private Map<ImageView, String> mImageViews = Collections
 			.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService mExecutorService;
+	private int mRequiredWidth;
 
-	public ImageLoader(Context context) {
+	public ImageLoader(Context context, int requiredWidth) {
 		mFileCache = new FileCache(context);
 		mExecutorService = Executors.newFixedThreadPool(5);
+		mRequiredWidth = requiredWidth;
 	}
 
 	int stub_id = R.drawable.ic_launcher;
@@ -92,7 +94,7 @@ public class ImageLoader {
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
 			// Find the correct scale value. It should be the power of 2.
-			final int REQUIRED_SIZE = 100;
+			final int REQUIRED_SIZE = mRequiredWidth;
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
 			while (true) {

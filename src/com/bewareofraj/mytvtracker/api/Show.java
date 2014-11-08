@@ -121,5 +121,11 @@ public class Show {
 	public void setSeasons(int mSeasons) {
 		this.mSeasons = mSeasons;
 	}
+	
+	public String getSizedPosterUrl(String size) {
+		String baseUrl = mPosterUrl.substring(0, mPosterUrl.lastIndexOf('.'));
+		String ext = mPosterUrl.substring(mPosterUrl.lastIndexOf('.'));
+		return baseUrl + size + ext;
+	}
 
 }

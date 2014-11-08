@@ -14,6 +14,7 @@ public class TraktApiHelper {
 	public static final String API_ARGUMENT_SHOW_SUMMARY = "summary";
 	public static final String API_ARGUMENT_SHOW_SEASONS = "seasons";
 	public static final String API_FORMAT = ".json/";
+	public static final String API_POSTER_SIZE_MEDIUM = "-300";
 
 	private String mApiKey = "";
 
