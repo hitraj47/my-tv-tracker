@@ -32,6 +32,8 @@ public class TraktApiHelper {
 	public static final String API_KEY_AIR_TIME = "air_time";
 	public static final String API_KEY_TVDBID = "tvdb_id";
 	public static final String API_KEY_POSTER_URL = "poster";
+	public static final String API_KEY_FIRST_AIRED = "first_aired";
+	public static final String API_KEY_IMAGES_OBJECT = "images";
 
 	private String mApiKey = "";
 
@@ -68,7 +70,7 @@ public class TraktApiHelper {
 		show.setFirstAired(getDateFromUnixTimestamp(result
 				.getInt(API_KEY_FIRST_AIRED_UTC)));
 		show.setCountry(result.getString(API_KEY_COUNTRY));
-		show.setOverview(result.getString(API_KEY_COUNTRY));
+		show.setOverview(result.getString(API_KEY_OVERVIEW));
 		show.setStatus(result.getString(API_KEY_STATUS));
 		show.setNetwork(result.getString(API_KEY_NETWORK));
 		show.setAirDay(result.getString(API_KEY_AIR_DAY));
@@ -116,7 +118,17 @@ public class TraktApiHelper {
 			for (int i = 0; i < results.length(); i++) {
 				JSONObject object = results.getJSONObject(i);
 				Show show = new Show();
-				show.setTitle(object.getString("title"));
+				show.setTitle(object.getString(API_KEY_SHOW_NAME));
+				show.setYear(object.getInt(API_KEY_YEAR));
+				show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
+				show.setCountry(object.getString(API_KEY_COUNTRY));
+				show.setOverview(object.getString(API_KEY_OVERVIEW));
+				show.setNetwork(object.getString(API_KEY_NETWORK));
+				show.setAirDay(object.getString(API_KEY_AIR_DAY));
+				show.setAirTime(object.getString(API_KEY_AIR_TIME));
+				show.setTvdbId(object.getString(API_KEY_TVDBID));
+				JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
+				show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
 				resultsAsShows.add(show);
 			}
 		}

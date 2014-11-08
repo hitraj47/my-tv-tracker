@@ -47,7 +47,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:id="@+id/lblNetwork"
+            android:id="@+id/lblShowNetwork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lblShowYear"
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lblShowTime"
-            android:layout_below="@+id/lblNetwork"
+            android:layout_below="@+id/lblShowNetwork"
             android:text="@string/first_aired_placeholder"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
