@@ -8,10 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
@@ -28,6 +32,22 @@ public class SearchFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View inflatedView = inflater.inflate(R.layout.fragment_search,
 				container, false);
+		
+		// init ui components for searching
+		final EditText txtSearch = (EditText) inflatedView.findViewById(R.id.txtSearch);		
+		Button btnSearch = (Button) inflatedView.findViewById(R.id.btnSearch);
+		btnSearch.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				String searchTerms = txtSearch.getText().toString();
+				if (searchTerms.equals("")) {
+					Toast.makeText(getActivity(), "Please enter something to search for...", Toast.LENGTH_LONG).show();
+				} else {
+					search(searchTerms);
+				}				
+			}
+		});
 
 		//TODO: remove this some time!
 		createDummyData();
@@ -52,6 +72,11 @@ public class SearchFragment extends Fragment {
 		//mListView.setAdapter(mAdapter);
 
 		return inflatedView;
+	}
+
+	protected void search(String string) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void createDummyData() {
