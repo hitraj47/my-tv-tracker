@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
@@ -112,7 +113,7 @@ public class ShowDetailFragment extends Fragment {
 		}
 		
 		if (width > 500) {
-			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-')));
+			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-') + 1));
 			return posterSize;
 		} else if (width > 300) {
 			return 100;
