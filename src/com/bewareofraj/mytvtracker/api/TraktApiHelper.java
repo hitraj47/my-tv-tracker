@@ -1,5 +1,6 @@
 package com.bewareofraj.mytvtracker.api;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -15,6 +16,9 @@ public class TraktApiHelper {
 	public static final String API_ARGUMENT_SHOW_SEASONS = "seasons";
 	public static final String API_FORMAT = ".json/";
 	public static final String API_POSTER_SIZE_MEDIUM = "-300";
+	public static final String API_METHOD_SEARCH = "search/";
+	public static final String API_ARGUMENT_SEARCH_SHOWS = "shows";
+	public static final String API_SEARCH_LIMIT = "10";
 
 	private String mApiKey = "";
 
@@ -42,25 +46,10 @@ public class TraktApiHelper {
 		query.append(mApiKey);
 		query.append(id + "/");
 
-		Show show = new Show();
 		JSONObject result = new JSONObject(new RetrieveTraktJSONTask().execute(
 				query.toString()).get());
 
-		show.setTitle(result.getString("title"));
-		show.setYear(result.getInt("year"));
-		show.setFirstAired(getDateFromUnixTimestamp(result
-				.getInt("first_aired_utc")));
-		show.setCountry(result.getString("country"));
-		show.setOverview(result.getString("overview"));
-		show.setStatus(result.getString("status"));
-		show.setNetwork(result.getString("network"));
-		show.setAirDay(result.getString("air_day"));	// EST
-		show.setAirTime(result.getString("air_time"));	// EST
-		show.setTvdbId(Integer.toString(result.getInt("tvdb_id")));
-		show.setPosterUrl(result.getString("poster"));
-		show.setSeasons(getNumberOfSeasons(id));
-
-		return show;
+		return createShowFromJSONObject(result);
 	}
 
 	public int getNumberOfSeasons(String id) throws InterruptedException, ExecutionException, JSONException {
@@ -90,6 +79,55 @@ public class TraktApiHelper {
 
 	public void setApiKey(String mApiKey) {
 		this.mApiKey = mApiKey + "/";
+	}
+	
+	public ArrayList<Show> getSearchResults(String terms) throws JSONException, InterruptedException, ExecutionException {
+		JSONArray results = searchShows(terms, API_SEARCH_LIMIT);
+		ArrayList<Show> resultsAsShows = new ArrayList<Show>();
+		if (results.length() > 0) {
+			for (int i = 0; i < results.length(); i++) {
+				JSONObject object = results.getJSONObject(i);
+				Show show = createShowFromJSONObject(object);
+				resultsAsShows.add(show);
+			}
+		}
+		
+		return resultsAsShows;
+	}
+
+	private JSONArray searchShows(String terms, String apiSearchLimit) throws JSONException, InterruptedException, ExecutionException {
+		StringBuilder query = new StringBuilder();
+		query.append(API_BASE_URL);
+		query.append(API_METHOD_SEARCH);
+		query.append(API_ARGUMENT_SEARCH_SHOWS);
+		query.append(API_FORMAT);
+		query.append(mApiKey);
+		query.append("?query=");
+		query.append(terms);
+		query.append("&limit=");
+		query.append(API_SEARCH_LIMIT);
+
+		return new JSONArray(new RetrieveTraktJSONTask().execute(
+				query.toString()).get());
+	}
+	
+	private Show createShowFromJSONObject(JSONObject obj) throws JSONException, InterruptedException, ExecutionException {
+		Show show = new Show();
+		show.setTitle(obj.getString("title"));
+		show.setYear(obj.getInt("year"));
+		show.setFirstAired(getDateFromUnixTimestamp(obj
+				.getInt("first_aired_utc")));
+		show.setCountry(obj.getString("country"));
+		show.setOverview(obj.getString("overview"));
+		show.setStatus(obj.getString("status"));
+		show.setNetwork(obj.getString("network"));
+		show.setAirDay(obj.getString("air_day"));	// EST
+		show.setAirTime(obj.getString("air_time"));	// EST
+		show.setTvdbId(Integer.toString(obj.getInt("tvdb_id")));
+		show.setPosterUrl(obj.getString("poster"));
+		show.setSeasons(getNumberOfSeasons(Integer.toString(obj.getInt("tvdb_id"))));
+		
+		return show;
 	}
 
 }

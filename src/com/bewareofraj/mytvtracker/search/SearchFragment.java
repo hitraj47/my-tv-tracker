@@ -1,7 +1,13 @@
 package com.bewareofraj.mytvtracker.search;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -18,6 +24,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.Show;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
 
 public class SearchFragment extends Fragment {
@@ -44,7 +52,12 @@ public class SearchFragment extends Fragment {
 				if (searchTerms.equals("")) {
 					Toast.makeText(getActivity(), "Please enter something to search for...", Toast.LENGTH_LONG).show();
 				} else {
-					search(searchTerms);
+					try {
+						search(URLEncoder.encode(searchTerms, "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}				
 			}
 		});
@@ -74,9 +87,25 @@ public class SearchFragment extends Fragment {
 		return inflatedView;
 	}
 
-	protected void search(String string) {
-		// TODO Auto-generated method stub
-		
+	protected void search(String terms) {
+		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+		try {
+			ArrayList<Show> results = helper.getSearchResults(terms);
+			if (results.size() == 0) {
+				Toast.makeText(getActivity(), "Sorry, no results found :(", Toast.LENGTH_LONG).show();
+			} else {
+				
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void createDummyData() {
