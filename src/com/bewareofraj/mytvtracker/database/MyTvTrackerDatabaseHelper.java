@@ -17,23 +17,18 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	private static final String TEXT_TYPE = " TEXT";
 	private static final String COMMA_SEP = ",";
 	private static final String SQL_CREATE_WATCH_LIST = "CREATE TABLE "
-			+ MyTvTrackerContract.WatchListEntry.TABLE_NAME + " ("
-			+ MyTvTrackerContract.WatchListEntry._ID + " INTEGER PRIMARY KEY,"
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_ENTRY_ID
-			+ TEXT_TYPE + COMMA_SEP
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_SHOW_NAME
-			+ TEXT_TYPE + COMMA_SEP
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_TVDB_ID
-			+ TEXT_TYPE + COMMA_SEP
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING
-			+ TEXT_TYPE + COMMA_SEP
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY
-			+ TEXT_TYPE + COMMA_SEP
-			+ MyTvTrackerContract.WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME
-			+ TEXT_TYPE + " )";
+			+ WatchListEntry.TABLE_NAME_WATCH_LIST + " ("
+			+ WatchListEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_SHOW_NAME + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_TVDB_ID + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME + TEXT_TYPE 
+			+ " )";
 
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
-			+ MyTvTrackerContract.WatchListEntry.TABLE_NAME;
+			+ WatchListEntry.TABLE_NAME_WATCH_LIST;
 
 	public MyTvTrackerDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
