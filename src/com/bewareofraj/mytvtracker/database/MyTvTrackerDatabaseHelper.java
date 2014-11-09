@@ -22,9 +22,9 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ WatchListEntry.COLUMN_NAME_SHOW_NAME + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_TVDB_ID + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME + TEXT_TYPE 
+			+ WatchListEntry.COLUMN_NAME_STATUS + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_AIR_DAY + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE 
 			+ " )";
 
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
@@ -47,17 +47,16 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public Cursor getWatchList() {
 		SQLiteDatabase db = this.getReadableDatabase();
 
-		String[] projection = { WatchListEntry.COLUMN_NAME_CURRENTLY_AIRING,
-				WatchListEntry.COLUMN_NAME_ENTRY_ID,
-				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_DAY,
-				WatchListEntry.COLUMN_NAME_NEXT_EPISODE_TIME,
+		String[] projection = { WatchListEntry.COLUMN_NAME_STATUS,
+				WatchListEntry.COLUMN_NAME_AIR_DAY,
+				WatchListEntry.COLUMN_NAME_AIR_TIME,
 				WatchListEntry.COLUMN_NAME_TVDB_ID,
-				WatchListEntry.COLUMN_NAME_SHOW_NAME };
+				WatchListEntry.COLUMN_NAME_SHOW_NAME,
+				WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL };
 
 		String sortOrder = WatchListEntry.COLUMN_NAME_SHOW_NAME + " ASC";
 
-		Cursor cursor = db.query(WatchListEntry.TABLE_NAME, // The table to
-															// query
+		Cursor cursor = db.query(WatchListEntry.TABLE_NAME_WATCH_LIST, // The table to query
 				projection, // The columns to return
 				null, // The columns for the WHERE clause
 				null, // The values for the WHERE clause
@@ -67,6 +66,11 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				);
 
 		return cursor;
+	}
+	
+	public void clearWatchList() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.execSQL(SQL_DELETE_WATCH_LIST);
 	}
 
 }

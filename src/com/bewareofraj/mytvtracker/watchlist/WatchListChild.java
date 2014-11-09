@@ -10,7 +10,7 @@ package com.bewareofraj.mytvtracker.watchlist;
 public class WatchListChild {
 
 	private String mShowName;
-	private int mShowImage;
+	private String mShowImage;
 	private String mShowTime;
 	private String mApiId;
 
@@ -22,11 +22,11 @@ public class WatchListChild {
 		this.mShowName = name;
 	}
 
-	public int getImage() {
+	public String getImage() {
 		return mShowImage;
 	}
 
-	public void setImage(int image) {
+	public void setImage(String image) {
 		this.mShowImage = image;
 	}
 

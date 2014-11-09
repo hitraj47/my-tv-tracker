@@ -21,10 +21,9 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
-import com.bewareofraj.mytvtracker.tvshow.ShowDetailActivity;
-import com.bewareofraj.mytvtracker.tvshow.ShowDetailFragment;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
 
 public class WatchListFragment extends Fragment {
@@ -46,12 +45,14 @@ public class WatchListFragment extends Fragment {
 
 		Cursor c = mDbHelper.getWatchList();
 
-		// TODO: change this back to > 0
-		if (c.getCount() == 0) {
+		if (c.getCount() > 0) {
 			View inflatedView = inflater.inflate(R.layout.fragment_watch_list,
 					container, false);
 			mExpandableList = (ExpandableListView) inflatedView
 					.findViewById(R.id.watch_list_expandable);
+			
+			mWatchListItems = createWatchListItems(c);
+			
 			setupExpandableList();
 
 			return inflatedView;
@@ -77,8 +78,57 @@ public class WatchListFragment extends Fragment {
 		}
 	}
 
+	private ArrayList<WatchListGroup> createWatchListItems(Cursor c) {
+		ArrayList<WatchListGroup> list = new ArrayList<WatchListGroup>();
+		
+		TreeMap<String, WatchListGroup> groups = new TreeMap<String, WatchListGroup>();
+		
+		while(c.moveToNext()) {
+			// get the info from the row
+			String showName = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_SHOW_NAME));
+			String firstLetter = showName.substring(0, 1).toUpperCase(Locale.ENGLISH);	// used for expandable list headers
+			String posterUrl = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL));
+			String status = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_STATUS));
+			String airTime = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_TIME));
+			String airDay = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY));
+			String id = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID));
+			
+			String showTime = determineShowTime(airTime, airDay, status);
+			
+			WatchListChild child = createWatchListChild(posterUrl, showName, showTime, id);
+			
+			if (groups.containsKey(firstLetter)) {
+				WatchListGroup watchListGroup = groups.get(firstLetter);
+				
+				ArrayList<WatchListChild> watchListItems = watchListGroup
+						.getItems();
+				watchListItems.add(child);
+				
+				watchListGroup.setItems(watchListItems);
+				groups.put(firstLetter, watchListGroup);
+			} else {
+				WatchListGroup watchListGroup = new WatchListGroup();
+				watchListGroup.setName(firstLetter);
+
+				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
+				watchListItems.add(child);
+
+				watchListGroup.setItems(watchListItems);
+
+				groups.put(firstLetter, watchListGroup);
+			}
+		}
+		
+		return list;
+	}
+
+	private String determineShowTime(String airTime, String airDay,
+			String status) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private void setupExpandableList() {
-		mWatchListItems = makeDummyData();
 		mWatchListAdapter = new WatchListExpandableListAdapter(getActivity(),
 				mWatchListItems);
 		mExpandableList.setAdapter(mWatchListAdapter);
@@ -101,75 +151,10 @@ public class WatchListFragment extends Fragment {
 		});
 	}
 
-	// temporary method for testing
-	public ArrayList<WatchListGroup> makeDummyData() {
-
-		int numShows = 10;
-
-		String[] showNames = { "The Walking Dead", "The Americans",
-				"American Horror Story", "Game of Thrones",
-				"The Big Bang Theory", "Grimm", "CSI: Miami", "Modern Family",
-				"Homeland", "24" };
-
-		String[] showTimes = { "Sunday, 9pm", "Monday 8pm", "Sunday, 10pm",
-				"Sunday, 8:30pm", "Wednesday, 7pm", "Thursday, 8:30pm",
-				"Show ended", "Monday, 6pm", "Sunday, 9pm", "On break" };
-
-		int images[] = { R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search,
-				R.drawable.action_search, R.drawable.action_search, };
-
-		ArrayList<WatchListGroup> list = new ArrayList<WatchListGroup>();
-
-		TreeMap<String, WatchListGroup> groups = new TreeMap<String, WatchListGroup>();
-
-		for (int i = 0; i < numShows; i++) {
-			String firstLetter = showNames[i].substring(0, 1).toUpperCase(
-					Locale.ENGLISH);
-			String dummyApiId = "153021";
-			if (groups.containsKey(firstLetter)) {
-				WatchListGroup watchListGroup = groups.get(firstLetter);
-				
-				ArrayList<WatchListChild> watchListItems = watchListGroup
-						.getItems();
-				WatchListChild child = createWatchListChild(images[i],
-						showNames[i], showTimes[i], dummyApiId);
-				
-				watchListItems.add(child);
-				
-				watchListGroup.setItems(watchListItems);
-				groups.put(firstLetter, watchListGroup);
-			} else {
-				WatchListGroup watchListGroup = new WatchListGroup();
-				watchListGroup.setName(firstLetter);
-
-				WatchListChild child = createWatchListChild(images[i],
-						showNames[i], showTimes[i], dummyApiId);
-
-				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
-				watchListItems.add(child);
-
-				watchListGroup.setItems(watchListItems);
-
-				groups.put(firstLetter, watchListGroup);
-			}
-		}
-
-		Iterator<Entry<String, WatchListGroup>> it = groups.entrySet()
-				.iterator();
-		while (it.hasNext()) {
-			Map.Entry pairs = (Map.Entry) it.next();
-			list.add((WatchListGroup) pairs.getValue());
-		}
-		return list;
-	}
-
-	private WatchListChild createWatchListChild(int image, String name,
+	private WatchListChild createWatchListChild(String imageUrl, String name,
 			String time, String apiId) {
 		WatchListChild child = new WatchListChild();
-		child.setImage(image);
+		child.setImage(imageUrl);
 		child.setName(name);
 		child.setShowTime(time);
 		child.setApiId(apiId);

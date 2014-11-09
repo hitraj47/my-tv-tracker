@@ -3,6 +3,8 @@ package com.bewareofraj.mytvtracker.watchlist;
 import java.util.ArrayList;
 
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.images.ImageLoader;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -55,7 +57,11 @@ public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 		TextView lblShowTime = (TextView) convertView.findViewById(R.id.show_time);
 
 		lblShowName.setText(child.getName().toString());
-		imgBoxArt.setImageResource(child.getImage());
+		
+		ImageLoader imgLoader = new ImageLoader(parent.getContext(), 100);
+		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
+		imgLoader.DisplayImage(child.getImage(), loadingImage, imgBoxArt);
+		
 		lblShowTime.setText(child.getShowTime().toString());
 
 		return convertView;
