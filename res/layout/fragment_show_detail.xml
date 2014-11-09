@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imgPoster"
             android:layout_marginLeft="21dp"
+            android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/imgPoster"
             android:text="@string/show_name_placeholder"
             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -54,14 +55,24 @@
             android:layout_below="@+id/lblShowTime"
             android:text="@string/show_network_placeholder"
             android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/lblShowCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowYear"
+            android:layout_below="@+id/lblShowNetwork"
+            android:text="@string/show_country_placeholder"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
             android:id="@+id/lblFirstAired"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lblShowTime"
-            android:layout_below="@+id/lblShowNetwork"
+            android:layout_below="@+id/lblShowCountry"
             android:text="@string/first_aired_placeholder"
+            android:layout_marginRight="10dp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <Button
@@ -91,8 +102,10 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/lblOverview"
             android:layout_below="@+id/lblOverview"
+            android:layout_marginRight="10dp"
             android:text="@string/overview_placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
     </RelativeLayout>
 
 </ScrollView>

@@ -75,6 +75,9 @@ public class ShowDetailFragment extends Fragment {
 			TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
 			lblShowNetwork.setText(show.getNetwork());
 			
+			TextView lblShowCountry = (TextView) rootView.findViewById(R.id.lblShowCountry);
+			lblShowCountry.setText(show.getCountry());
+			
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
 			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
 			

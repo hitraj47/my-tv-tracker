@@ -61,5 +61,6 @@
     <string name="overview_placeholder">Overview</string>
     <string name="show_network_placeholder">Network</string>
     <string name="search_button">Search</string>
+    <string name="show_country_placeholder">Country</string>
 
 </resources>
