@@ -21,6 +21,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
@@ -93,7 +94,7 @@ public class WatchListFragment extends Fragment {
 			String airDay = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY));
 			String id = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID));
 			
-			String showTime = determineShowTime(airTime, airDay, status);
+			String showTime = determineShowTime(airTime, airDay, status, id);
 			
 			WatchListChild child = createWatchListChild(posterUrl, showName, showTime, id);
 			
@@ -123,11 +124,13 @@ public class WatchListFragment extends Fragment {
 	}
 
 	private String determineShowTime(String airTime, String airDay,
-			String status) {
+			String status, String id) {
 		String showTime = null;
 		if (status.equals("Ended")) {
 			showTime = "Show Ended";
 		} else {
+			TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+			boolean currentlyOnAir = helper.isCurrentlyOnAir(id);
 			showTime = airDay + ", " + airTime;
 		}
 		return showTime;

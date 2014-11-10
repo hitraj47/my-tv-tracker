@@ -18,8 +18,9 @@ public class TraktApiHelper {
 	public static final String API_POSTER_SIZE_MEDIUM = "-300";
 	public static final String API_POSTER_SIZE_SMALL = "-138";
 	public static final String API_METHOD_SEARCH = "search/";
-	public static final String API_ARGUMENT_SEARCH_SHOWS = "shows";
+	public static final String API_ARGUMENT_SHOWS = "shows";
 	public static final String API_SEARCH_LIMIT = "10";
+	public static final String API_METHOD_CALENDAR = "calendar/";
 	
 	public static final String API_KEY_SHOW_NAME = "title";
 	public static final String API_KEY_YEAR = "year";
@@ -34,6 +35,8 @@ public class TraktApiHelper {
 	public static final String API_KEY_POSTER_URL = "poster";
 	public static final String API_KEY_FIRST_AIRED = "first_aired";
 	public static final String API_KEY_IMAGES_OBJECT = "images";
+	public static final String API_KEY_EPISODES = "episodes";
+	public static final String API_KEY_SHOW = "show";
 
 	private String mApiKey = "";
 
@@ -140,7 +143,7 @@ public class TraktApiHelper {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_SEARCH);
-		query.append(API_ARGUMENT_SEARCH_SHOWS);
+		query.append(API_ARGUMENT_SHOWS);
 		query.append(API_FORMAT);
 		query.append(mApiKey);
 		query.append("?query=");
@@ -150,5 +153,37 @@ public class TraktApiHelper {
 
 		return new JSONArray(new RetrieveTraktJSONTask().execute(
 				query.toString()).get());
+	}
+
+	/**
+	 * Determine if a show is currently on air
+	 * @param id
+	 * @return
+	 * @throws ExecutionException 
+	 * @throws InterruptedException 
+	 * @throws JSONException 
+	 */
+	public boolean isCurrentlyOnAir(String id) throws JSONException, InterruptedException, ExecutionException {
+		StringBuilder query = new StringBuilder();
+		query.append(API_BASE_URL);
+		query.append(API_METHOD_CALENDAR);
+		query.append(API_ARGUMENT_SHOWS);
+		query.append(API_FORMAT);
+		query.append(mApiKey);
+		
+		JSONArray resultsArray = new JSONArray(new RetrieveTraktJSONTask().execute(query.toString()).get());
+		for (int i = 0; i < resultsArray.length(); i++) {
+			JSONObject calendarObject = resultsArray.getJSONObject(i);
+			JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
+			for (int j = 0; j < episodes.length(); j++) {
+				JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
+				String showId = show.getString(API_KEY_TVDBID);
+				if (id.equals(showId)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
 	}
 }
