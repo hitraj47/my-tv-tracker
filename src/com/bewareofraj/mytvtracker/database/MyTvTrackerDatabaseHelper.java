@@ -29,7 +29,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
 			+ WatchListEntry.TABLE_NAME_WATCH_LIST;
-
+	
 	public MyTvTrackerDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -71,6 +71,17 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public void clearWatchList() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL(SQL_DELETE_WATCH_LIST);
+	}
+
+	public boolean isOnWatchList(String showId) {
+		Cursor cursor = getWatchList();
+		while(cursor.moveToNext()) {
+			String id = cursor.getString(cursor.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID));
+			if (id.equals(showId)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

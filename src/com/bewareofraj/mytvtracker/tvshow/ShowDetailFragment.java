@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
 
 /**
@@ -126,12 +127,11 @@ public class ShowDetailFragment extends Fragment {
 	}
 
 	private boolean isOnWatchList(String showId) {
-		// TODO Auto-generated method stub
-		return false;
+		MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());
+		return db.isOnWatchList(showId);
 	}
 
 	private String makeFirstAiredDated(Date date) {
-		// TODO Auto-generated method stub
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
