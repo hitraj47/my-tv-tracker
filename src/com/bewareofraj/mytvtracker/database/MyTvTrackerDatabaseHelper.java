@@ -1,5 +1,6 @@
 package com.bewareofraj.mytvtracker.database;
 
+import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 
 import android.content.Context;
@@ -85,9 +86,12 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public void removeFromWatchList(String[] ids) {
-		// TODO Auto-generated method stub
 		SQLiteDatabase db = this.getWritableDatabase();
-		int rowsDeleted = db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID, ids);
+		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID, ids);
+	}
+
+	public void addToWatchList(Show show) {
+		SQLiteDatabase db = getWritableDatabase();
 	}
 
 }

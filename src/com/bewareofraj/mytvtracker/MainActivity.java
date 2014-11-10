@@ -16,9 +16,11 @@
 
 package com.bewareofraj.mytvtracker;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -74,20 +76,21 @@ public class MainActivity extends Activity {
 
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
-	private static String[] menuItems;
+	private static String[] mMenuItems;
 
 	/**
 	 * The search screen id
 	 */
 	public static final int SCREEN_SEARCH = 1;
 	
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
 		mTitle = mDrawerTitle = getTitle();
-		menuItems = getResources().getStringArray(R.array.main_menu_items);
+		mMenuItems = getResources().getStringArray(R.array.main_menu_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -97,12 +100,14 @@ public class MainActivity extends Activity {
 				GravityCompat.START);
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, menuItems));
+				R.layout.drawer_list_item, mMenuItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			getActionBar().setHomeButtonEnabled(true);
+		}
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
@@ -197,7 +202,7 @@ public class MainActivity extends Activity {
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(menuItems[position]);
+		setTitle(mMenuItems[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
