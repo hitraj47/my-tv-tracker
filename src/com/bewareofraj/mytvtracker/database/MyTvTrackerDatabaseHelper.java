@@ -3,6 +3,7 @@ package com.bewareofraj.mytvtracker.database;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -91,7 +92,16 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	public void addToWatchList(Show show) {
-		SQLiteDatabase db = getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(WatchListEntry.COLUMN_NAME_AIR_DAY, show.getAirDay());
+		values.put(WatchListEntry.COLUMN_NAME_AIR_TIME, show.getAirTime());
+		values.put(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL, show.getPosterUrl());
+		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
+		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
+		values.put(WatchListEntry.COLUMN_NAME_TVDB_ID, show.getTvdbId());
+		
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.insert(WatchListEntry.TABLE_NAME_WATCH_LIST, null, values);
 	}
 
 }
