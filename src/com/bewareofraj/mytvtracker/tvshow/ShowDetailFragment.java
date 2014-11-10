@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
@@ -84,7 +85,7 @@ public class ShowDetailFragment extends Fragment {
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
 			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
 			
-			Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
+			final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
 			mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());
 			String buttonText = mIsOnWatchList ? "Remove from Watch List" : "Add to Watch List";
 			btnWatchList.setText(buttonText);
@@ -96,8 +97,12 @@ public class ShowDetailFragment extends Fragment {
 					if (mIsOnWatchList) {
 						String[] ids = { show.getTvdbId() };
 						db.removeFromWatchList(ids);
+						Toast.makeText(getActivity(), "Show removed from Watch List", Toast.LENGTH_LONG).show();
+						btnWatchList.setText("Add to Watch List");
 					} else {
 						db.addToWatchList(show);
+						Toast.makeText(getActivity(), "Show added to Watch List", Toast.LENGTH_LONG).show();
+						btnWatchList.setText("Remove from Watch List");
 					}
 				}
 			});

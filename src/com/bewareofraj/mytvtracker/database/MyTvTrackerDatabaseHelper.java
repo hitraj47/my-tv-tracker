@@ -88,7 +88,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	public void removeFromWatchList(String[] ids) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID, ids);
+		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID + "=?", ids);
 	}
 
 	public void addToWatchList(Show show) {
