@@ -98,8 +98,10 @@ public class WatchListFragment extends Fragment {
 			
 			WatchListChild child = createWatchListChild(posterUrl, showName, showTime, id);
 			
+			WatchListGroup watchListGroup;
+			
 			if (groups.containsKey(firstLetter)) {
-				WatchListGroup watchListGroup = groups.get(firstLetter);
+				watchListGroup = groups.get(firstLetter);
 				
 				ArrayList<WatchListChild> watchListItems = watchListGroup
 						.getItems();
@@ -107,8 +109,9 @@ public class WatchListFragment extends Fragment {
 				
 				watchListGroup.setItems(watchListItems);
 				groups.put(firstLetter, watchListGroup);
+				list.set(list.indexOf(watchListGroup), watchListGroup);
 			} else {
-				WatchListGroup watchListGroup = new WatchListGroup();
+				watchListGroup = new WatchListGroup();
 				watchListGroup.setName(firstLetter);
 
 				ArrayList<WatchListChild> watchListItems = new ArrayList<WatchListChild>();
@@ -117,6 +120,7 @@ public class WatchListFragment extends Fragment {
 				watchListGroup.setItems(watchListItems);
 
 				groups.put(firstLetter, watchListGroup);
+				list.add(watchListGroup);
 			}
 		}
 		
