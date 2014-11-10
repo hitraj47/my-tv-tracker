@@ -6,6 +6,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -130,8 +133,23 @@ public class WatchListFragment extends Fragment {
 			showTime = "Show Ended";
 		} else {
 			TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
-			boolean currentlyOnAir = helper.isCurrentlyOnAir(id);
-			showTime = airDay + ", " + airTime;
+			try {
+				boolean currentlyOnAir = helper.isCurrentlyOnAir(id);
+				if (currentlyOnAir) {
+					showTime = airDay + ", " + airTime;
+				} else {
+					showTime = "Currently off-air";
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return showTime;
 	}
