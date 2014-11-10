@@ -124,8 +124,13 @@ public class WatchListFragment extends Fragment {
 
 	private String determineShowTime(String airTime, String airDay,
 			String status) {
-		// TODO Auto-generated method stub
-		return null;
+		String showTime = null;
+		if (status.equals("Ended")) {
+			showTime = "Show Ended";
+		} else {
+			showTime = airDay + ", " + airTime;
+		}
+		return showTime;
 	}
 
 	private void setupExpandableList() {
