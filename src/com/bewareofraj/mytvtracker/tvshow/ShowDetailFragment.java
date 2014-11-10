@@ -15,11 +15,11 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
@@ -33,6 +33,8 @@ import com.bewareofraj.mytvtracker.images.ImageLoader;
  * {@link ShowDetailActivity} on handsets.
  */
 public class ShowDetailFragment extends Fragment {
+	
+	private boolean mIsOnWatchList;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,7 +57,7 @@ public class ShowDetailFragment extends Fragment {
 		// TODO: Get data from web using show id, then use the Show object to
 		// display info in layout components
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
-		Show show;
+		final Show show;
 		try {
 			show = helper.getShow(ShowListActivity.getShowId());
 			
@@ -83,9 +85,22 @@ public class ShowDetailFragment extends Fragment {
 			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
 			
 			Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
-			String buttonText = isOnWatchList(ShowListActivity.getShowId()) ? "Remove from Watch List" : "Add to Watch List";
+			mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());
+			String buttonText = mIsOnWatchList ? "Remove from Watch List" : "Add to Watch List";
 			btnWatchList.setText(buttonText);
-			//TODO: Add button listener
+			btnWatchList.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());
+					if (mIsOnWatchList) {
+						String[] ids = { show.getTvdbId() };
+						db.removeFromWatchList(ids);
+					} else {
+						db.addToWatchList(show);
+					}
+				}
+			});
 			
 			TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
 			lblOverviewBody.setText(show.getOverview());
