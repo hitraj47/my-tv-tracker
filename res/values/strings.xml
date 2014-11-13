@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -62,5 +62,6 @@
     <string name="show_network_placeholder">Network</string>
     <string name="search_button">Search</string>
     <string name="show_country_placeholder">Country</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 </resources>
