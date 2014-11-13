@@ -63,5 +63,6 @@
     <string name="search_button">Search</string>
     <string name="show_country_placeholder">Country</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="logo_description">My TV Tracker Logo</string>
 
 </resources>
