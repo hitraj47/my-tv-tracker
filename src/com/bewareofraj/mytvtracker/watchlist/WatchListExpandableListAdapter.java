@@ -3,7 +3,6 @@ package com.bewareofraj.mytvtracker.watchlist;
 import java.util.ArrayList;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
 
 import android.content.Context;

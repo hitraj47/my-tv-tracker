@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 /**
  * An activity representing a single Show detail screen. This activity is only
