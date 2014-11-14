@@ -18,6 +18,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	private static final String TEXT_TYPE = " TEXT";
 	private static final String COMMA_SEP = ",";
+	
 	private static final String SQL_CREATE_WATCH_LIST = "CREATE TABLE "
 			+ WatchListEntry.TABLE_NAME_WATCH_LIST + " ("
 			+ WatchListEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP
@@ -28,7 +29,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ WatchListEntry.COLUMN_NAME_AIR_DAY + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE 
 			+ " )";
-
+	
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
 			+ WatchListEntry.TABLE_NAME_WATCH_LIST;
 	

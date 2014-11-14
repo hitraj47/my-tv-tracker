@@ -27,3 +27,6 @@ proguard/
 
 # Secret API key file
 res/values/apikey.xml
+
+# auto generated file
+Thumbs.db

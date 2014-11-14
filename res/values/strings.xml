@@ -64,5 +64,8 @@
     <string name="show_country_placeholder">Country</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logo_description">My TV Tracker Logo</string>
+    <string name="splash_loading">Loading&#8230;</string>
+    
+    <string name="preferences_file_key">com.bewareofraj.mytvtracker.preferences</string>
 
 </resources>

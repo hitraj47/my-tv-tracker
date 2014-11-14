@@ -186,4 +186,15 @@ public class TraktApiHelper {
 		
 		return false;
 	}
+	
+	public String getCalendarJSON() throws InterruptedException, ExecutionException {
+		StringBuilder query = new StringBuilder();
+		query.append(API_BASE_URL);
+		query.append(API_METHOD_CALENDAR);
+		query.append(API_ARGUMENT_SHOWS);
+		query.append(API_FORMAT);
+		query.append(mApiKey);
+		
+		return new RetrieveTraktJSONTask().execute(query.toString()).get();
+	}
 }
