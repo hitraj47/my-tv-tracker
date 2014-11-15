@@ -65,7 +65,7 @@ public class SplashActivity extends Activity {
 	public static boolean isLocalJSONUpdated() {
 		Calendar c = Calendar.getInstance();
 		long currentTime = c.getTimeInMillis();
-		return (currentTime - mLastUpdatedPreferences) > DAY_IN_MILLIS;
+		return (currentTime - mLastUpdatedPreferences) < DAY_IN_MILLIS;
 	}
 	
 	public static SharedPreferences getSharedPreferences() {
