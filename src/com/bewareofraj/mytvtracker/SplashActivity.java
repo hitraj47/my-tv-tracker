@@ -27,7 +27,6 @@ public class SplashActivity extends Activity {
 		long lastUpdatedPreference = mPreferences.getLong(PREFS_KEY_CALENDAR_LAST_UPDATED, 0);
 		
 		if (lastUpdatedPreference == 0) {
-			//TODO: get calendar JSON string, store in string preferences
 			TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
 			String json = null;
 			try {
@@ -40,14 +39,7 @@ public class SplashActivity extends Activity {
 				e.printStackTrace();
 			}
 			
-			Editor editor = mPreferences.edit();
-			
-			editor.putString(PREFS_KEY_CALENDAR_JSON, json);
-			Calendar c = Calendar.getInstance();
-			long currentTime = c.getTimeInMillis();
-			editor.putLong(PREFS_KEY_CALENDAR_LAST_UPDATED, currentTime);
-			
-			editor.commit();
+			updatePreferences(json);
 		} else {
 			//TODO: check if it has been over a day since last updated, if so, pull new JSON
 		}
@@ -55,5 +47,14 @@ public class SplashActivity extends Activity {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		
+	}
+
+	private void updatePreferences(String json) {
+		Editor editor = mPreferences.edit();
+		editor.putString(PREFS_KEY_CALENDAR_JSON, json);
+		Calendar c = Calendar.getInstance();
+		long currentTime = c.getTimeInMillis();
+		editor.putLong(PREFS_KEY_CALENDAR_LAST_UPDATED, currentTime);
+		editor.commit();
 	}
 }
