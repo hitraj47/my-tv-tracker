@@ -3,10 +3,6 @@ package com.bewareofraj.mytvtracker.watchlist;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.TreeMap;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -22,7 +18,6 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
-import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;

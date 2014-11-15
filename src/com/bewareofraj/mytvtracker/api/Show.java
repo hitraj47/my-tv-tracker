@@ -5,8 +5,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
-import com.bewareofraj.mytvtracker.R;
-
 /**
  * A Show class represents a TV show.
  * @author Rajesh
