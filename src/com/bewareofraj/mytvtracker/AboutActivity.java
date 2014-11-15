@@ -12,8 +12,10 @@ public class AboutActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_about);
 		
-		// Make website URL clickable
+		// Make web site URL clickable
 		TextView lblWebsite = (TextView) findViewById(R.id.lblWebsite);
 		lblWebsite.setMovementMethod(LinkMovementMethod.getInstance());
+		TextView lblTrakt = (TextView) findViewById(R.id.lblTraktCredits);
+		lblTrakt.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 }
