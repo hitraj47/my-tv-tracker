@@ -19,6 +19,7 @@ package com.bewareofraj.mytvtracker;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -154,7 +155,7 @@ public class MainActivity extends Activity {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_about).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -167,9 +168,9 @@ public class MainActivity extends Activity {
 		}
 		// Handle action buttons
 		switch (item.getItemId()) {
-		case R.id.action_search:
-			// TODO: This selects the search screen, not good code, fix later
-			selectItem(SCREEN_SEARCH);
+		case R.id.action_about:
+			Intent aboutIntent = new Intent(this, AboutActivity.class);
+			startActivity(aboutIntent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -26,7 +26,7 @@
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="action_search">Search</string>
+    <string name="action_about">About/Credits</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
@@ -65,7 +65,11 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="logo_description">My TV Tracker Logo</string>
     <string name="splash_loading">Loading&#8230;</string>
-    
     <string name="preferences_file_key">com.bewareofraj.mytvtracker.preferences</string>
+    <string name="title_activity_about">About/Credits</string>
+    <string name="about_title">About/Credits</string>
+    <string name="author_label">Author: Raj Ramsaroop</string>
+    <string name="website">Website: <a href="http://www.bewareofraj.com">www.bewareofraj.com</a></string>
+    <string name="trakt_credits">This app is powered by Trakt.tv API.</string>
 
 </resources>
