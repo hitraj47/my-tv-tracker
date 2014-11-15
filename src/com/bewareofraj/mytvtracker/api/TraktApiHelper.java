@@ -8,6 +8,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
+
+import com.bewareofraj.mytvtracker.SplashActivity;
+
 public class TraktApiHelper {
 
 	public static final String API_BASE_URL = "http://api.trakt.tv/";
@@ -164,14 +168,13 @@ public class TraktApiHelper {
 	 * @throws JSONException 
 	 */
 	public boolean isCurrentlyOnAir(String id) throws JSONException, InterruptedException, ExecutionException {
-		StringBuilder query = new StringBuilder();
-		query.append(API_BASE_URL);
-		query.append(API_METHOD_CALENDAR);
-		query.append(API_ARGUMENT_SHOWS);
-		query.append(API_FORMAT);
-		query.append(mApiKey);
+		JSONArray resultsArray;
+		if (SplashActivity.isLocalJSONUpdated()) {
+			resultsArray = new JSONArray(getCalendarJSONLocal());
+		} else {
+			resultsArray = new JSONArray(getCalendarJSON());
+		}
 		
-		JSONArray resultsArray = new JSONArray(new RetrieveTraktJSONTask().execute(query.toString()).get());
 		for (int i = 0; i < resultsArray.length(); i++) {
 			JSONObject calendarObject = resultsArray.getJSONObject(i);
 			JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
@@ -197,4 +200,10 @@ public class TraktApiHelper {
 		
 		return new RetrieveTraktJSONTask().execute(query.toString()).get();
 	}
+	
+	public String getCalendarJSONLocal() {
+		SharedPreferences preferences = SplashActivity.getSharedPreferences();
+		return preferences.getString(SplashActivity.PREFS_KEY_CALENDAR_JSON, "");
+	}
+	
 }

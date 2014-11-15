@@ -13,13 +13,13 @@ import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 
 public class SplashActivity extends Activity {
 	
-	SharedPreferences mPreferences;
+	static SharedPreferences mPreferences;
 	
 	public static final String PREFS_KEY_CALENDAR_LAST_UPDATED = "last_updated";
 	public static final String PREFS_KEY_CALENDAR_JSON = "calendar_json";
 	public static final long DAY_IN_MILLIS = 86400000;
 	
-	private static boolean mJSONUpToDate = false;
+	private static long mLastUpdatedPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,17 +27,13 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 		
 		mPreferences = this.getSharedPreferences(getString(R.string.preferences_file_key), MODE_PRIVATE);
-		long lastUpdatedPreference = mPreferences.getLong(PREFS_KEY_CALENDAR_LAST_UPDATED, 0);
+		mLastUpdatedPreferences = mPreferences.getLong(PREFS_KEY_CALENDAR_LAST_UPDATED, 0);
 		
-		if (lastUpdatedPreference == 0) {
+		if (mLastUpdatedPreferences == 0) {
 			updatePreferences();
 		} else {
-			Calendar c = Calendar.getInstance();
-			long currentTime = c.getTimeInMillis();
-			if ( (currentTime - lastUpdatedPreference) > DAY_IN_MILLIS) {
+			if (!isLocalJSONUpdated()) {
 				updatePreferences();
-			} else {
-				mJSONUpToDate = true;
 			}
 		}
 		
@@ -64,11 +60,16 @@ public class SplashActivity extends Activity {
 		long currentTime = c.getTimeInMillis();
 		editor.putLong(PREFS_KEY_CALENDAR_LAST_UPDATED, currentTime);
 		editor.commit();
-		mJSONUpToDate = true;
 	}
 	
-	public static boolean isJSONUpToDate() {
-		return mJSONUpToDate;
+	public static boolean isLocalJSONUpdated() {
+		Calendar c = Calendar.getInstance();
+		long currentTime = c.getTimeInMillis();
+		return (currentTime - mLastUpdatedPreferences) > DAY_IN_MILLIS;
+	}
+	
+	public static SharedPreferences getSharedPreferences() {
+		return mPreferences;
 	}
 	
 }
