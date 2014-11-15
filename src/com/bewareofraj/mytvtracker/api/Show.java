@@ -142,7 +142,7 @@ public class Show {
 				if (currentlyOnAir) {
 					showTime = this.mAirDay + ", " + this.mAirTime;
 				} else {
-					showTime = "Currently off-air";
+					showTime = "Currently on break";
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

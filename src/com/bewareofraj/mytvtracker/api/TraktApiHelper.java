@@ -169,11 +169,10 @@ public class TraktApiHelper {
 	 */
 	public boolean isCurrentlyOnAir(String id) throws JSONException, InterruptedException, ExecutionException {
 		JSONArray resultsArray;
-		if (SplashActivity.isLocalJSONUpdated()) {
-			resultsArray = new JSONArray(getCalendarJSONLocal());
-		} else {
-			resultsArray = new JSONArray(getCalendarJSON());
+		if (!SplashActivity.isLocalJSONUpdated()) {
+			SplashActivity.updatePreferences(mApiKey);
 		}
+		resultsArray = new JSONArray(getCalendarJSONLocal());
 		
 		for (int i = 0; i < resultsArray.length(); i++) {
 			JSONObject calendarObject = resultsArray.getJSONObject(i);

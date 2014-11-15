@@ -30,10 +30,10 @@ public class SplashActivity extends Activity {
 		mLastUpdatedPreferences = mPreferences.getLong(PREFS_KEY_CALENDAR_LAST_UPDATED, 0);
 		
 		if (mLastUpdatedPreferences == 0) {
-			updatePreferences();
+			updatePreferences(getString(R.string.trakt_api_key));
 		} else {
 			if (!isLocalJSONUpdated()) {
-				updatePreferences();
+				updatePreferences(getString(R.string.trakt_api_key));
 			}
 		}
 		
@@ -42,8 +42,8 @@ public class SplashActivity extends Activity {
 		
 	}
 
-	private void updatePreferences() {
-		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
+	public static void updatePreferences(String apiKey) {
+		TraktApiHelper helper = new TraktApiHelper(apiKey);
 		String json = null;
 		try {
 			json = helper.getCalendarJSON();
