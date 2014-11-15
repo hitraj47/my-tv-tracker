@@ -70,6 +70,6 @@
     <string name="about_title">About/Credits</string>
     <string name="author_label">Author: Raj Ramsaroop</string>
     <string name="website">Website: <a href="http://www.bewareofraj.com">www.bewareofraj.com</a></string>
-    <string name="trakt_credits">This app is powered by Trakt.tv API.</string>
+    <string name="trakt_credits">This app is powered by <a href="http://www.trakt.tv">Trakt.tv</a> API.</string>
 
 </resources>
