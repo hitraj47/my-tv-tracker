@@ -18,6 +18,8 @@ public class SplashActivity extends Activity {
 	public static final String PREFS_KEY_CALENDAR_LAST_UPDATED = "last_updated";
 	public static final String PREFS_KEY_CALENDAR_JSON = "calendar_json";
 	public static final long DAY_IN_MILLIS = 86400000;
+	
+	private static boolean mJSONUpToDate = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class SplashActivity extends Activity {
 			long currentTime = c.getTimeInMillis();
 			if ( (currentTime - lastUpdatedPreference) > DAY_IN_MILLIS) {
 				updatePreferences();
+			} else {
+				mJSONUpToDate = true;
 			}
 		}
 		
@@ -60,5 +64,11 @@ public class SplashActivity extends Activity {
 		long currentTime = c.getTimeInMillis();
 		editor.putLong(PREFS_KEY_CALENDAR_LAST_UPDATED, currentTime);
 		editor.commit();
+		mJSONUpToDate = true;
 	}
+	
+	public static boolean isJSONUpToDate() {
+		return mJSONUpToDate;
+	}
+	
 }
