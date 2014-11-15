@@ -21,6 +21,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
@@ -85,18 +86,21 @@ public class WatchListFragment extends Fragment {
 		TreeMap<String, WatchListGroup> groups = new TreeMap<String, WatchListGroup>();
 		
 		while(c.moveToNext()) {
+			Show show = new Show();
 			// get the info from the row
-			String showName = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_SHOW_NAME));
-			String firstLetter = showName.substring(0, 1).toUpperCase(Locale.ENGLISH);	// used for expandable list headers
-			String posterUrl = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL));
-			String status = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_STATUS));
-			String airTime = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_TIME));
-			String airDay = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY));
-			String id = c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID));
+			show.setTitle(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_SHOW_NAME)));
 			
-			String showTime = determineShowTime(airTime, airDay, status, id);
+			String firstLetter = show.getTitle().substring(0, 1).toUpperCase(Locale.ENGLISH);	// used for expandable list headers
 			
-			WatchListChild child = createWatchListChild(posterUrl, showName, showTime, id);
+			show.setPosterUrl(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL)));
+			show.setStatus(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_STATUS)));
+			show.setAirTime(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_TIME)));
+			show.setAirDay(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY)));
+			show.setTvdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID)));
+			
+			String showTime = show.determineShowTime(getResources().getString(R.string.trakt_api_key));
+			
+			WatchListChild child = createWatchListChild(show.getPosterUrl(), show.getTitle(), showTime, show.getTvdbId());
 			
 			WatchListGroup watchListGroup;
 			
@@ -125,34 +129,6 @@ public class WatchListFragment extends Fragment {
 		}
 		
 		return list;
-	}
-
-	private String determineShowTime(String airTime, String airDay,
-			String status, String id) {
-		String showTime = null;
-		if (status.equals("Ended")) {
-			showTime = "Show Ended";
-		} else {
-			TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
-			try {
-				boolean currentlyOnAir = helper.isCurrentlyOnAir(id);
-				if (currentlyOnAir) {
-					showTime = airDay + ", " + airTime;
-				} else {
-					showTime = "Currently off-air";
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return showTime;
 	}
 
 	private void setupExpandableList() {

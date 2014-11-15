@@ -1,6 +1,11 @@
 package com.bewareofraj.mytvtracker.api;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
+
+import com.bewareofraj.mytvtracker.R;
 
 /**
  * A Show class represents a TV show.
@@ -126,6 +131,33 @@ public class Show {
 		String baseUrl = mPosterUrl.substring(0, mPosterUrl.lastIndexOf('.'));
 		String ext = mPosterUrl.substring(mPosterUrl.lastIndexOf('.'));
 		return baseUrl + size + ext;
+	}
+	
+	public String determineShowTime(String apiKey) {
+		String showTime = null;
+		if (this.mStatus.equals("Ended")) {
+			showTime = "Show Ended";
+		} else {
+			TraktApiHelper helper = new TraktApiHelper(apiKey);
+			try {
+				boolean currentlyOnAir = helper.isCurrentlyOnAir(this.mTvdbId);
+				if (currentlyOnAir) {
+					showTime = this.mAirDay + ", " + this.mAirTime;
+				} else {
+					showTime = "Currently off-air";
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return showTime;
 	}
 
 }
