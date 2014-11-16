@@ -29,8 +29,14 @@ public class ImageLoader {
 	private Map<ImageView, String> mImageViews = Collections
 			.synchronizedMap(new WeakHashMap<ImageView, String>());
 	ExecutorService mExecutorService;
-	private int mRequiredWidth;
+	private int mRequiredWidth = 0;
 
+	/**
+	 * 
+	 * @param context
+	 * @param requiredWidth
+	 *            Set to 0 to not resize
+	 */
 	public ImageLoader(Context context, int requiredWidth) {
 		mFileCache = new FileCache(context);
 		mExecutorService = Executors.newFixedThreadPool(5);
@@ -110,6 +116,7 @@ public class ImageLoader {
 			BitmapFactory.Options o2 = new BitmapFactory.Options();
 			o2.inSampleSize = scale;
 			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+
 		} catch (FileNotFoundException e) {
 		}
 		return null;

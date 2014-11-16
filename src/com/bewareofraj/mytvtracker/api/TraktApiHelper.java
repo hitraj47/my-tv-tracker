@@ -212,6 +212,7 @@ public class TraktApiHelper {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_SHOW);
+		query.append(API_ARGUMENT_SHOW_SEASON);
 		query.append(API_FORMAT);
 		query.append(mApiKey);
 		query.append(tvdbid + "/");
@@ -228,7 +229,7 @@ public class TraktApiHelper {
 			episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
 			episode.setImageUrl(object.getString(API_KEY_SCREEN));
 			episode.setOverview(object.getString(API_KEY_OVERVIEW));
-			episode.setTitle(object.getString("API_KEY_TITLE"));
+			episode.setTitle(object.getString(API_KEY_TITLE));
 			episodes[i] = episode;
 		}
 		return episodes;

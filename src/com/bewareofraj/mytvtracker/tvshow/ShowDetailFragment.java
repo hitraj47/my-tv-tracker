@@ -81,7 +81,7 @@ public class ShowDetailFragment extends Fragment {
 			lblShowCountry.setText(show.getCountry());
 			
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
-			lblFirstAired.setText("First aired: " + makeFirstAiredDated(show.getFirstAired()));
+			lblFirstAired.setText("First aired: " + makeFirstAiredDate(show.getFirstAired()));
 			
 			final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
 			mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());
@@ -152,7 +152,7 @@ public class ShowDetailFragment extends Fragment {
 		return db.isOnWatchList(showId);
 	}
 
-	private String makeFirstAiredDated(Date date) {
+	private String makeFirstAiredDate(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
