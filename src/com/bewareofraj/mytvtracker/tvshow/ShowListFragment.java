@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 
@@ -100,7 +99,6 @@ public class ShowListFragment extends ListFragment {
 	public void onListItemClick(ListView listView, View view, int position,
 			long id) {
 		super.onListItemClick(listView, view, position, id);
-		//TODO: implement what happens when user clicks on list item here
 		if (position == 0) {
 			if (ShowListActivity.isTwoPane()) {
 				ShowDetailFragment fragment = new ShowDetailFragment();
@@ -111,7 +109,16 @@ public class ShowListFragment extends ListFragment {
 				getActivity().startActivity(intent);
 			}
 		} else {
-			Toast.makeText(getActivity(), "Season " + position + " clicked", Toast.LENGTH_SHORT).show();
+			if (ShowListActivity.isTwoPane()) {
+				SeasonEpisodeFragment fragment = new SeasonEpisodeFragment();
+				fragment.setSeason(position);
+				FragmentManager fm = getFragmentManager();
+				fm.beginTransaction().replace(R.id.show_detail_container, fragment).commit();
+			} else {
+				Intent intent = new Intent(getActivity(), SeasonEpisodeActivity.class);
+				intent.putExtra(SeasonEpisodeActivity.EXTRA_SEASON, position);
+				getActivity().startActivity(intent);
+			}
 		}
 
 	}

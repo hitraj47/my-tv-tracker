@@ -12,7 +12,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -75,5 +75,6 @@
     <string name="episode_title_placeholder">Episode: Title</string>
     <string name="episode_image_placeholder">Episode Image</string>
     <string name="episode_first_aired_placeholder">First aired</string>
+    <string name="title_activity_season_episode">SeasonEpisodeActivity</string>
 
 </resources>

@@ -33,19 +33,20 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imgEpisodeImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lblEpisodeTitle"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" android:contentDescription="@string/episode_image_placeholder"/>
+        android:contentDescription="@string/episode_image_placeholder"
+        android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/lblEpisodeFirstAired"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lblEpisodeTitle"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/imgEpisodeImage"
         android:layout_marginTop="14dp"
         android:text="@string/episode_first_aired_placeholder"
         android:textAppearance="?android:attr/textAppearanceSmall" />
