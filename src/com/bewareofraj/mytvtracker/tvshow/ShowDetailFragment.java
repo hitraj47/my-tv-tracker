@@ -69,7 +69,8 @@ public class ShowDetailFragment extends Fragment {
 			lblShowName.setText(show.getTitle());
 			
 			TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
-			lblShowYear.setText(Integer.toString(show.getYear()));
+			String year = (show.getYear() == 0) ? "TBD" : Integer.toString(show.getYear());
+			lblShowYear.setText(year);
 			
 			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
 			lblShowTime.setText(show.determineShowTime(getResources().getString(R.string.trakt_api_key)));
@@ -81,7 +82,13 @@ public class ShowDetailFragment extends Fragment {
 			lblShowCountry.setText(show.getCountry());
 			
 			TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
-			lblFirstAired.setText("First aired: " + makeFirstAiredDate(show.getFirstAired()));
+			String firstAired;
+			if (show.getFirstAiredTimeStamp() == 0) {
+				firstAired = "First aired: TBD";
+			} else {
+				firstAired = "First aired: " + makeFirstAiredDate(show.getFirstAired());
+			}
+			lblFirstAired.setText(firstAired);
 			
 			final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
 			mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());

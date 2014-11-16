@@ -124,7 +124,7 @@ public class SearchFragment extends Fragment {
 			String id = show.getTvdbId();
 			String image = show
 					.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
-			String year = Integer.toString(show.getYear());
+			String year = (show.getYear() == 0) ? "TBD" : Integer.toString(show.getYear());
 			String network = show.getNetwork();
 			mResultList.add(new SearchResultItem(title, id, image, year,
 					network));

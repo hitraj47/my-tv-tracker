@@ -24,6 +24,7 @@ public class Show {
 	private String mTvdbId;
 	private String mPosterUrl;
 	private int mSeasons;
+	private int mFirstAiredTimestamp;
 	
 	public Show() {
 		
@@ -38,7 +39,11 @@ public class Show {
 	}
 
 	public int getYear() {
-		return mYear;
+		if (mFirstAiredTimestamp == 0) {
+			return 0;
+		} else {
+			return mYear;
+		}
 	}
 
 	public void setYear(int mYear) {
@@ -135,6 +140,8 @@ public class Show {
 		String showTime = null;
 		if (this.mStatus.equals("Ended")) {
 			showTime = "Show Ended";
+		} else if (mFirstAiredTimestamp == 0) {
+			showTime = "Show not started";
 		} else {
 			TraktApiHelper helper = new TraktApiHelper(apiKey);
 			try {
@@ -156,6 +163,14 @@ public class Show {
 			}
 		}
 		return showTime;
+	}
+
+	public int getFirstAiredTimeStamp() {
+		return mFirstAiredTimestamp;
+	}
+
+	public void setFirstAiredTimeStamp(int mFirstAiredTimeStamp) {
+		this.mFirstAiredTimestamp = mFirstAiredTimeStamp;
 	}
 
 }

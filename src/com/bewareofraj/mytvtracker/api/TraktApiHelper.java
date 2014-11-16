@@ -79,6 +79,7 @@ public class TraktApiHelper {
 		show.setYear(result.getInt(API_KEY_YEAR));
 		show.setFirstAired(getDateFromUnixTimestamp(result
 				.getInt(API_KEY_FIRST_AIRED_UTC)));
+		show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
 		show.setCountry(result.getString(API_KEY_COUNTRY));
 		show.setOverview(result.getString(API_KEY_OVERVIEW));
 		show.setStatus(result.getString(API_KEY_STATUS));
@@ -131,6 +132,7 @@ public class TraktApiHelper {
 				show.setTitle(object.getString(API_KEY_TITLE));
 				show.setYear(object.getInt(API_KEY_YEAR));
 				show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
+				show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
 				show.setCountry(object.getString(API_KEY_COUNTRY));
 				show.setOverview(object.getString(API_KEY_OVERVIEW));
 				show.setNetwork(object.getString(API_KEY_NETWORK));
