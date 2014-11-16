@@ -99,6 +99,8 @@ public class SearchFragment extends Fragment {
 				Toast.makeText(getActivity(), "Sorry, no results found :(",
 						Toast.LENGTH_LONG).show();
 			} else {
+				// clear results list first
+				mResultList.clear();
 				createResultItemsFromShows(results);
 				mAdapter.notifyDataSetChanged();
 			}
