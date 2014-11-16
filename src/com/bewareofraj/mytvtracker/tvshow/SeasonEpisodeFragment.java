@@ -67,6 +67,9 @@ public class SeasonEpisodeFragment extends Fragment {
 			e.printStackTrace();
 		}
 		
+		// set action bar title
+		getActivity().setTitle("Season " + mSeason);
+		
 		// episode list spinner
 		mSpnEpisodes = (Spinner) rootView.findViewById(R.id.spnEpisode);
 		String[] spinnerItems = new String[mEpisodes.length];
@@ -109,7 +112,7 @@ public class SeasonEpisodeFragment extends Fragment {
 		
 		//TODO: set appropriate image size instead of 900
 		ImageLoader imgLoader = new ImageLoader(getActivity(), 900);
-		int loadingImage = R.drawable.logo;	// loading image, use logo temporarily for now
+		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
 		imgLoader.DisplayImage(episode.getImageUrl(), loadingImage, mImgEpisodeImage);
 		
 		mLblFirstAired.setText("First aired: " + makeFirstAiredDate(episode.getFirstAired()));
