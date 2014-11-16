@@ -67,6 +67,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				null, // don't filter by row groups
 				sortOrder // The sort order
 				);
+		db.close();
 
 		return cursor;
 	}
@@ -74,6 +75,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public void clearWatchList() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.execSQL(SQL_DELETE_WATCH_LIST);
+		db.close();
 	}
 
 	public boolean isOnWatchList(String showId) {
@@ -90,6 +92,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public void removeFromWatchList(String[] ids) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID + "=?", ids);
+		db.close();
 	}
 
 	public void addToWatchList(Show show) {
@@ -103,6 +106,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(WatchListEntry.TABLE_NAME_WATCH_LIST, null, values);
+		db.close();
 	}
 
 }
