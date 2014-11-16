@@ -62,7 +62,6 @@ public class ShowListActivity extends Activity implements
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
 				R.string.trakt_api_key));
 		try {
-			// mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
 			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

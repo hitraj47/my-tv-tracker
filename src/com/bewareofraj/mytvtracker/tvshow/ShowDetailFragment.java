@@ -55,8 +55,6 @@ public class ShowDetailFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
 
-		// TODO: Get data from web using show id, then use the Show object to
-		// display info in layout components
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(R.string.trakt_api_key));
 		final Show show;
 		try {
@@ -119,6 +117,9 @@ public class ShowDetailFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		// set action bar title
+		getActivity().setTitle("Summary");
 		
 		return rootView;
 	}

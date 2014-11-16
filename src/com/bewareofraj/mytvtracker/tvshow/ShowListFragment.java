@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
 
@@ -56,7 +57,6 @@ public class ShowListFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//TODO: Populate list
 		String[] items = new String[ShowListActivity.getNumberOfSeasons() + 1];
 		// first menu item is for show info
 		items[0] = "Summary";
@@ -110,7 +110,8 @@ public class ShowListFragment extends ListFragment {
 				Intent intent = new Intent(getActivity(), ShowDetailActivity.class);
 				getActivity().startActivity(intent);
 			}
-			
+		} else {
+			Toast.makeText(getActivity(), "Season " + position + " clicked", Toast.LENGTH_SHORT).show();
 		}
 
 	}

@@ -135,7 +135,6 @@ public class WatchListFragment extends Fragment {
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
-				// TODO Auto-generated method stub
 				WatchListGroup group = mWatchListItems.get(groupPosition);
 				ArrayList<WatchListChild> child = group.getItems();
 				WatchListChild show = child.get(childPosition);

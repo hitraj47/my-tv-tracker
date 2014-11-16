@@ -87,7 +87,7 @@
             android:text="@string/watch_list_button_placeholder" />
 
         <TextView
-            android:id="@+id/lblOverview"
+            android:id="@+id/lblEpisodeOverview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/btnWatchList"
@@ -100,8 +100,8 @@
             android:id="@+id/lblOverviewBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/lblOverview"
-            android:layout_below="@+id/lblOverview"
+            android:layout_alignLeft="@+id/lblEpisodeOverview"
+            android:layout_below="@+id/lblEpisodeOverview"
             android:layout_marginRight="10dp"
             android:text="@string/overview_placeholder"
             android:textAppearance="?android:attr/textAppearanceMedium" />
