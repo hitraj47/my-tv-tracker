@@ -72,4 +72,14 @@ public class SplashActivity extends Activity {
 		return mPreferences;
 	}
 	
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		super.onWindowFocusChanged(hasFocus);
+		if (hasFocus) {
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
+	}
+	
 }
