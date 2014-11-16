@@ -25,8 +25,9 @@ public class TraktApiHelper {
 	public static final String API_ARGUMENT_SHOWS = "shows";
 	public static final String API_SEARCH_LIMIT = "10";
 	public static final String API_METHOD_CALENDAR = "calendar/";
+	public static final String API_ARGUMENT_SHOW_SEASON = "season";
 	
-	public static final String API_KEY_SHOW_NAME = "title";
+	public static final String API_KEY_TITLE = "title";
 	public static final String API_KEY_YEAR = "year";
 	public static final String API_KEY_FIRST_AIRED_UTC = "first_aired_utc";
 	public static final String API_KEY_COUNTRY = "country";
@@ -41,6 +42,8 @@ public class TraktApiHelper {
 	public static final String API_KEY_IMAGES_OBJECT = "images";
 	public static final String API_KEY_EPISODES = "episodes";
 	public static final String API_KEY_SHOW = "show";
+	public static final String API_KEY_EPISODE = "episode";
+	public static final String API_KEY_SCREEN = "screen";
 
 	private String mApiKey = "";
 
@@ -72,7 +75,7 @@ public class TraktApiHelper {
 				query.toString()).get());
 		
 		Show show = new Show();
-		show.setTitle(result.getString(API_KEY_SHOW_NAME));
+		show.setTitle(result.getString(API_KEY_TITLE));
 		show.setYear(result.getInt(API_KEY_YEAR));
 		show.setFirstAired(getDateFromUnixTimestamp(result
 				.getInt(API_KEY_FIRST_AIRED_UTC)));
@@ -125,7 +128,7 @@ public class TraktApiHelper {
 			for (int i = 0; i < results.length(); i++) {
 				JSONObject object = results.getJSONObject(i);
 				Show show = new Show();
-				show.setTitle(object.getString(API_KEY_SHOW_NAME));
+				show.setTitle(object.getString(API_KEY_TITLE));
 				show.setYear(object.getInt(API_KEY_YEAR));
 				show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
 				show.setCountry(object.getString(API_KEY_COUNTRY));
@@ -203,6 +206,32 @@ public class TraktApiHelper {
 	public String getCalendarJSONLocal() {
 		SharedPreferences preferences = SplashActivity.getSharedPreferences();
 		return preferences.getString(SplashActivity.PREFS_KEY_CALENDAR_JSON, "");
+	}
+	
+	public Episode[] getEpisodes(String tvdbid, String season) throws InterruptedException, ExecutionException, JSONException {
+		StringBuilder query = new StringBuilder();
+		query.append(API_BASE_URL);
+		query.append(API_METHOD_SHOW);
+		query.append(API_FORMAT);
+		query.append(mApiKey);
+		query.append(tvdbid + "/");
+		query.append(season);
+		
+		String json = new RetrieveTraktJSONTask().execute(query.toString()).get();
+		JSONArray resultsArray = new JSONArray(json);
+		
+		Episode[] episodes = new Episode[resultsArray.length()];
+		for (int i = 0; i < resultsArray.length(); i++) {
+			Episode episode = new Episode(Integer.parseInt(season));
+			JSONObject object = resultsArray.getJSONObject(i);
+			episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
+			episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
+			episode.setImageUrl(object.getString(API_KEY_SCREEN));
+			episode.setOverview(object.getString(API_KEY_OVERVIEW));
+			episode.setTitle(object.getString("API_KEY_TITLE"));
+			episodes[i] = episode;
+		}
+		return episodes;
 	}
 	
 }

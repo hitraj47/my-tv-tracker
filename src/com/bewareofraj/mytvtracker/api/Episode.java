@@ -1,12 +1,14 @@
 package com.bewareofraj.mytvtracker.api;
 
+import java.util.Date;
+
 public class Episode {
 	
 	private int mSeason;
 	private int mEpisodeNumber;
 	private String mTitle;
 	private String mImageUrl;
-	private String mFirstAired;
+	private Date mFirstAired;
 	private String mOverview;
 	
 	public Episode(int season) {
@@ -44,12 +46,12 @@ public class Episode {
 		this.mImageUrl = mImageUrl;
 	}
 
-	public String getFirstAired() {
+	public Date getFirstAired() {
 		return mFirstAired;
 	}
 
-	public void setFirstAired(String mFirstAired) {
-		this.mFirstAired = mFirstAired;
+	public void setFirstAired(int timestamp) {
+		this.mFirstAired = getDateFromUnixTimestamp(timestamp);
 	}
 
 	public String getOverview() {
@@ -58,5 +60,10 @@ public class Episode {
 
 	public void setOverview(String mOverview) {
 		this.mOverview = mOverview;
+	}
+	
+	private Date getDateFromUnixTimestamp(int timestamp) {
+		Date date = new Date((long) timestamp * 1000);
+		return date;
 	}
 }
