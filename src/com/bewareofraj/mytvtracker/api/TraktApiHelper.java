@@ -122,8 +122,8 @@ public class TraktApiHelper {
 		this.mApiKey = mApiKey + "/";
 	}
 	
-	public ArrayList<Show> getShowSearchResults(String terms) throws JSONException, InterruptedException, ExecutionException {
-		JSONArray results = searchShows(terms, API_SEARCH_LIMIT);
+	public ArrayList<Show> getShowSearchResults(String json) throws JSONException, InterruptedException, ExecutionException {
+		JSONArray results = new JSONArray(json);
 		ArrayList<Show> resultsAsShows = new ArrayList<Show>();
 		if (results.length() > 0) {
 			for (int i = 0; i < results.length(); i++) {
@@ -148,7 +148,7 @@ public class TraktApiHelper {
 		return resultsAsShows;
 	}
 
-	private JSONArray searchShows(String terms, String apiSearchLimit) throws JSONException, InterruptedException, ExecutionException {
+	public String searchShows(String terms, String apiSearchLimit) throws JSONException, InterruptedException, ExecutionException {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_SEARCH);
@@ -160,8 +160,7 @@ public class TraktApiHelper {
 		query.append("&limit=");
 		query.append(API_SEARCH_LIMIT);
 
-		return new JSONArray(new RetrieveTraktJSONTask().execute(
-				query.toString()).get());
+		return query.toString();
 	}
 
 	/**

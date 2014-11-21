@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.api.RetrieveTraktJSONTask;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
@@ -80,7 +81,7 @@ public class SearchFragment extends Fragment {
 							Toast.LENGTH_LONG).show();
 				} else {
 					try {
-						search(URLEncoder.encode(searchTerms, "UTF-8"));
+						search(URLEncoder.encode(searchTerms, "UTF-8"), 10);
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -90,48 +91,79 @@ public class SearchFragment extends Fragment {
 		});
 	}
 
-	protected void search(String terms) {
+	private void search(String terms, int limit) {
 		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
 				R.string.trakt_api_key));
+		String query;
 		try {
-			ArrayList<Show> results = helper.getShowSearchResults(terms);
-			if (results.size() == 0) {
-				Toast.makeText(getActivity(), "Sorry, no results found :(",
-						Toast.LENGTH_LONG).show();
-			} else {
-				// clear results list first
-				mResultList.clear();
-				createResultItemsFromShows(results);
-				mAdapter.notifyDataSetChanged();
-			}
-		} catch (JSONException e) {
+			query = helper.searchShows(terms, Integer.toString(limit));
+			new SearchAsync().execute(query);
+		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
 	}
 
 	private void createResultItemsFromShows(ArrayList<Show> results) {
-		Iterator<Show> it = results.iterator();
-		while (it.hasNext()) {
-			Show show = it.next();
-			String title = show.getTitle();
-			String id = show.getTvdbId();
-			String image = show
-					.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
-			String year = (show.getYear() == 0) ? "TBD" : Integer.toString(show.getYear());
-			String network = show.getNetwork();
-			mResultList.add(new SearchResultItem(title, id, image, year,
-					network));
+		if (results.size() == 0) {
+			Toast.makeText(getActivity(), "Sorry, no results found :(",
+					Toast.LENGTH_LONG).show();
+		} else {
+			mResultList.clear();
+			Iterator<Show> it = results.iterator();
+			while (it.hasNext()) {
+				Show show = it.next();
+				String title = show.getTitle();
+				String id = show.getTvdbId();
+				String image = show
+						.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
+				String year = (show.getYear() == 0) ? "TBD" : Integer
+						.toString(show.getYear());
+				String network = show.getNetwork();
+				mResultList.add(new SearchResultItem(title, id, image, year,
+						network));
 
-			// set adapter
-			mAdapter = new SearchResultListAdapter(getActivity(), mResultList);
-			mListView.setAdapter(mAdapter);
+				// set adapter
+				mAdapter = new SearchResultListAdapter(getActivity(),
+						mResultList);
+				mListView.setAdapter(mAdapter);
+				mAdapter.notifyDataSetChanged();
+			}
+		}
+	}
+
+	private class SearchAsync extends RetrieveTraktJSONTask {
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			Toast.makeText(getActivity(), "Searching...", Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			TraktApiHelper helper = new TraktApiHelper(
+					getString(R.string.trakt_api_key));
+			try {
+				createResultItemsFromShows(helper.getShowSearchResults(result));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
