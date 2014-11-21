@@ -11,6 +11,8 @@ import org.json.JSONException;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -147,6 +149,15 @@ public class SearchFragment extends Fragment {
 			super.onPreExecute();
 			mDialog = new ProgressDialog(getActivity());
 			mDialog.setMessage("Searching, please wait...");
+			mDialog.setCancelable(true);
+			mDialog.setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					cancel(true);
+					mDialog.dismiss();
+				}
+			});
 			mDialog.show();
 		}
 
