@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -139,11 +140,14 @@ public class SearchFragment extends Fragment {
 	}
 
 	private class SearchAsync extends RetrieveTraktJSONTask {
+		private ProgressDialog mDialog;
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			Toast.makeText(getActivity(), "Searching...", Toast.LENGTH_LONG).show();
+			mDialog = new ProgressDialog(getActivity());
+			mDialog.setMessage("Searching, please wait...");
+			mDialog.show();
 		}
 
 		@Override
@@ -152,6 +156,9 @@ public class SearchFragment extends Fragment {
 			super.onPostExecute(result);
 			TraktApiHelper helper = new TraktApiHelper(
 					getString(R.string.trakt_api_key));
+			if (mDialog.isShowing()) {
+				mDialog.dismiss();
+			}
 			try {
 				createResultItemsFromShows(helper.getShowSearchResults(result));
 			} catch (JSONException e) {
