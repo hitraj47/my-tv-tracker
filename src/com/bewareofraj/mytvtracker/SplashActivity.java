@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
+import com.bewareofraj.mytvtracker.api.RetrieveTraktJSONTask;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 
 public class SplashActivity extends Activity {
@@ -36,9 +37,6 @@ public class SplashActivity extends Activity {
 				updatePreferences(getString(R.string.trakt_api_key));
 			}
 		}
-		
-		Intent intent = new Intent(this, MainActivity.class);
-		startActivity(intent);
 		
 	}
 
@@ -78,6 +76,15 @@ public class SplashActivity extends Activity {
 		super.onWindowFocusChanged(hasFocus);
 		if (hasFocus) {
 			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
+	}
+	
+	private class SplashAsync extends RetrieveTraktJSONTask {
+		@Override
+		protected void onPostExecute(String result) {
+			super.onPostExecute(result);
+			Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 			startActivity(intent);
 		}
 	}

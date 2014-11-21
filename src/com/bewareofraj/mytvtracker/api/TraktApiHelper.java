@@ -202,7 +202,7 @@ public class TraktApiHelper {
 		query.append(API_FORMAT);
 		query.append(mApiKey);
 		
-		return new RetrieveTraktJSONTask().execute(query.toString()).get();
+		return query.toString();
 	}
 	
 	public String getCalendarJSONLocal() {
