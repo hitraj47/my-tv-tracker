@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.bewareofraj.mytvtracker.api.RetrieveTraktJSONTask;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
@@ -30,21 +31,26 @@ public class SplashActivity extends Activity {
 		mPreferences = this.getSharedPreferences(getString(R.string.preferences_file_key), MODE_PRIVATE);
 		mLastUpdatedPreferences = mPreferences.getLong(PREFS_KEY_CALENDAR_LAST_UPDATED, 0);
 		
-		if (mLastUpdatedPreferences == 0) {
-			updatePreferences(getString(R.string.trakt_api_key));
+		if (mLastUpdatedPreferences == 0 || !isLocalJSONUpdated()) {
+			getCalendarJSONFromWeb();
 		} else {
-			if (!isLocalJSONUpdated()) {
-				updatePreferences(getString(R.string.trakt_api_key));
-			}
+			Handler hander = new Handler();
+			hander.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+					startActivity(intent);
+				}
+			}, 1000);
 		}
 		
 	}
-
-	public static void updatePreferences(String apiKey) {
-		TraktApiHelper helper = new TraktApiHelper(apiKey);
-		String json = null;
+	
+	private void getCalendarJSONFromWeb() {
+		TraktApiHelper helper = new TraktApiHelper(getString(R.string.trakt_api_key));
 		try {
-			json = helper.getCalendarJSON();
+			new SplashAsync().execute(helper.getCalendarJSON());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,6 +58,9 @@ public class SplashActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void updatePreferences(String json) {
 		Editor editor = mPreferences.edit();
 		editor.putString(PREFS_KEY_CALENDAR_JSON, json);
 		Calendar c = Calendar.getInstance();
@@ -70,20 +79,11 @@ public class SplashActivity extends Activity {
 		return mPreferences;
 	}
 	
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus) {
-		// TODO Auto-generated method stub
-		super.onWindowFocusChanged(hasFocus);
-		if (hasFocus) {
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
-		}
-	}
-	
 	private class SplashAsync extends RetrieveTraktJSONTask {
 		@Override
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
+			updatePreferences(result);
 			Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 			startActivity(intent);
 		}
