@@ -18,6 +18,7 @@ public final class MyTvTrackerContract {
 		public static final String COLUMN_NAME_AIR_DAY = "air_day";
 		public static final String COLUMN_NAME_AIR_TIME = "air_time";
 		public static final String COLUMN_NAME_SHOW_NAME = "show_name";
+		public static final String COLUMN_NAME_FIRST_AIRED_TIMESTAMP = "first_aired_timestamp";
 	}
 	
 }

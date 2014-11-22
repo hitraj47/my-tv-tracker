@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import android.content.Context;
+
 /**
  * A Show class represents a TV show.
  * @author Rajesh
@@ -136,7 +138,7 @@ public class Show {
 		return baseUrl + size + ext;
 	}
 	
-	public String determineShowTime(String apiKey) {
+	public String determineShowTime(Context context, String apiKey) {
 		String showTime = null;
 		if (this.mStatus.equals("Ended")) {
 			showTime = "Show Ended";
@@ -145,7 +147,7 @@ public class Show {
 		} else {
 			TraktApiHelper helper = new TraktApiHelper(apiKey);
 			try {
-				boolean currentlyOnAir = helper.isCurrentlyOnAir(this.mTvdbId);
+				boolean currentlyOnAir = helper.isCurrentlyOnAir(context, this.mTvdbId);
 				if (currentlyOnAir) {
 					showTime = this.mAirDay + ", " + this.mAirTime;
 				} else {

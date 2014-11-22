@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.bewareofraj.mytvtracker.SplashActivity;
@@ -171,10 +172,11 @@ public class TraktApiHelper {
 	 * @throws InterruptedException 
 	 * @throws JSONException 
 	 */
-	public boolean isCurrentlyOnAir(String id) throws JSONException, InterruptedException, ExecutionException {
+	public boolean isCurrentlyOnAir(Context context, String id) throws JSONException, InterruptedException, ExecutionException {
 		JSONArray resultsArray;
-		if (!SplashActivity.isLocalJSONUpdated()) {
-			SplashActivity.updatePreferences(mApiKey);
+		if (!SplashActivity.isLocalJSONUpdated(context)) {
+			String json = new RetrieveTraktJSONTask().execute(getCalendarJSONQuery()).get();
+			SplashActivity.updatePreferences(json);
 		}
 		resultsArray = new JSONArray(getCalendarJSONLocal());
 		
@@ -193,7 +195,7 @@ public class TraktApiHelper {
 		return false;
 	}
 	
-	public String getCalendarJSON() throws InterruptedException, ExecutionException {
+	public String getCalendarJSONQuery() throws InterruptedException, ExecutionException {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_CALENDAR);

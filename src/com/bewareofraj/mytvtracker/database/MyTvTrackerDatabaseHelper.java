@@ -27,7 +27,8 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ WatchListEntry.COLUMN_NAME_TVDB_ID + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_STATUS + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_DAY + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE 
+			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP + " INTEGER"
 			+ " )";
 	
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
@@ -55,7 +56,8 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				WatchListEntry.COLUMN_NAME_AIR_TIME,
 				WatchListEntry.COLUMN_NAME_TVDB_ID,
 				WatchListEntry.COLUMN_NAME_SHOW_NAME,
-				WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL };
+				WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL,
+				WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP };
 
 		String sortOrder = WatchListEntry.COLUMN_NAME_SHOW_NAME + " ASC";
 
@@ -100,6 +102,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
 		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
 		values.put(WatchListEntry.COLUMN_NAME_TVDB_ID, show.getTvdbId());
+		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP, show.getFirstAiredTimeStamp());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(WatchListEntry.TABLE_NAME_WATCH_LIST, null, values);
