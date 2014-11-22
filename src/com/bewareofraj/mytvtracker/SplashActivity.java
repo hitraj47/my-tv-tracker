@@ -45,6 +45,7 @@ public class SplashActivity extends Activity {
 					Intent intent = new Intent(SplashActivity.this,
 							MainActivity.class);
 					startActivity(intent);
+					finish();
 				}
 			}, 1000);
 		}
@@ -96,7 +97,7 @@ public class SplashActivity extends Activity {
 			updatePreferences(result);
 			Intent intent = new Intent(SplashActivity.this, MainActivity.class);
 			startActivity(intent);
-
+			finish();
 		}
 	}
 
