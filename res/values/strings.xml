@@ -12,7 +12,14 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
+
+
+
+
+
+
+
 -->
 
 <resources>
@@ -76,5 +83,24 @@
     <string name="episode_image_placeholder">Episode Image</string>
     <string name="episode_first_aired_placeholder">First aired</string>
     <string name="title_activity_season_episode">SeasonEpisodeActivity</string>
+    
+    <string name="show_ended">Show ended</string>
+    <string name="show_not_started">Show not started</string>
+    <string name="show_on_break">Currently on break</string>
+    
+    <string name="search_field_empty">Please enter something to search for&#8230;</string>
+    <string name="search_no_results">Sorry, no results found :(</string>
+    <string name="search_please_wait">Searching, please wait&#8230;</string>
+    
+    <string name="watchlist_add">Add to Watch List</string>
+    <string name="watchlist_remove">Remove from Watch List</string>
+    <string name="watchlist_removed">Show removed from Watch List</string>
+    <string name="watchlist_added">Show added to Watch List</string>
+    
+    <string name="tbd">TBD</string>
+    
+    <string name="activity_title_summary">Summary</string>
+    
+    <string name="search_activity_title">Search</string>
 
 </resources>
