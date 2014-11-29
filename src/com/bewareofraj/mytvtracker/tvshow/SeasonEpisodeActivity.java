@@ -27,7 +27,7 @@ public class SeasonEpisodeActivity extends Activity {
 		fragment.setSeason(intent.getIntExtra(EXTRA_SEASON, 1));
 		fragment.setArguments(savedInstanceState);
 		FragmentManager fm = getFragmentManager();
-		fm.beginTransaction().add(R.id.season_episode_container, fragment)
+		fm.beginTransaction().replace(R.id.season_episode_container, fragment)
 				.commit();
 	}
 	

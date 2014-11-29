@@ -29,7 +29,7 @@ public class ShowDetailActivity extends Activity {
 		ShowDetailFragment fragment = new ShowDetailFragment();
 		fragment.setArguments(savedInstanceState);
 		FragmentManager fm = getFragmentManager();
-		fm.beginTransaction().add(R.id.show_detail_container, fragment).commit();
+		fm.beginTransaction().replace(R.id.show_detail_container, fragment).commit();
 	}
 
 	@Override
