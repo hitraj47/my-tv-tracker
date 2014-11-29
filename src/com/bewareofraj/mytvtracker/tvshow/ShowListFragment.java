@@ -58,7 +58,7 @@ public class ShowListFragment extends ListFragment {
 
 		String[] items = new String[ShowListActivity.getNumberOfSeasons() + 1];
 		// first menu item is for show info
-		items[0] = "Summary";
+		items[0] = getString(R.string.activity_title_summary);
 		for (int i = 1; i < items.length; i++) {
 			items[i] = "Season " + i;
 		}

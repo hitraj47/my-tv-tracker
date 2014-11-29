@@ -69,7 +69,7 @@ public class ShowDetailFragment extends Fragment {
 			lblShowName.setText(show.getTitle());
 			
 			TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
-			String year = (show.getYear() == 0) ? "TBD" : Integer.toString(show.getYear());
+			String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer.toString(show.getYear());
 			lblShowYear.setText(year);
 			
 			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
@@ -92,7 +92,7 @@ public class ShowDetailFragment extends Fragment {
 			
 			final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
 			mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());
-			String buttonText = mIsOnWatchList ? "Remove from Watch List" : "Add to Watch List";
+			String buttonText = mIsOnWatchList ? getString(R.string.watchlist_remove) : getString(R.string.watchlist_add);
 			btnWatchList.setText(buttonText);
 			btnWatchList.setOnClickListener(new OnClickListener() {
 				
@@ -102,13 +102,13 @@ public class ShowDetailFragment extends Fragment {
 					if (mIsOnWatchList) {
 						String[] ids = { show.getTvdbId() };
 						db.removeFromWatchList(ids);
-						Toast.makeText(getActivity(), "Show removed from Watch List", Toast.LENGTH_LONG).show();
-						btnWatchList.setText("Add to Watch List");
+						Toast.makeText(getActivity(), getString(R.string.watchlist_removed), Toast.LENGTH_LONG).show();
+						btnWatchList.setText(getString(R.string.watchlist_add));
 						mIsOnWatchList = false;
 					} else {
 						db.addToWatchList(show);
-						Toast.makeText(getActivity(), "Show added to Watch List", Toast.LENGTH_LONG).show();
-						btnWatchList.setText("Remove from Watch List");
+						Toast.makeText(getActivity(), getString(R.string.watchlist_added), Toast.LENGTH_LONG).show();
+						btnWatchList.setText(getString(R.string.watchlist_remove));
 						mIsOnWatchList = true;
 					}
 				}

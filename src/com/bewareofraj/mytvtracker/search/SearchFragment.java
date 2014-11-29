@@ -80,7 +80,7 @@ public class SearchFragment extends Fragment {
 				String searchTerms = txtSearch.getText().toString();
 				if (searchTerms.equals("")) {
 					Toast.makeText(getActivity(),
-							"Please enter something to search for...",
+							getString(R.string.search_field_empty),
 							Toast.LENGTH_LONG).show();
 				} else {
 					try {
@@ -115,7 +115,7 @@ public class SearchFragment extends Fragment {
 
 	private void createResultItemsFromShows(ArrayList<Show> results) {
 		if (results.size() == 0) {
-			Toast.makeText(getActivity(), "Sorry, no results found :(",
+			Toast.makeText(getActivity(), getString(R.string.search_no_results),
 					Toast.LENGTH_LONG).show();
 		} else {
 			mResultList.clear();
@@ -126,7 +126,7 @@ public class SearchFragment extends Fragment {
 				String id = show.getTvdbId();
 				String image = show
 						.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
-				String year = (show.getYear() == 0) ? "TBD" : Integer
+				String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer
 						.toString(show.getYear());
 				String network = show.getNetwork();
 				mResultList.add(new SearchResultItem(title, id, image, year,
@@ -148,7 +148,7 @@ public class SearchFragment extends Fragment {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
 			mDialog = new ProgressDialog(getActivity());
-			mDialog.setMessage("Searching, please wait...");
+			mDialog.setMessage(getString(R.string.search_please_wait));
 			mDialog.setCancelable(true);
 			mDialog.setOnCancelListener(new OnCancelListener() {
 				

@@ -62,7 +62,7 @@ public class WatchListFragment extends Fragment {
 
 				@Override
 				public void onClick(View v) {
-					getActivity().getActionBar().setTitle("Search");
+					getActivity().getActionBar().setTitle(getString(R.string.search_activity_title));
 					MainActivity.mDrawerList.setItemChecked(
 							MainActivity.SCREEN_SEARCH, true);
 					SearchFragment fragment = new SearchFragment();

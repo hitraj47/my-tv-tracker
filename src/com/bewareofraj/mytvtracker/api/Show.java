@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import com.bewareofraj.mytvtracker.R;
+
 import android.content.Context;
 
 /**
@@ -141,9 +143,9 @@ public class Show {
 	public String determineShowTime(Context context, String apiKey) {
 		String showTime = null;
 		if (this.mStatus.equals("Ended")) {
-			showTime = "Show Ended";
+			showTime = context.getString(R.string.show_ended);
 		} else if (mFirstAiredTimestamp == 0) {
-			showTime = "Show not started";
+			showTime = context.getString(R.string.show_not_started);
 		} else {
 			TraktApiHelper helper = new TraktApiHelper(apiKey);
 			try {
@@ -151,7 +153,7 @@ public class Show {
 				if (currentlyOnAir) {
 					showTime = this.mAirDay + ", " + this.mAirTime;
 				} else {
-					showTime = "Currently on break";
+					showTime = context.getString(R.string.show_not_started);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
