@@ -104,10 +104,12 @@ public class ShowDetailFragment extends Fragment {
 						db.removeFromWatchList(ids);
 						Toast.makeText(getActivity(), "Show removed from Watch List", Toast.LENGTH_LONG).show();
 						btnWatchList.setText("Add to Watch List");
+						mIsOnWatchList = false;
 					} else {
 						db.addToWatchList(show);
 						Toast.makeText(getActivity(), "Show added to Watch List", Toast.LENGTH_LONG).show();
 						btnWatchList.setText("Remove from Watch List");
+						mIsOnWatchList = true;
 					}
 				}
 			});
