@@ -8,7 +8,7 @@ Here is a brief list of the feature requirements:
 
 - Search for a TV show
 - List TV shows that the user is tracking, in a ‘watch list’
-- Notify the user when a new episode is about to begin, or a new season is starting
+- Notify the user when a new episode is about to begin, or a new season is starting *this feature is currently unimplemented*
 - View information about a TV show and their episodes
 
 
