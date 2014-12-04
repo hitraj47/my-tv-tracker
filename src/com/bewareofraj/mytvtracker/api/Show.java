@@ -153,7 +153,7 @@ public class Show {
 				if (currentlyOnAir) {
 					showTime = this.mAirDay + ", " + this.mAirTime;
 				} else {
-					showTime = context.getString(R.string.show_not_started);
+					showTime = context.getString(R.string.show_on_break);
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
