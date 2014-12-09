@@ -28,5 +28,17 @@ proguard/
 # Secret API key file
 res/values/apikey.xml
 
-# auto generated file
+# Windows generated file
 Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+# Android Studio
+.idea
+
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
