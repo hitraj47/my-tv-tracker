@@ -39,35 +39,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bewareofraj.mytvtracker.ItemListActivity"
-            android:label="@string/title_item_list" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.bewareofraj.mytvtracker.ItemDetailActivity"
-            android:label="@string/title_item_detail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
-        </activity>
-        <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemFragment"
-            android:label="@string/title_item_detail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
-        </activity>
-        <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemFragmentContainerActivity"
-            android:label="@string/title_activity_test_item_fragment_container" >
-        </activity>
-        <activity
-            android:name="com.bewareofraj.mytvtracker.TestItemContainerActivity"
-            android:label="@string/title_activity_test_item_container" >
-        </activity>
-        <activity
             android:name="com.bewareofraj.mytvtracker.tvshow.ShowListActivity"
             android:label="@string/title_show_list" >
             <meta-data
