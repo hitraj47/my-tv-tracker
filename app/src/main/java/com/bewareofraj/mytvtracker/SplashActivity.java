@@ -37,17 +37,18 @@ public class SplashActivity extends Activity {
 		if (mLastUpdatedPreferences == 0 || !isLocalJSONUpdated(this)) {
 			getCalendarJSONFromWeb();
 		} else {
-			Handler hander = new Handler();
-			hander.postDelayed(new Runnable() {
+			Handler handler;
+            handler = new Handler();
+            handler.postDelayed(new Runnable() {
 
-				@Override
-				public void run() {
-					Intent intent = new Intent(SplashActivity.this,
-							MainActivity.class);
-					startActivity(intent);
-					finish();
-				}
-			}, 1000);
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SplashActivity.this,
+                            MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 1000);
 		}
 
 	}
@@ -57,14 +58,11 @@ public class SplashActivity extends Activity {
 				getString(R.string.trakt_api_key));
 		try {
 			new SplashAsync().execute(helper.getCalendarJSONQuery());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
+		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+    }
 
 	public static void updatePreferences(String json) {
 		Editor editor = mPreferences.edit();
@@ -72,7 +70,7 @@ public class SplashActivity extends Activity {
 		Calendar c = Calendar.getInstance();
 		long currentTime = c.getTimeInMillis();
 		editor.putLong(PREFS_KEY_CALENDAR_LAST_UPDATED, currentTime);
-		editor.commit();
+		editor.apply();
 	}
 
 	public static boolean isLocalJSONUpdated(Context context) {
