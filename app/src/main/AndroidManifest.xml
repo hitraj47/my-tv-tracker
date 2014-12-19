@@ -12,7 +12,13 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
+
+
+
+
+
+
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,35 +44,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ItemListActivity"
-            android:label="@string/title_item_list" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ItemDetailActivity"
-            android:label="@string/title_item_detail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
-        </activity>
-        <activity
-            android:name=".TestItemFragment"
-            android:label="@string/title_item_detail" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.android.navigationdrawerexample.ItemListActivity" />
-        </activity>
-        <activity
-            android:name=".TestItemFragmentContainerActivity"
-            android:label="@string/title_activity_test_item_fragment_container" >
-        </activity>
-        <activity
-            android:name=".TestItemContainerActivity"
-            android:label="@string/title_activity_test_item_container" >
         </activity>
         <activity
             android:name=".tvshow.ShowListActivity"
