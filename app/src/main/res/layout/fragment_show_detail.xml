@@ -1,0 +1,111 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imgPoster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="18dp"
+            android:contentDescription="@string/box_art_placeholder"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/lblShowName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgPoster"
+            android:layout_marginLeft="21dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/imgPoster"
+            android:text="@string/show_name_placeholder"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/lblShowYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowName"
+            android:layout_below="@+id/lblShowName"
+            android:text="@string/show_year_placeholder"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/lblShowTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowYear"
+            android:layout_below="@+id/lblShowYear"
+            android:text="@string/show_time_placeholder"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/lblShowNetwork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowYear"
+            android:layout_below="@+id/lblShowTime"
+            android:text="@string/show_network_placeholder"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <TextView
+            android:id="@+id/lblShowCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowYear"
+            android:layout_below="@+id/lblShowNetwork"
+            android:text="@string/show_country_placeholder"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/lblFirstAired"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblShowTime"
+            android:layout_below="@+id/lblShowCountry"
+            android:text="@string/first_aired_placeholder"
+            android:layout_marginRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <Button
+            android:id="@+id/btnWatchList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imgPoster"
+            android:layout_below="@+id/imgPoster"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/watch_list_button_placeholder" />
+
+        <TextView
+            android:id="@+id/lblEpisodeOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btnWatchList"
+            android:layout_below="@+id/btnWatchList"
+            android:layout_marginTop="14dp"
+            android:text="@string/heading_overview"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/lblOverviewBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/lblEpisodeOverview"
+            android:layout_below="@+id/lblEpisodeOverview"
+            android:layout_marginRight="10dp"
+            android:text="@string/overview_placeholder"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+</ScrollView>

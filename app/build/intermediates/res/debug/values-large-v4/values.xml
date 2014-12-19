@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/Rajesh/AndroidStudioProjects/MyTVTracker/app/src/main/res/values-large/refs.xml -->
+    <eat-comment/>
+    <item name="activity_show_list" type="layout">@layout/activity_show_twopane</item>
+</resources>
