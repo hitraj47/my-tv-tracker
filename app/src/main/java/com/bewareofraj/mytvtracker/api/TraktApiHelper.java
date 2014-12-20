@@ -1,17 +1,24 @@
 package com.bewareofraj.mytvtracker.api;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.bewareofraj.mytvtracker.SplashActivity;
+import com.bewareofraj.mytvtracker.util.VolleyController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import com.bewareofraj.mytvtracker.SplashActivity;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 public class TraktApiHelper {
 
@@ -45,6 +52,8 @@ public class TraktApiHelper {
 	public static final String API_KEY_SHOW = "show";
 	public static final String API_KEY_EPISODE = "episode";
 	public static final String API_KEY_SCREEN = "screen";
+    
+    private static final String TAG = "trakt_api_helper";
 
 	private String mApiKey = "";
 
@@ -62,8 +71,7 @@ public class TraktApiHelper {
 	 * @throws InterruptedException
 	 * @throws JSONException
 	 */
-	public Show getShow(String id) throws InterruptedException,
-			ExecutionException, JSONException {
+	public Show getShow(Context context, String id, String requestTag, final boolean showProgressDialog) {
 		StringBuilder query = new StringBuilder();
 		query.append(API_BASE_URL);
 		query.append(API_METHOD_SHOW);
@@ -72,24 +80,58 @@ public class TraktApiHelper {
 		query.append(mApiKey);
 		query.append(id + "/");
 
-		JSONObject result = new JSONObject(new RetrieveTraktJSONTask().execute(
-				query.toString()).get());
-		
-		Show show = new Show();
-		show.setTitle(result.getString(API_KEY_TITLE));
-		show.setYear(result.getInt(API_KEY_YEAR));
-		show.setFirstAired(getDateFromUnixTimestamp(result
-				.getInt(API_KEY_FIRST_AIRED_UTC)));
-		show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
-		show.setCountry(result.getString(API_KEY_COUNTRY));
-		show.setOverview(result.getString(API_KEY_OVERVIEW));
-		show.setStatus(result.getString(API_KEY_STATUS));
-		show.setNetwork(result.getString(API_KEY_NETWORK));
-		show.setAirDay(result.getString(API_KEY_AIR_DAY));
-		show.setAirTime(result.getString(API_KEY_AIR_TIME));
-		show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
-		show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
-		show.setSeasons(getNumberOfSeasons(Integer.toString(result.getInt(API_KEY_TVDBID))));
+        final ProgressDialog pDialog = new ProgressDialog(context);
+
+        if (showProgressDialog) {
+            pDialog.setMessage("Loading...");
+            pDialog.show();
+        }
+        
+        final Show show = new Show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query.toString(), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject result) {
+                try {
+                    show.setTitle(result.getString(API_KEY_TITLE));
+                    show.setYear(result.getInt(API_KEY_YEAR));
+                    show.setFirstAired(getDateFromUnixTimestamp(result.getInt(API_KEY_FIRST_AIRED_UTC)));
+                    show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
+                    show.setCountry(result.getString(API_KEY_COUNTRY));
+                    show.setOverview(result.getString(API_KEY_OVERVIEW));
+                    show.setStatus(result.getString(API_KEY_STATUS));
+                    show.setNetwork(result.getString(API_KEY_NETWORK));
+                    show.setAirDay(result.getString(API_KEY_AIR_DAY));
+                    show.setAirTime(result.getString(API_KEY_AIR_TIME));
+                    show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
+                    show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
+                    show.setSeasons(getNumberOfSeasons(Integer.toString(result.getInt(API_KEY_TVDBID))));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (pDialog.isShowing()) {
+                        pDialog.hide(); 
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                if (pDialog.isShowing()) {
+                    // hide the progress dialog
+                    pDialog.hide();
+                }
+            }
+        });
+
+        // Adding request to request queue
+        VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
 
 		return show;
 	}
