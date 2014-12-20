@@ -56,10 +56,17 @@ public class TraktApiHelper {
     private static final String TAG = "trakt_api_helper";
 
 	private String mApiKey = "";
+    private Context mContext;
+    private boolean mShowProgressDialog = false;
 
-	public TraktApiHelper(String apiKey) {
+	public TraktApiHelper(Context context, String apiKey) {
+        this.mContext = context;
 		this.setApiKey(apiKey);
 	}
+    
+    public void showProgressDialog(boolean showProgressDialog) {
+        this.mShowProgressDialog = showProgressDialog;
+    }
 
 	/**
 	 * Get a TV show based on TVDB ID
@@ -67,29 +74,21 @@ public class TraktApiHelper {
 	 * @param id
 	 *            The TVDB ID
 	 * @return A Show object
-	 * @throws ExecutionException
-	 * @throws InterruptedException
-	 * @throws JSONException
 	 */
-	public Show getShow(Context context, String id, String requestTag, final boolean showProgressDialog) {
-		StringBuilder query = new StringBuilder();
-		query.append(API_BASE_URL);
-		query.append(API_METHOD_SHOW);
-		query.append(API_ARGUMENT_SHOW_SUMMARY);
-		query.append(API_FORMAT);
-		query.append(mApiKey);
-		query.append(id + "/");
+	public Show getShow(String id, String requestTag) {
+        
+        String url = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + mApiKey + id + "/";
 
-        final ProgressDialog pDialog = new ProgressDialog(context);
+        final ProgressDialog pDialog = new ProgressDialog(mContext);
 
-        if (showProgressDialog) {
+        if (mShowProgressDialog) {
             pDialog.setMessage("Loading...");
             pDialog.show();
         }
         
         final Show show = new Show();
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query.toString(), null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject result) {
                 try {
@@ -106,11 +105,7 @@ public class TraktApiHelper {
                     show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
                     show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
                     show.setSeasons(getNumberOfSeasons(Integer.toString(result.getInt(API_KEY_TVDBID))));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (JSONException | InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 } finally {
                     if (pDialog.isShowing()) {
@@ -137,13 +132,7 @@ public class TraktApiHelper {
 	}
 
 	public int getNumberOfSeasons(String id) throws InterruptedException, ExecutionException, JSONException {
-		StringBuilder query = new StringBuilder();
-		query.append(API_BASE_URL);
-		query.append(API_METHOD_SHOW);
-		query.append(API_ARGUMENT_SHOW_SEASONS);
-		query.append(API_FORMAT);
-		query.append(mApiKey);
-		query.append(id);
+		String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + mApiKey + id;
 
 		JSONArray result = new JSONArray(new RetrieveTraktJSONTask().execute(
 				query.toString()).get());

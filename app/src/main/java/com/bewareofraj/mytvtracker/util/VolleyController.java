@@ -10,8 +10,7 @@ import com.android.volley.toolbox.Volley;
 
 public class VolleyController extends Application {
 
-    public static final String TAG = VolleyController.class
-            .getSimpleName();
+    public static final String TAG = VolleyController.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
