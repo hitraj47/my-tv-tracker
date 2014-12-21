@@ -32,7 +32,6 @@ public class TraktApiHelper {
     public static final String API_POSTER_SIZE_SMALL = "-138";
     public static final String API_METHOD_SEARCH = "search/";
     public static final String API_ARGUMENT_SHOWS = "shows";
-    public static final String API_SEARCH_LIMIT = "10";
     public static final String API_METHOD_CALENDAR = "calendar/";
     public static final String API_ARGUMENT_SHOW_SEASON = "season";
 
@@ -53,6 +52,10 @@ public class TraktApiHelper {
     public static final String API_KEY_SHOW = "show";
     public static final String API_KEY_EPISODE = "episode";
     public static final String API_KEY_SCREEN = "screen";
+    
+    public static final String DEFAULT_LOADING_MESSAGE = "Loading...";
+    
+    private String mLoadingMessage = DEFAULT_LOADING_MESSAGE;
 
     private static final String TAG = "trakt_api_helper";
 
@@ -82,7 +85,7 @@ public class TraktApiHelper {
         final ProgressDialog pDialog = new ProgressDialog(mContext);
 
         if (mShowProgressDialog) {
-            pDialog.setMessage("Loading...");
+            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
             pDialog.show();
         }
 
@@ -99,7 +102,8 @@ public class TraktApiHelper {
             }
         };
         
-        Response.Listener responseListener = new Response.Listener<JSONObject>() {
+        Response.Listener<JSONObject> responseListener;
+        responseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject result) {
                 try {
@@ -126,7 +130,8 @@ public class TraktApiHelper {
             }
         };
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, null, responseListener, errorListener);
+        JsonObjectRequest jsonObjReq;
+        jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, null, responseListener, errorListener);
 
         // Adding request to request queue
         VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
@@ -134,23 +139,30 @@ public class TraktApiHelper {
         return show;
     }
 
-    public int getNumberOfSeasons(String id, String requestTag) {
+    public int getNumberOfSeasons(String id, String requestTag) throws JSONException {
         String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + mApiKey + id;
 
         final ProgressDialog pDialog = new ProgressDialog(mContext);
 
         if (mShowProgressDialog) {
-            pDialog.setMessage("Loading...");
+            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
             pDialog.show();
         }
-
-        int latestSeason = -1;
+        
+        // for getting the season number from the inner response listener
+        class DataReceiver {
+            public int season = -1;            
+        }
+        
+        final DataReceiver r = new DataReceiver();
 
         Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            
             @Override
             public void onResponse(JSONArray array) {
                 try {
-                    JSONObject obj = array.getJSONObject(0);
+                    JSONObject object = array.getJSONObject(0);
+                    r.season = object.getInt("season");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } finally {
@@ -172,17 +184,13 @@ public class TraktApiHelper {
         };
 
         JsonArrayRequest jsonArrayReq = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayReq, requestTag);
 
-        return latestSeason;
+        return r.season;
     }
 
     private Date getDateFromUnixTimestamp(int timestamp) {
-        Date date = new Date((long) timestamp * 1000);
-        return date;
-    }
-
-    public String getApiKey() {
-        return mApiKey;
+        return new Date((long) timestamp * 1000);
     }
 
     public void setApiKey(String mApiKey) {
@@ -191,7 +199,7 @@ public class TraktApiHelper {
 
     public ArrayList<Show> getShowSearchResults(String json) throws JSONException, InterruptedException, ExecutionException {
         JSONArray results = new JSONArray(json);
-        ArrayList<Show> resultsAsShows = new ArrayList<Show>();
+        ArrayList<Show> resultsAsShows = new ArrayList<>();
         if (results.length() > 0) {
             for (int i = 0; i < results.length(); i++) {
                 JSONObject object = results.getJSONObject(i);
@@ -215,26 +223,17 @@ public class TraktApiHelper {
         return resultsAsShows;
     }
 
-    public String searchShows(String terms, String apiSearchLimit) throws JSONException, InterruptedException, ExecutionException {
-        StringBuilder query = new StringBuilder();
-        query.append(API_BASE_URL);
-        query.append(API_METHOD_SEARCH);
-        query.append(API_ARGUMENT_SHOWS);
-        query.append(API_FORMAT);
-        query.append(mApiKey);
-        query.append("?query=");
-        query.append(terms);
-        query.append("&limit=");
-        query.append(API_SEARCH_LIMIT);
+    public String searchShows(String terms, String apiSearchLimit) {
 
-        return query.toString();
+        return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
     }
 
     /**
      * Determine if a show is currently on air
      *
-     * @param id
-     * @return
+     * @param context Application context
+     * @param id The TVDB ID
+     * @return boolean
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws JSONException
@@ -263,14 +262,8 @@ public class TraktApiHelper {
     }
 
     public String getCalendarJSONQuery() throws InterruptedException, ExecutionException {
-        StringBuilder query = new StringBuilder();
-        query.append(API_BASE_URL);
-        query.append(API_METHOD_CALENDAR);
-        query.append(API_ARGUMENT_SHOWS);
-        query.append(API_FORMAT);
-        query.append(mApiKey);
 
-        return query.toString();
+        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey;
     }
 
     public String getCalendarJSONLocal() {
@@ -279,16 +272,10 @@ public class TraktApiHelper {
     }
 
     public Episode[] getEpisodes(String tvdbid, String season) throws InterruptedException, ExecutionException, JSONException {
-        StringBuilder query = new StringBuilder();
-        query.append(API_BASE_URL);
-        query.append(API_METHOD_SHOW);
-        query.append(API_ARGUMENT_SHOW_SEASON);
-        query.append(API_FORMAT);
-        query.append(mApiKey);
-        query.append(tvdbid + "/");
-        query.append(season);
+        
+        String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + mApiKey + tvdbid + "/" + season;
 
-        String json = new RetrieveTraktJSONTask().execute(query.toString()).get();
+        String json = new RetrieveTraktJSONTask().execute(query).get();
         JSONArray resultsArray = new JSONArray(json);
 
         Episode[] episodes = new Episode[resultsArray.length()];
@@ -305,4 +292,11 @@ public class TraktApiHelper {
         return episodes;
     }
 
+    public String getLoadingMessage() {
+        return mLoadingMessage;
+    }
+
+    public void setLoadingMessage(String mLoadingMessage) {
+        this.mLoadingMessage = mLoadingMessage;
+    }
 }
