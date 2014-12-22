@@ -1,13 +1,10 @@
 package com.bewareofraj.mytvtracker.api;
 
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
+import android.content.Context;
 
 import com.bewareofraj.mytvtracker.R;
 
-import android.content.Context;
+import java.util.Date;
 
 /**
  * A Show class represents a TV show.
@@ -147,24 +144,14 @@ public class Show {
 		} else if (mFirstAiredTimestamp == 0) {
 			showTime = context.getString(R.string.show_not_started);
 		} else {
-			TraktApiHelper helper = new TraktApiHelper(apiKey);
-			try {
-				boolean currentlyOnAir = helper.isCurrentlyOnAir(context, this.mTvdbId);
-				if (currentlyOnAir) {
-					showTime = this.mAirDay + ", " + this.mAirTime;
-				} else {
-					showTime = context.getString(R.string.show_on_break);
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			TraktApiHelper helper = new TraktApiHelper(context, apiKey);
+
+            boolean currentlyOnAir = helper.isCurrentlyOnAir(this.mTvdbId, "on_air");
+            if (currentlyOnAir) {
+                showTime = this.mAirDay + ", " + this.mAirTime;
+            } else {
+                showTime = context.getString(R.string.show_on_break);
+            }
 		}
 		return showTime;
 	}
