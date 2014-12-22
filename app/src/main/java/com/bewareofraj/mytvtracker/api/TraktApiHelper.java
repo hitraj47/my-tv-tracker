@@ -196,36 +196,66 @@ public class TraktApiHelper {
     public void setApiKey(String mApiKey) {
         this.mApiKey = mApiKey + "/";
     }
+    
+    public ArrayList<Show> searchShows(String terms, int apiSearchLimit, String requestTag) {
+        final ArrayList<Show> resultsAsShows = new ArrayList<>();
 
-    public ArrayList<Show> getShowSearchResults(String json) throws JSONException, InterruptedException, ExecutionException {
-        JSONArray results = new JSONArray(json);
-        ArrayList<Show> resultsAsShows = new ArrayList<>();
-        if (results.length() > 0) {
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject object = results.getJSONObject(i);
-                Show show = new Show();
-                show.setTitle(object.getString(API_KEY_TITLE));
-                show.setYear(object.getInt(API_KEY_YEAR));
-                show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
-                show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
-                show.setCountry(object.getString(API_KEY_COUNTRY));
-                show.setOverview(object.getString(API_KEY_OVERVIEW));
-                show.setNetwork(object.getString(API_KEY_NETWORK));
-                show.setAirDay(object.getString(API_KEY_AIR_DAY));
-                show.setAirTime(object.getString(API_KEY_AIR_TIME));
-                show.setTvdbId(object.getString(API_KEY_TVDBID));
-                JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
-                show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
-                resultsAsShows.add(show);
-            }
+        final ProgressDialog pDialog = new ProgressDialog(mContext);
+
+        if (mShowProgressDialog) {
+            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
+            pDialog.show();
         }
-
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray jsonArray) {
+                if (jsonArray.length() > 0) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Show show = new Show();
+                            show.setTitle(object.getString(API_KEY_TITLE));
+                            show.setYear(object.getInt(API_KEY_YEAR));
+                            show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
+                            show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
+                            show.setCountry(object.getString(API_KEY_COUNTRY));
+                            show.setOverview(object.getString(API_KEY_OVERVIEW));
+                            show.setNetwork(object.getString(API_KEY_NETWORK));
+                            show.setAirDay(object.getString(API_KEY_AIR_DAY));
+                            show.setAirTime(object.getString(API_KEY_AIR_TIME));
+                            show.setTvdbId(object.getString(API_KEY_TVDBID));
+                            JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
+                            show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
+                            resultsAsShows.add(show);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (pDialog.isShowing()) {
+                                pDialog.hide();
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
+                if (pDialog.isShowing()) {
+                    pDialog.hide();
+                }
+            }
+        };
+        
+        String query = API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
+        
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+        
         return resultsAsShows;
-    }
-
-    public String searchShows(String terms, String apiSearchLimit) {
-
-        return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
     }
 
     /**
