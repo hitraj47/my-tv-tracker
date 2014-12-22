@@ -97,7 +97,7 @@ public class TraktApiHelper {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 if (pDialog.isShowing()) {
                     // hide the progress dialog
-                    pDialog.hide();
+                    pDialog.dismiss();
                 }
             }
         };
@@ -124,7 +124,7 @@ public class TraktApiHelper {
                     e.printStackTrace();
                 } finally {
                     if (pDialog.isShowing()) {
-                        pDialog.hide();
+                        pDialog.dismiss();
                     }
                 }
             }
@@ -167,7 +167,7 @@ public class TraktApiHelper {
                     e.printStackTrace();
                 } finally {
                     if (pDialog.isShowing()) {
-                        pDialog.hide();
+                        pDialog.dismiss();
                     }
                 }
             }
@@ -178,7 +178,7 @@ public class TraktApiHelper {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 if (pDialog.isShowing()) {
-                    pDialog.hide();
+                    pDialog.dismiss();
                 }
             }
         };
@@ -232,7 +232,7 @@ public class TraktApiHelper {
                             e.printStackTrace();
                         } finally {
                             if (pDialog.isShowing()) {
-                                pDialog.hide();
+                                pDialog.dismiss();
                             }
                         }
                     }
@@ -245,7 +245,7 @@ public class TraktApiHelper {
             public void onErrorResponse(VolleyError volleyError) {
                 VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
                 if (pDialog.isShowing()) {
-                    pDialog.hide();
+                    pDialog.dismiss();
                 }
             }
         };
@@ -261,39 +261,71 @@ public class TraktApiHelper {
     /**
      * Determine if a show is currently on air
      *
-     * @param context Application context
      * @param id The TVDB ID
      * @return boolean
      * @throws ExecutionException
      * @throws InterruptedException
      * @throws JSONException
      */
-    public boolean isCurrentlyOnAir(Context context, String id) throws JSONException, InterruptedException, ExecutionException {
-        JSONArray resultsArray;
-        if (!SplashActivity.isLocalJSONUpdated(context)) {
-            String json = new RetrieveTraktJSONTask().execute(getCalendarJSONQuery()).get();
-            SplashActivity.updatePreferences(json);
-        }
-        resultsArray = new JSONArray(getCalendarJSONLocal());
+    public boolean isCurrentlyOnAir(final String id, String requestTag) {
+        String query = API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey;
 
-        for (int i = 0; i < resultsArray.length(); i++) {
-            JSONObject calendarObject = resultsArray.getJSONObject(i);
-            JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
-            for (int j = 0; j < episodes.length(); j++) {
-                JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
-                String showId = show.getString(API_KEY_TVDBID);
-                if (id.equals(showId)) {
-                    return true;
+        final ProgressDialog pDialog = new ProgressDialog(mContext);
+
+        if (mShowProgressDialog) {
+            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
+            pDialog.show();
+        }
+        
+        class DataReceiver {
+            public boolean isOnAir = false;            
+        }
+        final DataReceiver dr = new DataReceiver();
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray resultsArray) {
+                try {
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        JSONObject calendarObject = resultsArray.getJSONObject(i);
+                        JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
+                        for (int j = 0; j < episodes.length(); j++) {
+                            JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
+                            String showId = show.getString(API_KEY_TVDBID);
+                            if (id.equals(showId)) {
+                                dr.isOnAir = true;
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (pDialog.isShowing()) {
+                        pDialog.dismiss();
+                    }
                 }
             }
-        }
+        };
 
-        return false;
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
+                if (pDialog.isShowing()) {
+                    pDialog.dismiss();
+                }
+            }
+        };
+        
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+
+        return dr.isOnAir;
     }
 
     public String getCalendarJSONQuery() throws InterruptedException, ExecutionException {
 
-        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey;
+        return
     }
 
     public String getCalendarJSONLocal() {
