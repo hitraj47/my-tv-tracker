@@ -321,24 +321,55 @@ public class TraktApiHelper {
         return dr.isOnAir;
     }
 
-    public Episode[] getEpisodes(String tvdbid, String season) throws InterruptedException, ExecutionException, JSONException {
+    public ArrayList<Episode> getEpisodes(String tvdbid, final String season, String requestTag) {
         
         String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + mApiKey + tvdbid + "/" + season;
+        final ArrayList<Episode> episodes = new ArrayList<>();
 
-        String json = new RetrieveTraktJSONTask().execute(query).get();
-        JSONArray resultsArray = new JSONArray(json);
+        final ProgressDialog pDialog = new ProgressDialog(mContext);
 
-        Episode[] episodes = new Episode[resultsArray.length()];
-        for (int i = 0; i < resultsArray.length(); i++) {
-            Episode episode = new Episode(Integer.parseInt(season));
-            JSONObject object = resultsArray.getJSONObject(i);
-            episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
-            episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
-            episode.setImageUrl(object.getString(API_KEY_SCREEN));
-            episode.setOverview(object.getString(API_KEY_OVERVIEW));
-            episode.setTitle(object.getString(API_KEY_TITLE));
-            episodes[i] = episode;
+        if (mShowProgressDialog) {
+            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
+            pDialog.show();
         }
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray resultsArray) {
+                try {
+                    for (int i = 0; i < resultsArray.length(); i++) {
+                        Episode episode = new Episode(Integer.parseInt(season));
+                        JSONObject object = resultsArray.getJSONObject(i);
+                        episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
+                        episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
+                        episode.setImageUrl(object.getString(API_KEY_SCREEN));
+                        episode.setOverview(object.getString(API_KEY_OVERVIEW));
+                        episode.setTitle(object.getString(API_KEY_TITLE));
+                        episodes.add(i, episode);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (pDialog.isShowing()) {
+                        pDialog.dismiss();
+                    }
+                }
+            }
+        };
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
+                if (pDialog.isShowing()) {
+                    pDialog.dismiss();
+                }
+            }
+        };
+        
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+
         return episodes;
     }
 
