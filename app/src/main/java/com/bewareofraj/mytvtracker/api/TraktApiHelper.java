@@ -2,7 +2,6 @@ package com.bewareofraj.mytvtracker.api;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -10,7 +9,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.bewareofraj.mytvtracker.SplashActivity;
 import com.bewareofraj.mytvtracker.util.VolleyController;
 
 import org.json.JSONArray;
@@ -321,16 +319,6 @@ public class TraktApiHelper {
         VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 
         return dr.isOnAir;
-    }
-
-    public String getCalendarJSONQuery() throws InterruptedException, ExecutionException {
-
-        return
-    }
-
-    public String getCalendarJSONLocal() {
-        SharedPreferences preferences = SplashActivity.getSharedPreferences();
-        return preferences.getString(SplashActivity.PREFS_KEY_CALENDAR_JSON, "");
     }
 
     public Episode[] getEpisodes(String tvdbid, String season) throws InterruptedException, ExecutionException, JSONException {
