@@ -137,14 +137,14 @@ public class Show {
 		return baseUrl + size + ext;
 	}
 	
-	public String determineShowTime(Context context, String apiKey) {
+	public String determineShowTime(Context context) {
 		String showTime = null;
 		if (this.mStatus.equals("Ended")) {
 			showTime = context.getString(R.string.show_ended);
 		} else if (mFirstAiredTimestamp == 0) {
 			showTime = context.getString(R.string.show_not_started);
 		} else {
-			TraktApiHelper helper = new TraktApiHelper(context, apiKey);
+			TraktApiHelper helper = new TraktApiHelper(context, context.getResources().getString(R.string.trakt_api_key));
 
             boolean currentlyOnAir = helper.isCurrentlyOnAir(this.mTvdbId, "on_air");
             if (currentlyOnAir) {

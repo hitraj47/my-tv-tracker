@@ -73,7 +73,7 @@ public class ShowDetailFragment extends Fragment {
 			lblShowYear.setText(year);
 			
 			TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-			lblShowTime.setText(show.determineShowTime(getActivity(), getResources().getString(R.string.trakt_api_key)));
+			lblShowTime.setText(show.determineShowTime(getActivity()));
 			
 			TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
 			lblShowNetwork.setText(show.getNetwork());

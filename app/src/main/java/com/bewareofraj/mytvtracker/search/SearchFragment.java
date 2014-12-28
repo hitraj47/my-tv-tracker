@@ -95,22 +95,10 @@ public class SearchFragment extends Fragment {
 	}
 
 	private void search(String terms, int limit) {
-		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
+		TraktApiHelper helper = new TraktApiHelper(getActivity(), getResources().getString(
 				R.string.trakt_api_key));
-		String query;
-		try {
-			query = helper.searchShows(terms, Integer.toString(limit));
-			new SearchAsync().execute(query);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ExecutionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		ArrayList<Show> results = helper.searchShows(terms, limit, "search");
+        createResultItemsFromShows(results);
 	}
 
 	private void createResultItemsFromShows(ArrayList<Show> results) {
