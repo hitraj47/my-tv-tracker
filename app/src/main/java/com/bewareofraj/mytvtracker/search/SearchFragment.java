@@ -1,18 +1,6 @@
 package com.bewareofraj.mytvtracker.search;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,18 +15,22 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.api.RetrieveTraktJSONTask;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class SearchFragment extends Fragment {
 
-	private List<SearchResultItem> mResultList = new ArrayList<SearchResultItem>();
+	private List<SearchResultItem> mResultList = new ArrayList<>();
 	private ListView mListView;
-	private SearchResultListAdapter mAdapter;
 
-	@Override
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
@@ -121,54 +113,10 @@ public class SearchFragment extends Fragment {
 						network));
 
 				// set adapter
-				mAdapter = new SearchResultListAdapter(getActivity(),
-						mResultList);
+                SearchResultListAdapter mAdapter = new SearchResultListAdapter(getActivity(),
+                        mResultList);
 				mListView.setAdapter(mAdapter);
 				mAdapter.notifyDataSetChanged();
-			}
-		}
-	}
-
-	private class SearchAsync extends RetrieveTraktJSONTask {
-		private ProgressDialog mDialog;
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			mDialog = new ProgressDialog(getActivity());
-			mDialog.setMessage(getString(R.string.search_please_wait));
-			mDialog.setCancelable(true);
-			mDialog.setOnCancelListener(new OnCancelListener() {
-				
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					cancel(true);
-					mDialog.dismiss();
-				}
-			});
-			mDialog.show();
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			TraktApiHelper helper = new TraktApiHelper(
-					getString(R.string.trakt_api_key));
-			if (mDialog.isShowing()) {
-				mDialog.dismiss();
-			}
-			try {
-				createResultItemsFromShows(helper.getShowSearchResults(result));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 	}
