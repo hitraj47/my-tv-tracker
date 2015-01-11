@@ -1,12 +1,5 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +17,11 @@ import com.bewareofraj.mytvtracker.api.Episode;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class SeasonEpisodeFragment extends Fragment {
 	
 	private int mSeason;
@@ -34,7 +32,7 @@ public class SeasonEpisodeFragment extends Fragment {
 	private TextView mLblFirstAired;
 	private TextView mLblOverview;
 	
-	private Episode[] mEpisodes;
+	private ArrayList<Episode> mEpisodes;
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -53,28 +51,17 @@ public class SeasonEpisodeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_season_episode,
 				container, false);
-		TraktApiHelper helper = new TraktApiHelper(getString(R.string.trakt_api_key));
-		try {
-			mEpisodes = helper.getEpisodes(ShowListActivity.getShowId(), Integer.toString(mSeason));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		TraktApiHelper helper = new TraktApiHelper(getActivity(), getString(R.string.trakt_api_key));
+		mEpisodes = helper.getEpisodes(ShowListActivity.getShowId(), Integer.toString(mSeason), "get_episodes");
+
 		// set action bar title
 		getActivity().setTitle("Season " + mSeason);
 		
 		// episode list spinner
 		mSpnEpisodes = (Spinner) rootView.findViewById(R.id.spnEpisode);
-		String[] spinnerItems = new String[mEpisodes.length];
-		for (int i = 0; i < mEpisodes.length; i++) {
-			spinnerItems[i] = "Episode " + mEpisodes[i].getEpisodeNumber();
+		String[] spinnerItems = new String[mEpisodes.size()];
+		for (int i = 0; i < mEpisodes.size(); i++) {
+			spinnerItems[i] = "Episode " + mEpisodes.get(i).getEpisodeNumber();
 		}
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, spinnerItems);
 		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,7 +93,7 @@ public class SeasonEpisodeFragment extends Fragment {
 	}
 
 	protected void displayEpisode(int position) {
-		Episode episode = mEpisodes[position];
+		Episode episode = mEpisodes.get(position);
 		
 		mLblEpisodeTitle.setText("Episode " + episode.getEpisodeNumber() + ": " + episode.getTitle());
 		

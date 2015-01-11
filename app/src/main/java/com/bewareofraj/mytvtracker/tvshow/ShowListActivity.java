@@ -1,9 +1,5 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +8,8 @@ import android.view.MenuItem;
 
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+
+import org.json.JSONException;
 
 /**
  * An activity representing a list of Shows. This activity has different
@@ -59,22 +57,15 @@ public class ShowListActivity extends Activity implements
 		// Show TV show information as default/first screen
 		Intent intent = getIntent();
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
-		TraktApiHelper helper = new TraktApiHelper(getResources().getString(
+		TraktApiHelper helper = new TraktApiHelper(this, getResources().getString(
 				R.string.trakt_api_key));
-		try {
-			mNumberOfSeasons = helper.getNumberOfSeasons(mShowId);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            mNumberOfSeasons = helper.getNumberOfSeasons(mShowId, "get_num_seasons");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-		setContentView(R.layout.activity_show_list);
+        setContentView(R.layout.activity_show_list);
 		
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
