@@ -1,16 +1,5 @@
 package com.bewareofraj.mytvtracker.api;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.bewareofraj.mytvtracker.util.VolleyController;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,208 +39,81 @@ public class TraktApiHelper {
     public static final String API_KEY_SHOW = "show";
     public static final String API_KEY_EPISODE = "episode";
     public static final String API_KEY_SCREEN = "screen";
+
+    /**
+     * Private constructor, this is a utility class
+     * * *
+     */
+    private TraktApiHelper() {}
     
-    public static final String DEFAULT_LOADING_MESSAGE = "Loading...";
-    
-    private String mLoadingMessage = DEFAULT_LOADING_MESSAGE;
-
-    private static final String TAG = "trakt_api_helper";
-
-    private String mApiKey = "";
-    private Context mContext;
-    private boolean mShowProgressDialog = false;
-
-    public TraktApiHelper(Context context, String apiKey) {
-        this.mContext = context;
-        this.setApiKey(apiKey);
-    }
-
-    public void showProgressDialog(boolean showProgressDialog) {
-        this.mShowProgressDialog = showProgressDialog;
-    }
-
     /**
      * Get a TV show based on TVDB ID
      *
      * @param id The TVDB ID
      * @return A Show object
      */
-    public Show getShow(String id, String requestTag) {
-
-        String url = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + mApiKey + id + "/";
-
-        final ProgressDialog pDialog = new ProgressDialog(mContext);
-
-        if (mShowProgressDialog) {
-            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
-            pDialog.show();
-        }
-
-        final Show show = new Show();
-        
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                if (pDialog.isShowing()) {
-                    // hide the progress dialog
-                    pDialog.dismiss();
-                }
-            }
-        };
-        
-        Response.Listener<JSONObject> responseListener;
-        responseListener = new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject result) {
-                try {
-                    show.setTitle(result.getString(API_KEY_TITLE));
-                    show.setYear(result.getInt(API_KEY_YEAR));
-                    show.setFirstAired(getDateFromUnixTimestamp(result.getInt(API_KEY_FIRST_AIRED_UTC)));
-                    show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
-                    show.setCountry(result.getString(API_KEY_COUNTRY));
-                    show.setOverview(result.getString(API_KEY_OVERVIEW));
-                    show.setStatus(result.getString(API_KEY_STATUS));
-                    show.setNetwork(result.getString(API_KEY_NETWORK));
-                    show.setAirDay(result.getString(API_KEY_AIR_DAY));
-                    show.setAirTime(result.getString(API_KEY_AIR_TIME));
-                    show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
-                    show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
-                    show.setSeasons(getNumberOfSeasons(show.getTvdbId(), "num_seasons"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (pDialog.isShowing()) {
-                        pDialog.dismiss();
-                    }
-                }
-            }
-        };
-
-        JsonObjectRequest jsonObjReq;
-        jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, null, responseListener, errorListener);
-
-        // Adding request to request queue
-        VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
+    public static String getShowQuery(String id, String apiKey) {
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + apiKey + id + "/";
+    }
+    
+    public static Show getShowObjectFromResult(JSONObject result) throws JSONException {
+        Show show = new Show();
+        show.setTitle(result.getString(API_KEY_TITLE));
+        show.setYear(result.getInt(API_KEY_YEAR));
+        show.setFirstAired(getDateFromUnixTimestamp(result.getInt(API_KEY_FIRST_AIRED_UTC)));
+        show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
+        show.setCountry(result.getString(API_KEY_COUNTRY));
+        show.setOverview(result.getString(API_KEY_OVERVIEW));
+        show.setStatus(result.getString(API_KEY_STATUS));
+        show.setNetwork(result.getString(API_KEY_NETWORK));
+        show.setAirDay(result.getString(API_KEY_AIR_DAY));
+        show.setAirTime(result.getString(API_KEY_AIR_TIME));
+        show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
+        show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
+        //TODO: show.setSeasons(getNumberOfSeasons(show.getTvdbId(), "num_seasons"));
 
         return show;
     }
 
-    public int getNumberOfSeasons(String id, String requestTag) throws JSONException {
-        String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + mApiKey + id;
-
-        final ProgressDialog pDialog = new ProgressDialog(mContext);
-
-        if (mShowProgressDialog) {
-            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
-            pDialog.show();
-        }
-        
-        // for getting the season number from the inner response listener
-        class DataReceiver {
-            public int season = -1;            
-        }
-        
-        final DataReceiver r = new DataReceiver();
-
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-            
-            @Override
-            public void onResponse(JSONArray array) {
-                try {
-                    JSONObject object = array.getJSONObject(0);
-                    r.season = object.getInt("season");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (pDialog.isShowing()) {
-                        pDialog.dismiss();
-                    }
-                }
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                if (pDialog.isShowing()) {
-                    pDialog.dismiss();
-                }
-            }
-        };
-
-        JsonArrayRequest jsonArrayReq = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayReq, requestTag);
-
-        return r.season;
-    }
-
-    private Date getDateFromUnixTimestamp(int timestamp) {
-        return new Date((long) timestamp * 1000);
-    }
-
-    public void setApiKey(String mApiKey) {
-        this.mApiKey = mApiKey + "/";
+    public static String getNumberOfSeasonsQuery(String id, String apiKey, String requestTag) throws JSONException {
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + apiKey + id;
     }
     
-    public ArrayList<Show> searchShows(String terms, int apiSearchLimit, String requestTag) {
-        final ArrayList<Show> resultsAsShows = new ArrayList<>();
+    public static int getNumberOfSeasonsFromResult(JSONArray result) throws JSONException {
+        JSONObject object = result.getJSONObject(0);
+        return object.getInt("season");
+    }
 
-        final ProgressDialog pDialog = new ProgressDialog(mContext);
-
-        if (mShowProgressDialog) {
-            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
-            pDialog.show();
+    private static Date getDateFromUnixTimestamp(int timestamp) {
+        return new Date((long) timestamp * 1000);
+    }
+    
+    public static String getSearchQuery(String terms, int apiSearchLimit, String apiKey, String requestTag) {
+       return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
+    }
+    
+    public static ArrayList<Show> getSearchResults(JSONArray results) throws JSONException {
+        ArrayList<Show> resultsAsShows = new ArrayList<Show>();
+        
+        if (results.length() > 0) {
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject object = results.getJSONObject(i);
+                Show show = new Show();
+                show.setTitle(object.getString(API_KEY_TITLE));
+                show.setYear(object.getInt(API_KEY_YEAR));
+                show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
+                show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
+                show.setCountry(object.getString(API_KEY_COUNTRY));
+                show.setOverview(object.getString(API_KEY_OVERVIEW));
+                show.setNetwork(object.getString(API_KEY_NETWORK));
+                show.setAirDay(object.getString(API_KEY_AIR_DAY));
+                show.setAirTime(object.getString(API_KEY_AIR_TIME));
+                show.setTvdbId(object.getString(API_KEY_TVDBID));
+                JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
+                show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
+                resultsAsShows.add(show);
+            }
         }
-        
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray jsonArray) {
-                if (jsonArray.length() > 0) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        try {
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            Show show = new Show();
-                            show.setTitle(object.getString(API_KEY_TITLE));
-                            show.setYear(object.getInt(API_KEY_YEAR));
-                            show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
-                            show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
-                            show.setCountry(object.getString(API_KEY_COUNTRY));
-                            show.setOverview(object.getString(API_KEY_OVERVIEW));
-                            show.setNetwork(object.getString(API_KEY_NETWORK));
-                            show.setAirDay(object.getString(API_KEY_AIR_DAY));
-                            show.setAirTime(object.getString(API_KEY_AIR_TIME));
-                            show.setTvdbId(object.getString(API_KEY_TVDBID));
-                            JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
-                            show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
-                            resultsAsShows.add(show);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (pDialog.isShowing()) {
-                                pDialog.dismiss();
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
-                if (pDialog.isShowing()) {
-                    pDialog.dismiss();
-                }
-            }
-        };
-        
-        String query = API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
-        
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
         
         return resultsAsShows;
     }
@@ -265,119 +127,42 @@ public class TraktApiHelper {
      * @throws InterruptedException
      * @throws JSONException
      */
-    public boolean isCurrentlyOnAir(final String id, String requestTag) {
-        String query = API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + mApiKey;
-
-        final ProgressDialog pDialog = new ProgressDialog(mContext);
-
-        if (mShowProgressDialog) {
-            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
-            pDialog.show();
-        }
-        
-        class DataReceiver {
-            public boolean isOnAir = false;            
-        }
-        final DataReceiver dr = new DataReceiver();
-        
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray resultsArray) {
-                try {
-                    for (int i = 0; i < resultsArray.length(); i++) {
-                        JSONObject calendarObject = resultsArray.getJSONObject(i);
-                        JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
-                        for (int j = 0; j < episodes.length(); j++) {
-                            JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
-                            String showId = show.getString(API_KEY_TVDBID);
-                            if (id.equals(showId)) {
-                                dr.isOnAir = true;
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (pDialog.isShowing()) {
-                        pDialog.dismiss();
-                    }
+    public static String getCurrentlyOnAirQuery(final String id, String apiKey, String requestTag) {
+        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + apiKey;
+    }
+    
+    public static boolean getCurrentlyOnAirResult(JSONArray result, String id) throws JSONException {
+        boolean currentlyOnAir = false;
+        for (int i = 0; i < result.length(); i++) {
+            JSONObject calendarObject = result.getJSONObject(i);
+            JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
+            for (int j = 0; j < episodes.length(); j++) {
+                JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
+                String showId = show.getString(API_KEY_TVDBID);
+                if (id.equals(showId)) {
+                    currentlyOnAir = true;
                 }
             }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
-                if (pDialog.isShowing()) {
-                    pDialog.dismiss();
-                }
-            }
-        };
-        
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
-
-        return dr.isOnAir;
+        }
+        return currentlyOnAir;
     }
 
-    public ArrayList<Episode> getEpisodes(String tvdbid, final String season, String requestTag) {
-        
-        String query = API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + mApiKey + tvdbid + "/" + season;
-        final ArrayList<Episode> episodes = new ArrayList<>();
-
-        final ProgressDialog pDialog = new ProgressDialog(mContext);
-
-        if (mShowProgressDialog) {
-            pDialog.setMessage(DEFAULT_LOADING_MESSAGE);
-            pDialog.show();
+    public static String getEpisodesQuery(String tvdbid, String season, String apiKey, String requestTag) {
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + apiKey + tvdbid + "/" + season;
+    }
+    
+    public static ArrayList<Episode> getEpisodesResult(JSONArray resultsArray, String season) throws JSONException {
+        ArrayList<Episode> episodes = new ArrayList<>();
+        for (int i = 0; i < resultsArray.length(); i++) {
+            Episode episode = new Episode(Integer.parseInt(season));
+            JSONObject object = resultsArray.getJSONObject(i);
+            episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
+            episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
+            episode.setImageUrl(object.getString(API_KEY_SCREEN));
+            episode.setOverview(object.getString(API_KEY_OVERVIEW));
+            episode.setTitle(object.getString(API_KEY_TITLE));
+            episodes.add(i, episode);
         }
-        
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray resultsArray) {
-                try {
-                    for (int i = 0; i < resultsArray.length(); i++) {
-                        Episode episode = new Episode(Integer.parseInt(season));
-                        JSONObject object = resultsArray.getJSONObject(i);
-                        episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
-                        episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
-                        episode.setImageUrl(object.getString(API_KEY_SCREEN));
-                        episode.setOverview(object.getString(API_KEY_OVERVIEW));
-                        episode.setTitle(object.getString(API_KEY_TITLE));
-                        episodes.add(i, episode);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (pDialog.isShowing()) {
-                        pDialog.dismiss();
-                    }
-                }
-            }
-        };
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(TAG, "Error: " + volleyError.getMessage());
-                if (pDialog.isShowing()) {
-                    pDialog.dismiss();
-                }
-            }
-        };
-        
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
-
         return episodes;
-    }
-
-    public String getLoadingMessage() {
-        return mLoadingMessage;
-    }
-
-    public void setLoadingMessage(String mLoadingMessage) {
-        this.mLoadingMessage = mLoadingMessage;
     }
 }

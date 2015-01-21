@@ -2,7 +2,15 @@ package com.bewareofraj.mytvtracker.api;
 
 import android.content.Context;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.util.VolleyController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.Date;
 
@@ -26,6 +34,7 @@ public class Show {
 	private String mPosterUrl;
 	private int mSeasons;
 	private int mFirstAiredTimestamp;
+    private String mShowTime;
 	
 	public Show() {
 		
@@ -137,24 +146,47 @@ public class Show {
 		return baseUrl + size + ext;
 	}
 	
-	public String determineShowTime(Context context) {
-		String showTime = null;
-		if (this.mStatus.equals("Ended")) {
-			showTime = context.getString(R.string.show_ended);
+	public void determineShowTime(final Context context) {
+		if (mStatus.equals("Ended")) {
+			mShowTime = context.getString(R.string.show_ended);
 		} else if (mFirstAiredTimestamp == 0) {
-			showTime = context.getString(R.string.show_not_started);
+			mShowTime = context.getString(R.string.show_not_started);
 		} else {
-			TraktApiHelper helper = new TraktApiHelper(context, context.getResources().getString(R.string.trakt_api_key));
+            final String requestTag = "on_air";
+			String query = TraktApiHelper.getCurrentlyOnAirQuery(mTvdbId, context.getString(R.string.trakt_api_key), requestTag);
+            
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+                }
+            };
+            
+            Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    try {
+                        boolean currentlyOnAir = TraktApiHelper.getCurrentlyOnAirResult(jsonArray, mTvdbId);
+                        if (currentlyOnAir) {
+                            mShowTime = mAirDay + ", " + mAirTime;
+                        } else {
+                            mShowTime = context.getString(R.string.show_on_break);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
 
-            boolean currentlyOnAir = helper.isCurrentlyOnAir(this.mTvdbId, "on_air");
-            if (currentlyOnAir) {
-                showTime = this.mAirDay + ", " + this.mAirTime;
-            } else {
-                showTime = context.getString(R.string.show_on_break);
-            }
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+            VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 		}
-		return showTime;
 	}
+    
+    public String getShowTime() {
+        return mShowTime;
+        
+    }
 
 	public int getFirstAiredTimeStamp() {
 		return mFirstAiredTimestamp;

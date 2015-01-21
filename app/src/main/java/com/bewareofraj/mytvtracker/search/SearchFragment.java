@@ -29,6 +29,9 @@ public class SearchFragment extends Fragment {
 
 	private List<SearchResultItem> mResultList = new ArrayList<>();
 	private ListView mListView;
+    
+    private EditText mTxtSearch;
+    private Button mBtnSearch;
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,14 +65,14 @@ public class SearchFragment extends Fragment {
 	}
 
 	private void initSearchUi(View inflatedView) {
-		final EditText txtSearch = (EditText) inflatedView
+		mTxtSearch = (EditText) inflatedView
 				.findViewById(R.id.txtSearch);
-		Button btnSearch = (Button) inflatedView.findViewById(R.id.btnSearch);
-		btnSearch.setOnClickListener(new OnClickListener() {
+		mBtnSearch = (Button) inflatedView.findViewById(R.id.btnSearch);
+        mBtnSearch.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				String searchTerms = txtSearch.getText().toString();
+				String searchTerms = mTxtSearch.getText().toString();
 				if (searchTerms.equals("")) {
 					Toast.makeText(getActivity(),
 							getString(R.string.search_field_empty),
