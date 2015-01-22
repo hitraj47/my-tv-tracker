@@ -14,10 +14,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
+import com.bewareofraj.mytvtracker.util.VolleyController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -90,10 +98,32 @@ public class SearchFragment extends Fragment {
 	}
 
 	private void search(String terms, int limit) {
-		TraktApiHelper helper = new TraktApiHelper(getActivity(), getResources().getString(
-				R.string.trakt_api_key));
-		ArrayList<Show> results = helper.searchShows(terms, limit, "search");
-        createResultItemsFromShows(results);
+        final String requestTag = "search";
+		String query = TraktApiHelper.getSearchQuery(terms, limit, getString(R.string.trakt_api_key), requestTag);
+        
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray jsonArray) {
+                try {
+                    ArrayList<Show> results = TraktApiHelper.getSearchResults(jsonArray);
+                    createResultItemsFromShows(results);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+        
 	}
 
 	private void createResultItemsFromShows(ArrayList<Show> results) {
