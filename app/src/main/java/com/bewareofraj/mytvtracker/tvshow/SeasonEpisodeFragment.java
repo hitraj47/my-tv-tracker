@@ -12,10 +12,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Episode;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
+import com.bewareofraj.mytvtracker.util.VolleyController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -51,8 +59,30 @@ public class SeasonEpisodeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_season_episode,
 				container, false);
-		TraktApiHelper helper = new TraktApiHelper(getActivity(), getString(R.string.trakt_api_key));
-		mEpisodes = helper.getEpisodes(ShowListActivity.getShowId(), Integer.toString(mSeason), "get_episodes");
+        
+		final String requestTag = "get_episodes";
+        String query = TraktApiHelper.getEpisodesQuery(ShowListActivity.getShowId(), Integer.toString(mSeason), getString(R.string.trakt_api_key), requestTag);
+        
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray result) {
+                try {
+                    mEpisodes = TraktApiHelper.getEpisodesResult(result, Integer.toString(mSeason));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 
 		// set action bar title
 		getActivity().setTitle("Season " + mSeason);

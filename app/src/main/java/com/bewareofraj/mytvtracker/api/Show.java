@@ -185,7 +185,6 @@ public class Show {
     
     public String getShowTime() {
         return mShowTime;
-        
     }
 
 	public int getFirstAiredTimeStamp() {

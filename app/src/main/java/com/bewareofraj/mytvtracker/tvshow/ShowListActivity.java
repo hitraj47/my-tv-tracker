@@ -6,9 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.util.VolleyController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
@@ -57,13 +63,30 @@ public class ShowListActivity extends Activity implements
 		// Show TV show information as default/first screen
 		Intent intent = getIntent();
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
-		TraktApiHelper helper = new TraktApiHelper(this, getResources().getString(
-				R.string.trakt_api_key));
-        try {
-            mNumberOfSeasons = helper.getNumberOfSeasons(mShowId, "get_num_seasons");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        final String tag = "get_seasons";
+        String query = TraktApiHelper.getNumberOfSeasonsQuery(mShowId, getString(R.string.trakt_api_key), tag);
+        
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(tag, "Error: " + volleyError.getMessage());
+            }
+        };
+        
+        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray jsonArray) {
+                try {
+                    mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, tag);
 
         setContentView(R.layout.activity_show_list);
 		

@@ -1,54 +1,58 @@
 package com.bewareofraj.mytvtracker;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.bewareofraj.mytvtracker.api.Show;
+import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.util.VolleyController;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SplashActivity extends Activity {
-    
+
     private static final String TAG = "splash_activity";
+    
+    private Show mShow;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-        // Tag used to cancel the request
-        String tag_json_obj = "json_obj_req";
+        final String requestTag = "splash_activity";
+        String query = TraktApiHelper.getShowQuery("258823", getString(R.string.trakt_api_key));
 
-        String url = "http://api.trakt.tv/show/summary.json/c43a958fd3fb0ef52e35e7d4cd0047e4/258823/";
-
-        final ProgressDialog pDialog = new ProgressDialog(this);
-        pDialog.setMessage("Loading...");
-        pDialog.show();
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, response.toString());
-                pDialog.hide();
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
-                // hide the progress dialog
-                pDialog.hide();
-            }
-        });
+        };
 
-        // Adding request to request queue
-        VolleyController.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    mShow = TraktApiHelper.getShowObjectFromResult(jsonObject);
+                    displayTitle(mShow.getTitle());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        VolleyController.getInstance().getRequestQueue().getCache().clear();
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
+
 
         /*
         Handler handler;
@@ -65,5 +69,10 @@ public class SplashActivity extends Activity {
         }, 1000);*/
 
 	}
+
+    private void displayTitle(String title) {
+        TextView v = (TextView) findViewById(R.id.lblLoading);
+        v.setText(title);
+    }
 
 }

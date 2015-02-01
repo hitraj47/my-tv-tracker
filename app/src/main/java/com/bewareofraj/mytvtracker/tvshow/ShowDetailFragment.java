@@ -15,11 +15,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,12 +55,40 @@ public class ShowDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_show_detail,
+		final View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
 
-		TraktApiHelper helper = new TraktApiHelper(getActivity(), getResources().getString(R.string.trakt_api_key));
-		final Show show = helper.getShow(ShowListActivity.getShowId(), "get_show");
+        final String requestTag = "get_show";
+        String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId(), getString(R.string.trakt_api_key));
+        
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+        
+        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    Show show = TraktApiHelper.getShowObjectFromResult(jsonObject);
+                    populateUi(show, rootView);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        
+        //TODO: Make volley request
 			
+        // set action bar title
+		getActivity().setTitle("Summary");
+		
+		return rootView;
+	}
+
+    private void populateUi(final Show show, View rootView) {
         ImageView imgPoster = (ImageView) rootView.findViewById(R.id.imgPoster);
         ImageLoader imgLoader = new ImageLoader(getActivity(), determineBestImageWidth());
         int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
@@ -112,14 +146,9 @@ public class ShowDetailFragment extends Fragment {
 
         TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
         lblOverviewBody.setText(show.getOverview());
-		
-		// set action bar title
-		getActivity().setTitle("Summary");
-		
-		return rootView;
-	}
+    }
 
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private int determineBestImageWidth() {
 		Display display = getActivity().getWindowManager().getDefaultDisplay();

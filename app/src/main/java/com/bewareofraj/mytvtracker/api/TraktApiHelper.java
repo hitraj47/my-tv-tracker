@@ -53,7 +53,7 @@ public class TraktApiHelper {
      * @return A Show object
      */
     public static String getShowQuery(String id, String apiKey) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + apiKey + id + "/";
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + apiKey + "/" + id + "/";
     }
     
     public static Show getShowObjectFromResult(JSONObject result) throws JSONException {
@@ -75,7 +75,7 @@ public class TraktApiHelper {
         return show;
     }
 
-    public static String getNumberOfSeasonsQuery(String id, String apiKey, String requestTag) throws JSONException {
+    public static String getNumberOfSeasonsQuery(String id, String apiKey, String requestTag) {
         return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + apiKey + id;
     }
     
