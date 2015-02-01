@@ -4,15 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.TextView;
-
-import com.bewareofraj.mytvtracker.api.Show;
 
 public class SplashActivity extends Activity {
-
-    private static final String TAG = "splash_activity";
-    
-    private Show mShow;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +26,5 @@ public class SplashActivity extends Activity {
         }, 1000);
 
 	}
-
-    private void displayTitle(String title) {
-        TextView v = (TextView) findViewById(R.id.lblLoading);
-        v.setText(title);
-    }
 
 }

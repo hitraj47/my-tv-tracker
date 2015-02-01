@@ -100,7 +100,13 @@ public class TraktApiHelper {
                 JSONObject object = results.getJSONObject(i);
                 Show show = new Show();
                 show.setTitle(object.getString(API_KEY_TITLE));
-                show.setYear(object.getInt(API_KEY_YEAR));
+                
+                // sometimes the year is 'null'
+                if (!object.isNull(API_KEY_YEAR)) {
+                    show.setYear(object.getInt(API_KEY_YEAR));
+                } else {
+                    show.setYear(0);
+                }
                 show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
                 show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
                 show.setCountry(object.getString(API_KEY_COUNTRY));
