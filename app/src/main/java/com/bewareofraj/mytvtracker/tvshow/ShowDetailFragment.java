@@ -15,14 +15,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
+import com.bewareofraj.mytvtracker.util.VolleyController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,8 +82,9 @@ public class ShowDetailFragment extends Fragment {
                 }
             }
         };
-        
-        //TODO: Make volley request
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
+        VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
 			
         // set action bar title
 		getActivity().setTitle("Summary");

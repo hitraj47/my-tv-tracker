@@ -76,7 +76,7 @@ public class TraktApiHelper {
     }
 
     public static String getNumberOfSeasonsQuery(String id, String apiKey, String requestTag) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + apiKey + id;
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + apiKey + "/" + id;
     }
     
     public static int getNumberOfSeasonsFromResult(JSONArray result) throws JSONException {
@@ -89,7 +89,7 @@ public class TraktApiHelper {
     }
     
     public static String getSearchQuery(String terms, int apiSearchLimit, String apiKey, String requestTag) {
-       return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "?query=" + terms + "&limit=" + apiSearchLimit;
+       return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "/" + "?query=" + terms + "&limit=" + apiSearchLimit;
     }
     
     public static ArrayList<Show> getSearchResults(JSONArray results) throws JSONException {
@@ -148,7 +148,7 @@ public class TraktApiHelper {
     }
 
     public static String getEpisodesQuery(String tvdbid, String season, String apiKey, String requestTag) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + apiKey + tvdbid + "/" + season;
+        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + apiKey + "/" + tvdbid + "/" + season;
     }
     
     public static ArrayList<Episode> getEpisodesResult(JSONArray resultsArray, String season) throws JSONException {
