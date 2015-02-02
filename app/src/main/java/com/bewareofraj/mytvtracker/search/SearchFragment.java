@@ -137,8 +137,8 @@ public class SearchFragment extends Fragment {
 				Show show = it.next();
 				String title = show.getTitle();
 				String id = show.getTvdbId();
-				String image = show
-						.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
+				//String image = show.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
+                String image = show.getPosterUrl();
 				String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer
 						.toString(show.getYear());
 				String network = show.getNetwork();

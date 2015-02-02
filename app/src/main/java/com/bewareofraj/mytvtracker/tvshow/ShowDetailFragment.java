@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,12 +18,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
-import com.bewareofraj.mytvtracker.images.ImageLoader;
 import com.bewareofraj.mytvtracker.util.VolleyController;
 
 import org.json.JSONException;
@@ -93,10 +93,9 @@ public class ShowDetailFragment extends Fragment {
 	}
 
     private void populateUi(final Show show, View rootView) {
-        ImageView imgPoster = (ImageView) rootView.findViewById(R.id.imgPoster);
-        ImageLoader imgLoader = new ImageLoader(getActivity(), determineBestImageWidth());
-        int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
-        imgLoader.DisplayImage(show.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_MEDIUM), loadingImage, imgPoster);
+        ImageLoader imageLoader = VolleyController.getInstance().getImageLoader();
+        NetworkImageView imgPoster = (NetworkImageView) rootView.findViewById(R.id.imgPoster);
+        imgPoster.setImageUrl(show.getPosterUrl(), imageLoader);
 
         TextView lblShowName = (TextView) rootView.findViewById(R.id.lblShowName);
         lblShowName.setText(show.getTitle());
