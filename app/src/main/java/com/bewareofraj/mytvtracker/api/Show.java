@@ -12,6 +12,7 @@ import com.bewareofraj.mytvtracker.util.VolleyController;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Date;
  * @author Rajesh
  *
  */
-public class Show {
+public class Show implements Serializable {
 	
 	private String mTitle;
 	private int mYear;

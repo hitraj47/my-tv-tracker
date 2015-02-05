@@ -42,6 +42,7 @@ import java.util.Locale;
 public class ShowDetailFragment extends Fragment {
 	
 	private boolean mIsOnWatchList;
+    private Show mShow;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,37 +61,48 @@ public class ShowDetailFragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
+        
+        if ( (savedInstanceState != null) && savedInstanceState.getSerializable("show") != null) {
+            mShow = (Show) savedInstanceState.getSerializable("show");
+            populateUi(mShow, rootView);
+        } else {
+            final String requestTag = "get_show";
+            String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId(), getString(R.string.trakt_api_key));
 
-        final String requestTag = "get_show";
-        String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId(), getString(R.string.trakt_api_key));
-        
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
-            }
-        };
-        
-        Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject jsonObject) {
-                try {
-                    Show show = TraktApiHelper.getShowObjectFromResult(jsonObject);
-                    populateUi(show, rootView);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
                 }
-            }
-        };
+            };
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
-			
+            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject jsonObject) {
+                    try {
+                        mShow = TraktApiHelper.getShowObjectFromResult(jsonObject);
+                        populateUi(mShow, rootView);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
+            VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
+        }
+
         // set action bar title
 		getActivity().setTitle("Summary");
 		
 		return rootView;
 	}
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("show", mShow);
+    }
 
     private void populateUi(final Show show, View rootView) {
         ImageLoader imageLoader = VolleyController.getInstance().getImageLoader();
