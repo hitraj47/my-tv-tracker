@@ -79,6 +79,7 @@ public class ShowListActivity extends Activity implements
             public void onResponse(JSONArray jsonArray) {
                 try {
                     mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(jsonArray);
+                    displayListLayout();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -87,27 +88,30 @@ public class ShowListActivity extends Activity implements
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
         VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, tag);
-
-        setContentView(R.layout.activity_show_list);
-		
+        
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		if (findViewById(R.id.show_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
-
-			// In two-pane mode, list items should be given the
-			// 'activated' state when touched.
-			((ShowListFragment) getFragmentManager().findFragmentById(
-					R.id.show_list)).setActivateOnItemClick(true);
-		}
+		
 	}
 
-	public static String getShowId() {
+    private void displayListLayout() {
+        if (findViewById(R.id.show_detail_container) != null) {
+            // The detail container view will be present only in the
+            // large-screen layouts (res/values-large and
+            // res/values-sw600dp). If this view is present, then the
+            // activity should be in two-pane mode.
+            mTwoPane = true;
+
+            // In two-pane mode, list items should be given the
+            // 'activated' state when touched.
+            ((ShowListFragment) getFragmentManager().findFragmentById(
+                    R.id.show_list)).setActivateOnItemClick(true);
+        }
+        setContentView(R.layout.activity_show_list);
+    }
+
+    public static String getShowId() {
 		return mShowId;
 	}
 

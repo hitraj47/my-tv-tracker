@@ -80,8 +80,7 @@ public class TraktApiHelper {
     }
     
     public static int getNumberOfSeasonsFromResult(JSONArray result) throws JSONException {
-        JSONObject object = result.getJSONObject(0);
-        return object.getInt("season");
+        return result.length()-1;
     }
 
     private static Date getDateFromUnixTimestamp(int timestamp) {
