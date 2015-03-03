@@ -1,6 +1,7 @@
 package com.bewareofraj.mytvtracker.search;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ public class SearchFragment extends Fragment {
     
     private EditText mTxtSearch;
     private Button mBtnSearch;
+    
+    private ProgressDialog mDialog;
 
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,10 +104,16 @@ public class SearchFragment extends Fragment {
         final String requestTag = "search";
 		String query = TraktApiHelper.getSearchQuery(terms, limit, getString(R.string.trakt_api_key), requestTag);
         
+        mDialog = new ProgressDialog(getActivity());
+        mDialog.setMessage("Searching...");
+        mDialog.setCancelable(true);
+        mDialog.show();
+        
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+                mDialog.dismiss();
             }
         };
         
@@ -117,6 +126,8 @@ public class SearchFragment extends Fragment {
                     createResultItemsFromShows(results);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    mDialog.dismiss();
                 }
             }
         };

@@ -154,7 +154,7 @@ public class Show implements Serializable {
 			mShowTime = context.getString(R.string.show_not_started);
 		} else {
             final String requestTag = "on_air";
-			String query = TraktApiHelper.getCurrentlyOnAirQuery(mTvdbId, context.getString(R.string.trakt_api_key), requestTag);
+			String query = TraktApiHelper.getCurrentlyOnAirQuery(context.getString(R.string.trakt_api_key));
             
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override

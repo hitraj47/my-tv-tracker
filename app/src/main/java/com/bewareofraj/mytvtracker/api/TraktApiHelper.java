@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 public class TraktApiHelper {
 
@@ -126,13 +125,9 @@ public class TraktApiHelper {
     /**
      * Determine if a show is currently on air
      *
-     * @param id The TVDB ID
-     * @return boolean
-     * @throws ExecutionException
-     * @throws InterruptedException
-     * @throws JSONException
+     * @return String
      */
-    public static String getCurrentlyOnAirQuery(final String id, String apiKey, String requestTag) {
+    public static String getCurrentlyOnAirQuery(String apiKey) {
         return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + apiKey;
     }
     
