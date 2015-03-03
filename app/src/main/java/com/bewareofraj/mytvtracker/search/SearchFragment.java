@@ -105,7 +105,7 @@ public class SearchFragment extends Fragment {
 		String query = TraktApiHelper.getSearchQuery(terms, limit, getString(R.string.trakt_api_key), requestTag);
         
         mDialog = new ProgressDialog(getActivity());
-        mDialog.setMessage("Searching...");
+        mDialog.setMessage(getString(R.string.search_please_wait));
         mDialog.setCancelable(true);
         mDialog.show();
         

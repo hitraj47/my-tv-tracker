@@ -2,6 +2,7 @@ package com.bewareofraj.mytvtracker.tvshow;
 
 import android.annotation.TargetApi;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,10 +70,16 @@ public class ShowDetailFragment extends Fragment {
             final String requestTag = "get_show";
             String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId(), getString(R.string.trakt_api_key));
 
+            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setMessage(getString(R.string.show_retrieving));
+            dialog.setCancelable(false);
+            dialog.show();
+
             Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+                    dialog.dismiss();
                 }
             };
 
@@ -84,6 +91,8 @@ public class ShowDetailFragment extends Fragment {
                         populateUi(mShow, rootView);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    } finally {
+                        dialog.dismiss();
                     }
                 }
             };

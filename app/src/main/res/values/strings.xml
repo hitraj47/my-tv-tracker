@@ -97,6 +97,8 @@
     <string name="watchlist_removed">Show removed from Watch List</string>
     <string name="watchlist_added">Show added to Watch List</string>
     
+    <string name="show_retrieving">Retrieving information, please wait</string>
+    
     <string name="tbd">TBD</string>
     
     <string name="activity_title_summary">Summary</string>
