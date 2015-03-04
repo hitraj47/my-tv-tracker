@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class TraktApiHelper {
 
-    public static final String API_BASE_URL = "https://api.trakt.tv/";
+    public static final String API_BASE_URL = "https://api-v2launch.trakt.tv/";
     public static final String API_METHOD_SHOW = "show/";
     public static final String API_ARGUMENT_SHOW_SUMMARY = "summary";
     public static final String API_ARGUMENT_SHOW_SEASONS = "seasons";
