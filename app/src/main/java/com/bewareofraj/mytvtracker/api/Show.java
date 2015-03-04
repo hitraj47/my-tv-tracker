@@ -149,7 +149,7 @@ public class Show implements Serializable {
 	
 	public void determineShowTime(final Context context) {
 		if (mStatus.equals("Ended")) {
-			mShowTime = context.getString(R.string.show_ended);
+            mShowTime = context.getString(R.string.show_ended);
 		} else if (mFirstAiredTimestamp == 0) {
 			mShowTime = context.getString(R.string.show_not_started);
 		} else {

@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TraktApiHelper {
@@ -128,7 +130,9 @@ public class TraktApiHelper {
      * @return String
      */
     public static String getCurrentlyOnAirQuery(String apiKey) {
-        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + apiKey;
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+        String days = "7";
+        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "/" + date + "/" + days;
     }
     
     public static boolean getCurrentlyOnAirResult(JSONArray result, String id) throws JSONException {
