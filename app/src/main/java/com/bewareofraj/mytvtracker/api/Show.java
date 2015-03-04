@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.util.VolleyController;
+import com.bewareofraj.mytvtracker.util.ApplicationController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -180,7 +180,7 @@ public class Show implements Serializable {
             };
 
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-            VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+            ApplicationController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 		}
 	}
     

@@ -26,7 +26,7 @@ import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Show;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
-import com.bewareofraj.mytvtracker.util.VolleyController;
+import com.bewareofraj.mytvtracker.util.ApplicationController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,7 +98,7 @@ public class ShowDetailFragment extends Fragment {
             };
 
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
-            VolleyController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
+            ApplicationController.getInstance().addToRequestQueue(jsonObjReq, requestTag);
         }
 
         // set action bar title
@@ -114,7 +114,7 @@ public class ShowDetailFragment extends Fragment {
     }
 
     private void populateUi(final Show show, View rootView) {
-        ImageLoader imageLoader = VolleyController.getInstance().getImageLoader();
+        ImageLoader imageLoader = ApplicationController.getInstance().getImageLoader();
         NetworkImageView imgPoster = (NetworkImageView) rootView.findViewById(R.id.imgPoster);
         imgPoster.setImageUrl(show.getPosterUrl(), imageLoader);
 

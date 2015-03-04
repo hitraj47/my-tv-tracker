@@ -12,7 +12,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
-import com.bewareofraj.mytvtracker.util.VolleyController;
+import com.bewareofraj.mytvtracker.util.ApplicationController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +87,7 @@ public class ShowListActivity extends Activity implements
         };
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, tag);
+        ApplicationController.getInstance().addToRequestQueue(jsonArrayRequest, tag);
         
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);

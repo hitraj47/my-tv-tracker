@@ -20,7 +20,7 @@ import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.api.Episode;
 import com.bewareofraj.mytvtracker.api.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
-import com.bewareofraj.mytvtracker.util.VolleyController;
+import com.bewareofraj.mytvtracker.util.ApplicationController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,7 +82,7 @@ public class SeasonEpisodeFragment extends Fragment {
         };
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        VolleyController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+        ApplicationController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 
 		// set action bar title
 		getActivity().setTitle("Season " + mSeason);
