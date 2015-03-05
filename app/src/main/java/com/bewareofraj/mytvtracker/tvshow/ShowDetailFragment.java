@@ -23,8 +23,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.api.Show;
-import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.traktapi.Show;
+import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.util.ApplicationController;
 

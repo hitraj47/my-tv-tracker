@@ -1,6 +1,6 @@
 package com.bewareofraj.mytvtracker.database;
 
-import com.bewareofraj.mytvtracker.api.Show;
+import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 
 import android.content.ContentValues;

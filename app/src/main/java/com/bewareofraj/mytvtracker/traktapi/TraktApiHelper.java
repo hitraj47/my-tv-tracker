@@ -1,4 +1,4 @@
-package com.bewareofraj.mytvtracker.api;
+package com.bewareofraj.mytvtracker.traktapi;
 
 import org.json.JSONArray;
 import org.json.JSONException;

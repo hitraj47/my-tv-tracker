@@ -17,8 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.api.Episode;
-import com.bewareofraj.mytvtracker.api.TraktApiHelper;
+import com.bewareofraj.mytvtracker.traktapi.Episode;
+import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
 import com.bewareofraj.mytvtracker.util.ApplicationController;
 

@@ -15,7 +15,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.api.Show;
+import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
