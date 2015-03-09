@@ -88,8 +88,8 @@ public class TraktApiHelper {
         return new Date((long) timestamp * 1000);
     }
     
-    public static String getSearchQuery(String terms, int apiSearchLimit, String apiKey, String requestTag) {
-       return API_BASE_URL + API_METHOD_SEARCH + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "/" + "?query=" + terms + "&limit=" + apiSearchLimit;
+    public static String getSearchQuery(String terms, String type, String year, String requestTag) {
+       return API_BASE_URL + API_METHOD_SEARCH + "?query=" + terms + "&type=" + type + "&year=" + year;
     }
     
     public static ArrayList<Show> getSearchResults(JSONArray results) throws JSONException {
