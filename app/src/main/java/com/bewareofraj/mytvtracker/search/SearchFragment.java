@@ -23,7 +23,7 @@ import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
-import com.bewareofraj.mytvtracker.util.ApplicationController;
+import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,7 +133,7 @@ public class SearchFragment extends Fragment {
         };
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        ApplicationController.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+        MyApplication.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
         
 	}
 

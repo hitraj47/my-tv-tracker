@@ -8,14 +8,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-public class ApplicationController extends Application {
+public class MyApplication extends Application {
 
-    public static final String TAG = ApplicationController.class.getSimpleName();
+    public static final String TAG = MyApplication.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
-    private static ApplicationController mInstance;
+    private static MyApplication mInstance;
 
     @Override
     public void onCreate() {
@@ -23,7 +23,7 @@ public class ApplicationController extends Application {
         mInstance = this;
     }
 
-    public static synchronized ApplicationController getInstance() {
+    public static synchronized MyApplication getInstance() {
         return mInstance;
     }
 
