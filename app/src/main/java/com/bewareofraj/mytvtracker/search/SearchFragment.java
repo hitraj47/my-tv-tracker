@@ -15,17 +15,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
@@ -117,12 +117,12 @@ public class SearchFragment extends Fragment {
             }
         };
         
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONArray jsonArray) {
+            public void onResponse(String jsonArrayString) {
                 try {
-                    ArrayList<Show> results = TraktApiHelper.getSearchResults(jsonArray);
+                    ArrayList<Show> results = TraktApiHelper.getShowSearchResults(jsonArrayString);
                     createResultItemsFromShows(results);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,8 +132,8 @@ public class SearchFragment extends Fragment {
             }
         };
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        MyApplication.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
+        CustomRequest searchRequest = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().addToRequestQueue(searchRequest, requestTag);
         
 	}
 
