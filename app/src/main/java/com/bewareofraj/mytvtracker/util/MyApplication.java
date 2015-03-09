@@ -7,6 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.bewareofraj.mytvtracker.R;
+
+import java.util.HashMap;
 
 public class MyApplication extends Application {
 
@@ -59,5 +62,12 @@ public class MyApplication extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public HashMap<String, String> getTraktHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("trakt-api-version", "2");
+        headers.put("trakt-api-key", getString(R.string.trakt_client_id));
+        return headers;
     }
 }

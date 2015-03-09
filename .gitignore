@@ -15,7 +15,6 @@ local.properties
 *.log
 
 # Secret API key file
-app/src/main/res/values/apikey.xml
 app/src/main/res/values/secret.xml
 
 # auto generated file
