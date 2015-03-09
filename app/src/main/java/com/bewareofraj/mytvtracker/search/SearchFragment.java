@@ -102,7 +102,7 @@ public class SearchFragment extends Fragment {
 
 	private void search(String terms, int limit) {
         final String requestTag = "search";
-		String query = TraktApiHelper.getSearchQuery(terms, limit, getString(R.string.trakt_api_key), requestTag);
+		String query = TraktApiHelper.getSearchQuery(terms, "show", limit);
         
         mDialog = new ProgressDialog(getActivity());
         mDialog.setMessage(getString(R.string.search_please_wait));

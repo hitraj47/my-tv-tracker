@@ -88,8 +88,33 @@ public class TraktApiHelper {
         return new Date((long) timestamp * 1000);
     }
     
-    public static String getSearchQuery(String terms, String type, String year, String requestTag) {
-       return API_BASE_URL + API_METHOD_SEARCH + "?query=" + terms + "&type=" + type + "&year=" + year;
+    public static String getSearchQuery(String terms, String type, int limit) {
+       return API_BASE_URL + API_METHOD_SEARCH + "?query=" + terms + "&type=" + type + "&limit=" + Integer.toString(limit);
+    }
+
+    public static ArrayList<Show> getShowSearchResults(String stringResults) throws JSONException {
+        ArrayList<Show> resultsAsShows = new ArrayList<>();
+        JSONArray resultsArray = new JSONArray(stringResults);
+
+        if (resultsArray.length() > 0) {
+            for (int i = 0; i < resultsArray.length(); i++) {
+                JSONObject resultObject = resultsArray.getJSONObject(i);
+                JSONObject showObject = resultObject.getJSONObject("show");
+
+                Show show = new Show();
+                show.setTitle(showObject.getString("title"));
+                show.setYear(showObject.getInt("2010"));
+
+                JSONObject posterObject = showObject.getJSONObject("images").getJSONObject("poster");
+                show.setPosterUrl(posterObject.getString("thumb"));
+
+                show.setTvdbId(showObject.getJSONObject("ids").getString("tvdb"));
+
+                resultsAsShows.add(show);
+            }
+        }
+
+        return resultsAsShows;
     }
     
     public static ArrayList<Show> getSearchResults(JSONArray results) throws JSONException {
