@@ -36,6 +36,7 @@ public class Show implements Serializable {
 	private int mSeasons;
 	private int mFirstAiredTimestamp;
     private String mShowTime;
+    private String mImdbId;
 	
 	public Show() {
 		
@@ -196,4 +197,11 @@ public class Show implements Serializable {
 		this.mFirstAiredTimestamp = mFirstAiredTimeStamp;
 	}
 
+    public String getImdbId() {
+        return mImdbId;
+    }
+
+    public void setImdbId(String id) {
+        this.mImdbId = id;
+    }
 }
