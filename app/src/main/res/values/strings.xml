@@ -104,5 +104,6 @@
     <string name="activity_title_summary">Summary</string>
     
     <string name="search_activity_title">Search</string>
+    <string name="search_result_desc_placeholder">Description</string>
 
 </resources>

@@ -1,7 +1,5 @@
 package com.bewareofraj.mytvtracker.search;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -13,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.images.ImageLoader;
+import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
+
+import java.util.List;
 
 public class SearchResultListAdapter extends BaseAdapter {
 
@@ -61,8 +61,8 @@ public class SearchResultListAdapter extends BaseAdapter {
 		TextView lblYear = (TextView) convertView.findViewById(R.id.lblSearchYear);
 		lblYear.setText(result.getYear());
 		
-		TextView lblNetwork = (TextView) convertView.findViewById(R.id.lblSearchNetwork);
-		lblNetwork.setText(result.getNetwork());
+		TextView lblDescription = (TextView) convertView.findViewById(R.id.lblSearchDescription);
+		lblDescription.setText(result.getDescription());
 		
 		ImageView imgPoster = (ImageView) convertView.findViewById(R.id.imgSearchPoster);
 		ImageLoader imgLoader = new ImageLoader(parent.getContext(), determineBestImageWidth(parent.getContext()));

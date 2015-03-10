@@ -44,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lblResults"
         android:layout_below="@+id/lblResults"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp">
     </ListView>
 
 </RelativeLayout>

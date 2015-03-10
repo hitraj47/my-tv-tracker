@@ -103,6 +103,7 @@ public class TraktApiHelper {
 
                 Show show = new Show();
                 show.setTitle(showObject.getString("title"));
+                show.setOverview(showObject.getString("overview"));
 
                 if (showObject.isNull("year")) {
                     show.setYear(0);
@@ -113,7 +114,7 @@ public class TraktApiHelper {
                 JSONObject posterObject = showObject.getJSONObject("images").getJSONObject("poster");
                 show.setPosterUrl(posterObject.getString("thumb"));
 
-                show.setTvdbId(showObject.getJSONObject("ids").getString("tvdb"));
+                show.setImdbId(showObject.getJSONObject("ids").getString("imdb"));
 
                 resultsAsShows.add(show);
             }

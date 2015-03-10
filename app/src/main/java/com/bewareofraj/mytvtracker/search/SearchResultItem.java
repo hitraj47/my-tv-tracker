@@ -2,18 +2,14 @@ package com.bewareofraj.mytvtracker.search;
 
 public class SearchResultItem {
 	
-	private String mName, mId, mImageUrl, mYear, mNetwork;
-	
-	public SearchResultItem() {
-		
-	}
-	
-	public SearchResultItem(String name, String id, String imageUrl, String year, String network) {
+	private String mName, mId, mImageUrl, mYear, mDescription;
+
+	public SearchResultItem(String name, String id, String imageUrl, String year, String description) {
 		this.setName(name);
 		this.setId(id);
 		this.setImageUrl(imageUrl);
 		this.setYear(year);
-		this.setNetwork(network);
+		this.setDescription(description);
 	}
 
 	public String getName() {
@@ -48,12 +44,12 @@ public class SearchResultItem {
 		this.mYear = mYear;
 	}
 
-	public String getNetwork() {
-		return mNetwork;
+	public String getDescription() {
+		return mDescription;
 	}
 
-	public void setNetwork(String mNetwork) {
-		this.mNetwork = mNetwork;
+	public void setDescription(String description) {
+		this.mDescription = description;
 	}
 
 }

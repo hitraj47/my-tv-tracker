@@ -147,14 +147,14 @@ public class SearchFragment extends Fragment {
 			while (it.hasNext()) {
 				Show show = it.next();
 				String title = show.getTitle();
-				String id = show.getTvdbId();
+				String id = show.getImdbId();
 				//String image = show.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
                 String image = show.getPosterUrl();
 				String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer
 						.toString(show.getYear());
-				String network = show.getNetwork();
+				String description = show.getOverview();
 				mResultList.add(new SearchResultItem(title, id, image, year,
-						network));
+						description));
 
 				// set adapter
                 SearchResultListAdapter mAdapter = new SearchResultListAdapter(getActivity(),

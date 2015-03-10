@@ -35,12 +35,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/lblSearchNetwork"
+        android:id="@+id/lblSearchDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/lblSearchYear"
         android:layout_below="@+id/lblSearchYear"
-        android:text="@string/show_network_placeholder"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:text="@string/search_result_desc_placeholder"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:ellipsize="end"
+        android:singleLine="true" />
 
 </RelativeLayout>
