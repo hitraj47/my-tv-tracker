@@ -103,7 +103,12 @@ public class TraktApiHelper {
 
                 Show show = new Show();
                 show.setTitle(showObject.getString("title"));
-                show.setYear(showObject.getInt("2010"));
+
+                if (showObject.isNull("year")) {
+                    show.setYear(0);
+                } else {
+                    show.setYear(showObject.getInt("year"));
+                }
 
                 JSONObject posterObject = showObject.getJSONObject("images").getJSONObject("poster");
                 show.setPosterUrl(posterObject.getString("thumb"));
@@ -114,38 +119,6 @@ public class TraktApiHelper {
             }
         }
 
-        return resultsAsShows;
-    }
-    
-    public static ArrayList<Show> getSearchResults(JSONArray results) throws JSONException {
-        ArrayList<Show> resultsAsShows = new ArrayList<Show>();
-        
-        if (results.length() > 0) {
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject object = results.getJSONObject(i);
-                Show show = new Show();
-                show.setTitle(object.getString(API_KEY_TITLE));
-                
-                // sometimes the year is 'null'
-                if (!object.isNull(API_KEY_YEAR)) {
-                    show.setYear(object.getInt(API_KEY_YEAR));
-                } else {
-                    show.setYear(0);
-                }
-                show.setFirstAired(getDateFromUnixTimestamp(object.getInt(API_KEY_FIRST_AIRED)));
-                show.setFirstAiredTimeStamp(object.getInt(API_KEY_FIRST_AIRED));
-                show.setCountry(object.getString(API_KEY_COUNTRY));
-                show.setOverview(object.getString(API_KEY_OVERVIEW));
-                show.setNetwork(object.getString(API_KEY_NETWORK));
-                show.setAirDay(object.getString(API_KEY_AIR_DAY));
-                show.setAirTime(object.getString(API_KEY_AIR_TIME));
-                show.setTvdbId(object.getString(API_KEY_TVDBID));
-                JSONObject imagesObject = object.getJSONObject(API_KEY_IMAGES_OBJECT);
-                show.setPosterUrl(imagesObject.getString(API_KEY_POSTER_URL));
-                resultsAsShows.add(show);
-            }
-        }
-        
         return resultsAsShows;
     }
 

@@ -66,6 +66,7 @@ public class MyApplication extends Application {
 
     public HashMap<String, String> getTraktHeaders() {
         HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
         headers.put("trakt-api-version", "2");
         headers.put("trakt-api-key", getString(R.string.trakt_client_id));
         return headers;

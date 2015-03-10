@@ -143,18 +143,16 @@ public final class R {
         public static final int title_show_detail=0x7f06002e;
         public static final int title_show_list=0x7f06002f;
         public static final int trakt_api_key=0x7f060030;
-        public static final int trakt_callback_test=0x7f060031;
-        public static final int trakt_callback_url=0x7f060032;
-        public static final int trakt_client_id=0x7f060033;
-        public static final int trakt_client_secret=0x7f060034;
-        public static final int trakt_credits=0x7f060035;
-        public static final int trakt_oauth_authorization=0x7f060036;
-        public static final int txt_search_hint=0x7f060037;
-        public static final int watch_list_button_placeholder=0x7f060038;
-        public static final int watchlist_add=0x7f060039;
-        public static final int watchlist_added=0x7f06003a;
-        public static final int watchlist_remove=0x7f06003b;
-        public static final int watchlist_removed=0x7f06003c;
-        public static final int website=0x7f06003d;
+        public static final int trakt_client_id=0x7f060031;
+        public static final int trakt_client_secret=0x7f060032;
+        public static final int trakt_credits=0x7f060033;
+        public static final int trakt_oauth_authorization=0x7f060034;
+        public static final int txt_search_hint=0x7f060035;
+        public static final int watch_list_button_placeholder=0x7f060036;
+        public static final int watchlist_add=0x7f060037;
+        public static final int watchlist_added=0x7f060038;
+        public static final int watchlist_remove=0x7f060039;
+        public static final int watchlist_removed=0x7f06003a;
+        public static final int website=0x7f06003b;
     }
 }
