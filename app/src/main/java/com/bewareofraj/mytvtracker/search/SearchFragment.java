@@ -133,6 +133,7 @@ public class SearchFragment extends Fragment {
         };
 
         CustomRequest searchRequest = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().getRequestQueue().getCache().clear();   // need to do this, otherwise we get error 412 response
         MyApplication.getInstance().addToRequestQueue(searchRequest, requestTag);
         
 	}
