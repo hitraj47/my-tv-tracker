@@ -51,11 +51,7 @@ public class Show implements Serializable {
 	}
 
 	public int getYear() {
-		if (mFirstAiredTimestamp == 0) {
-			return 0;
-		} else {
-			return mYear;
-		}
+		return mYear;
 	}
 
 	public void setYear(int mYear) {
