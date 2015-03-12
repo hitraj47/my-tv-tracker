@@ -133,7 +133,7 @@ public final class R {
         public static final int show_time_placeholder=0x7f060024;
         public static final int show_year_placeholder=0x7f060025;
         public static final int splash_loading=0x7f060026;
-        public static final int tbd=0x7f060027;
+        public static final int show_year_unknown =0x7f060027;
         public static final int title_activity_about=0x7f060028;
         public static final int title_activity_season_episode=0x7f060029;
         public static final int title_activity_splash=0x7f06002a;

@@ -38,10 +38,6 @@ public class Show implements Serializable {
     private String mShowTime;
     private String mImdbId;
 	
-	public Show() {
-		
-	}
-
 	public String getTitle() {
 		return mTitle;
 	}

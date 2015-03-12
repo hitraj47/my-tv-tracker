@@ -149,9 +149,8 @@ public class SearchFragment extends Fragment {
 				Show show = it.next();
 				String title = show.getTitle();
 				String id = show.getImdbId();
-				//String image = show.getSizedPosterUrl(TraktApiHelper.API_POSTER_SIZE_SMALL);
                 String image = show.getPosterUrl();
-				String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer
+				String year = (show.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer
 						.toString(show.getYear());
 				String description = show.getOverview();
 				mResultList.add(new SearchResultItem(title, id, image, year,

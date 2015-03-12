@@ -122,7 +122,7 @@ public class ShowDetailFragment extends Fragment {
         lblShowName.setText(show.getTitle());
 
         TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
-        String year = (show.getYear() == 0) ? getString(R.string.tbd) : Integer.toString(show.getYear());
+        String year = (show.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer.toString(show.getYear());
         lblShowYear.setText(year);
 
         TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
