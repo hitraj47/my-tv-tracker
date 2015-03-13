@@ -13,15 +13,12 @@ public class TraktApiHelper {
 
     public static final String API_BASE_URL = "https://api-v2launch.trakt.tv/";
     public static final String API_METHOD_SHOW = "show/";
-    public static final String API_ARGUMENT_SHOW_SUMMARY = "summary";
     public static final String API_FORMAT = ".json/";
     public static final String API_POSTER_SIZE_MEDIUM = "-300";
     public static final String API_POSTER_SIZE_SMALL = "-138";
-    public static final String API_METHOD_SEARCH = "search/";
     public static final String API_ARGUMENT_SHOWS = "shows";
     public static final String API_METHOD_CALENDAR = "calendar/";
     public static final String API_ARGUMENT_SHOW_SEASON = "season";
-    public static final String API_METHOD_SHOWS = "shows/";
     public static final String API_KEY_TITLE = "title";
     public static final String API_KEY_YEAR = "year";
     public static final String API_KEY_FIRST_AIRED_UTC = "first_aired_utc";
@@ -39,7 +36,6 @@ public class TraktApiHelper {
     public static final String API_KEY_SHOW = "show";
     public static final String API_KEY_EPISODE = "episode";
     public static final String API_KEY_SCREEN = "screen";
-    public static final String API_ARGUMENT_SEASONS = "seasons";
 
     /**
      * Private constructor, this is a utility class
@@ -53,8 +49,19 @@ public class TraktApiHelper {
      * @param id The TVDB ID
      * @return A Show object
      */
-    public static String getShowQuery(String id, String apiKey) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SUMMARY + API_FORMAT + apiKey + "/" + id + "/";
+    public static String getShowQuery(String id) {
+        return API_BASE_URL + "/shows/" + id + "?extended=full,images";
+    }
+
+    public static Show getShowFromResult(String response) throws JSONException {
+        Show show = new Show();
+        JSONObject showObject = new JSONObject(response);
+        show.setTitle(showObject.getString("title"));
+        show.setYear(showObject.getInt("year"));
+        show.setImdbId(showObject.getJSONObject("ids").getString("imdb"));
+        show.setOverview(showObject.getString("overview"));
+
+        return show;
     }
     
     public static Show getShowObjectFromResult(JSONObject result) throws JSONException {
@@ -77,7 +84,7 @@ public class TraktApiHelper {
     }
 
     public static String getNumberOfSeasonsQuery(String id) {
-        return API_BASE_URL + API_METHOD_SHOWS + id + "/" + API_ARGUMENT_SEASONS;
+        return API_BASE_URL + "shows/" + id + "/seasons";
     }
     
     public static int getNumberOfSeasonsFromResult(String resultString) throws JSONException {
@@ -92,7 +99,7 @@ public class TraktApiHelper {
     }
     
     public static String getSearchQuery(String terms, String type, int limit) {
-       return API_BASE_URL + API_METHOD_SEARCH + "?query=" + terms + "&type=" + type + "&limit=" + Integer.toString(limit);
+       return API_BASE_URL + "/search" + "?query=" + terms + "&type=" + type + "&limit=" + Integer.toString(limit);
     }
 
     public static ArrayList<Show> getShowSearchResults(String resultString) throws JSONException {
