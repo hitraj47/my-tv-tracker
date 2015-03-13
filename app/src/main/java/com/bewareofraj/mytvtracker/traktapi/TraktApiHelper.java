@@ -14,7 +14,6 @@ public class TraktApiHelper {
     public static final String API_BASE_URL = "https://api-v2launch.trakt.tv/";
     public static final String API_METHOD_SHOW = "show/";
     public static final String API_ARGUMENT_SHOW_SUMMARY = "summary";
-    public static final String API_ARGUMENT_SHOW_SEASONS = "seasons";
     public static final String API_FORMAT = ".json/";
     public static final String API_POSTER_SIZE_MEDIUM = "-300";
     public static final String API_POSTER_SIZE_SMALL = "-138";
@@ -22,7 +21,7 @@ public class TraktApiHelper {
     public static final String API_ARGUMENT_SHOWS = "shows";
     public static final String API_METHOD_CALENDAR = "calendar/";
     public static final String API_ARGUMENT_SHOW_SEASON = "season";
-
+    public static final String API_METHOD_SHOWS = "shows/";
     public static final String API_KEY_TITLE = "title";
     public static final String API_KEY_YEAR = "year";
     public static final String API_KEY_FIRST_AIRED_UTC = "first_aired_utc";
@@ -40,6 +39,7 @@ public class TraktApiHelper {
     public static final String API_KEY_SHOW = "show";
     public static final String API_KEY_EPISODE = "episode";
     public static final String API_KEY_SCREEN = "screen";
+    public static final String API_ARGUMENT_SEASONS = "seasons";
 
     /**
      * Private constructor, this is a utility class
@@ -76,12 +76,15 @@ public class TraktApiHelper {
         return show;
     }
 
-    public static String getNumberOfSeasonsQuery(String id, String apiKey, String requestTag) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASONS + API_FORMAT + apiKey + "/" + id;
+    public static String getNumberOfSeasonsQuery(String id) {
+        return API_BASE_URL + API_METHOD_SHOWS + id + "/" + API_ARGUMENT_SEASONS;
     }
     
-    public static int getNumberOfSeasonsFromResult(JSONArray result) throws JSONException {
-        return result.length()-1;
+    public static int getNumberOfSeasonsFromResult(String resultString) throws JSONException {
+        JSONArray resultsArray = new JSONArray(resultString);
+
+        //  -1 because season 0 are specials
+        return resultsArray.length()-1;
     }
 
     private static Date getDateFromUnixTimestamp(int timestamp) {
@@ -92,9 +95,9 @@ public class TraktApiHelper {
        return API_BASE_URL + API_METHOD_SEARCH + "?query=" + terms + "&type=" + type + "&limit=" + Integer.toString(limit);
     }
 
-    public static ArrayList<Show> getShowSearchResults(String stringResults) throws JSONException {
+    public static ArrayList<Show> getShowSearchResults(String resultString) throws JSONException {
         ArrayList<Show> resultsAsShows = new ArrayList<>();
-        JSONArray resultsArray = new JSONArray(stringResults);
+        JSONArray resultsArray = new JSONArray(resultString);
 
         if (resultsArray.length() > 0) {
             for (int i = 0; i < resultsArray.length(); i++) {

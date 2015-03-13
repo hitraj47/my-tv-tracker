@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
 /**
@@ -65,7 +65,7 @@ public class ShowListActivity extends Activity implements
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
 
         final String tag = "get_seasons";
-        String query = TraktApiHelper.getNumberOfSeasonsQuery(mShowId, getString(R.string.trakt_api_key), tag);
+        String query = TraktApiHelper.getNumberOfSeasonsQuery(mShowId);
         
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
@@ -74,11 +74,11 @@ public class ShowListActivity extends Activity implements
             }
         };
         
-        Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONArray jsonArray) {
+            public void onResponse(String stringResponse) {
                 try {
-                    mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(jsonArray);
+                    mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(stringResponse);
                     displayListLayout();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -86,8 +86,8 @@ public class ShowListActivity extends Activity implements
             }
         };
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-        MyApplication.getInstance().addToRequestQueue(jsonArrayRequest, tag);
+        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().addToRequestQueue(request, tag);
         
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);

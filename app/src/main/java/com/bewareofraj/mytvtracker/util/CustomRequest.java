@@ -26,4 +26,14 @@ public class CustomRequest extends StringRequest {
     public HashMap<String, String> getParams() {
         return mParams;
     }
+
+    @Override
+    public HashMap<String, String> getHeaders() {
+        return mParams;
+    }
+
+    @Override
+    public String getBodyContentType() {
+        return "application/json";
+    }
 }
