@@ -9,11 +9,11 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * A Show class represents a TV show.
@@ -24,19 +24,21 @@ public class Show implements Serializable {
 	
 	private String mTitle;
 	private int mYear;
-	private Date mFirstAired;
+	private DateTime mFirstAired;
 	private String mCountry;
 	private String mOverview;
 	private String mStatus;
 	private String mNetwork;
 	private String mAirDay;
 	private String mAirTime;
+    private String mAirTimeZone;
 	private String mTvdbId;
 	private String mPosterUrl;
 	private int mSeasons;
 	private int mFirstAiredTimestamp;
     private String mShowTime;
     private String mImdbId;
+    private int mRunTimeMinutes;
 	
 	public String getTitle() {
 		return mTitle;
@@ -54,11 +56,11 @@ public class Show implements Serializable {
 		this.mYear = mYear;
 	}
 
-	public Date getFirstAired() {
+	public DateTime getFirstAired() {
 		return mFirstAired;
 	}
 
-	public void setFirstAired(Date mFirstAired) {
+	public void setFirstAired(DateTime mFirstAired) {
 		this.mFirstAired = mFirstAired;
 	}
 
@@ -195,5 +197,21 @@ public class Show implements Serializable {
 
     public void setImdbId(String id) {
         this.mImdbId = id;
+    }
+
+    public String getAirTimeZone() {
+        return mAirTimeZone;
+    }
+
+    public void setAirTimeZone(String mAirTimeZone) {
+        this.mAirTimeZone = mAirTimeZone;
+    }
+
+    public int getRunTimeMinutes() {
+        return mRunTimeMinutes;
+    }
+
+    public void setRunTimeMinutes(int mRunTimeMinutes) {
+        this.mRunTimeMinutes = mRunTimeMinutes;
     }
 }

@@ -20,16 +20,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
-import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class ShowDetailFragment extends Fragment {
             populateUi(mShow, rootView);
         } else {
             final String requestTag = "get_show";
-            String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId(), getString(R.string.trakt_api_key));
+            String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId());
 
             final ProgressDialog dialog = new ProgressDialog(getActivity());
             dialog.setMessage(getString(R.string.show_retrieving));
@@ -83,11 +84,11 @@ public class ShowDetailFragment extends Fragment {
                 }
             };
 
-            Response.Listener<JSONObject> responseListener = new Response.Listener<JSONObject>() {
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
                 @Override
-                public void onResponse(JSONObject jsonObject) {
+                public void onResponse(String stringResponse) {
                     try {
-                        mShow = TraktApiHelper.getShowObjectFromResult(jsonObject);
+                        mShow = TraktApiHelper.getShowFromResult(stringResponse);
                         populateUi(mShow, rootView);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -97,8 +98,8 @@ public class ShowDetailFragment extends Fragment {
                 }
             };
 
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, query, null, responseListener, errorListener);
-            MyApplication.getInstance().addToRequestQueue(jsonObjReq, requestTag);
+            CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+            MyApplication.getInstance().addToRequestQueue(request, requestTag);
         }
 
         // set action bar title
@@ -126,8 +127,9 @@ public class ShowDetailFragment extends Fragment {
         lblShowYear.setText(year);
 
         TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-        show.determineShowTime(getActivity());
-        lblShowTime.setText(show.getShowTime());
+        //TODO: determine show time and if the show is on air
+        String showTime = "Airs: " + show.getAirDay() + "at " + show.getAirTime() + " (" + show.getAirTimeZone() + ")";
+        lblShowTime.setText(showTime);
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
         lblShowNetwork.setText(show.getNetwork());
@@ -136,12 +138,9 @@ public class ShowDetailFragment extends Fragment {
         lblShowCountry.setText(show.getCountry());
 
         TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
-        String firstAired;
-        if (show.getFirstAiredTimeStamp() == 0) {
-            firstAired = "First aired: TBD";
-        } else {
-            firstAired = "First aired: " + makeFirstAiredDate(show.getFirstAired());
-        }
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MMMM d, yyyy");
+        String firstAired = "First aired: ";
+        firstAired = firstAired + show.getFirstAired().toString(dtf);
         lblFirstAired.setText(firstAired);
 
         final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);

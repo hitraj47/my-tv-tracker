@@ -1,5 +1,6 @@
 package com.bewareofraj.mytvtracker.traktapi;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class TraktApiHelper {
 
@@ -60,25 +62,20 @@ public class TraktApiHelper {
         show.setYear(showObject.getInt("year"));
         show.setImdbId(showObject.getJSONObject("ids").getString("imdb"));
         show.setOverview(showObject.getString("overview"));
+        show.setFirstAired(new DateTime(showObject.getString("first_aired")));
 
-        return show;
-    }
-    
-    public static Show getShowObjectFromResult(JSONObject result) throws JSONException {
-        Show show = new Show();
-        show.setTitle(result.getString(API_KEY_TITLE));
-        show.setYear(result.getInt(API_KEY_YEAR));
-        show.setFirstAired(getDateFromUnixTimestamp(result.getInt(API_KEY_FIRST_AIRED_UTC)));
-        show.setFirstAiredTimeStamp(result.getInt(API_KEY_FIRST_AIRED));
-        show.setCountry(result.getString(API_KEY_COUNTRY));
-        show.setOverview(result.getString(API_KEY_OVERVIEW));
-        show.setStatus(result.getString(API_KEY_STATUS));
-        show.setNetwork(result.getString(API_KEY_NETWORK));
-        show.setAirDay(result.getString(API_KEY_AIR_DAY));
-        show.setAirTime(result.getString(API_KEY_AIR_TIME));
-        show.setTvdbId(Integer.toString(result.getInt(API_KEY_TVDBID)));
-        show.setPosterUrl(result.getString(API_KEY_POSTER_URL));
-        //TODO: show.setSeasons(getNumberOfSeasons(show.getTvdbId(), "num_seasons"));
+        Locale country = new Locale("", showObject.getString("country").toUpperCase());
+        show.setCountry(country.getDisplayCountry());
+
+        show.setRunTimeMinutes(showObject.getInt("runtime"));
+        show.setNetwork(showObject.getString("network"));
+        show.setStatus(showObject.getString("status"));
+        show.setPosterUrl(showObject.getJSONObject("images").getJSONObject("poster").getString("full"));
+
+        JSONObject airsObject = showObject.getJSONObject("airs");
+        show.setAirDay(airsObject.getString("day"));
+        show.setAirTime(airsObject.getString("time"));
+        show.setAirTimeZone(airsObject.getString("timezone"));
 
         return show;
     }
