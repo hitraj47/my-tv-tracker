@@ -2,7 +2,7 @@
 
 This is an Android app to help you keep track of the TV shows you are watching. The app will let you add and remove shows from you "Watch List". You will be reminded of upcoming episodes on your Watch List. You can also search for TV shows and find out more infomation about them, including a description, the time it airs and information about the seasons and episodes.
 
-## Requirements Summary
+## Features Summary
 
 Here is a brief list of the feature requirements:
 
@@ -13,15 +13,9 @@ Here is a brief list of the feature requirements:
 
 More features will be added in the future.
 
-## Screen Flow
+## Project Setup
 
-Prototype on FluidUI: https://www.fluidui.com/editor/live/preview/p_OuPfL5qOHz5IaVCi9RnphnsykCvAzF5s.1414372986270
-
-The final screens do not look like the prototype, but the information on each screen should be the same. The FluidUI prototype has notes.
-
-## Platforms/Devices covered
-
-The app is designed to work on Android phones and tablets running API 14 (Android 4.01/Ice Cream Sandwich) or higher. There may be support for more devices in the future.
+You will need a 'secret.xml' file in 'res/values' that will contain a string resource called 'trakt_client_id'. The value of this can be obtained from the Trakt.tv 'Your API Apps' page. This is the "Client ID".
 
 ## Branch Set up
 
