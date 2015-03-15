@@ -128,7 +128,7 @@ public class ShowDetailFragment extends Fragment {
 
         TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
         //TODO: determine show time and if the show is on air
-        String showTime = "Airs: " + show.getAirDay() + "at " + show.getAirTime() + " (" + show.getAirTimeZone() + ")";
+        String showTime = "Airs: " + show.getAirDay() + " at " + show.getAirTime() + " (" + show.getAirTimeZone() + ")";
         lblShowTime.setText(showTime);
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
