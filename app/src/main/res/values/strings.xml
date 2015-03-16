@@ -85,8 +85,9 @@
     <string name="title_activity_season_episode">SeasonEpisodeActivity</string>
     
     <string name="show_ended">Show ended</string>
-    <string name="show_not_started">Show not started</string>
+    <string name="show_in_production">Show in production</string>
     <string name="show_on_break">Currently on break</string>
+    <string name="show_cancelled">Show cancelled</string>
     
     <string name="search_field_empty">Please enter something to search for&#8230;</string>
     <string name="search_no_results">Sorry, no results found :(</string>

@@ -5,15 +5,13 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
-import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * A Show class represents a TV show.
@@ -39,6 +37,7 @@ public class Show implements Serializable {
     private String mShowTime;
     private String mImdbId;
     private int mRunTimeMinutes;
+    private boolean mIsOnAir;
 	
 	public String getTitle() {
 		return mTitle;
@@ -141,12 +140,13 @@ public class Show implements Serializable {
 		String ext = mPosterUrl.substring(mPosterUrl.lastIndexOf('.'));
 		return baseUrl + size + ext;
 	}
-	
+
+    /*
 	public void determineShowTime(final Context context) {
 		if (mStatus.equals("Ended")) {
             mShowTime = context.getString(R.string.show_ended);
 		} else if (mFirstAiredTimestamp == 0) {
-			mShowTime = context.getString(R.string.show_not_started);
+			mShowTime = context.getString(R.string.show_in_production);
 		} else {
             final String requestTag = "on_air";
 			String query = TraktApiHelper.getCurrentlyOnAirQuery(context.getString(R.string.trakt_api_key));
@@ -177,7 +177,7 @@ public class Show implements Serializable {
             JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
             MyApplication.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
 		}
-	}
+	}*/
     
     public String getShowTime() {
         return mShowTime;
@@ -213,5 +213,59 @@ public class Show implements Serializable {
 
     public void setRunTimeMinutes(int mRunTimeMinutes) {
         this.mRunTimeMinutes = mRunTimeMinutes;
+    }
+
+    public void setOnAir(boolean isOnAir) {
+        mIsOnAir = isOnAir;
+    }
+
+    public boolean isOnAir() {
+        return mIsOnAir;
+    }
+
+    public String makeShowTimeString(Context context) {
+        String showTime = "";
+        if (getStatus().equalsIgnoreCase("ended")) {
+            showTime = context.getString(R.string.show_ended);
+        } else if (getStatus().equalsIgnoreCase("returning series")) {
+            //TODO: determine if show is currently airing and display day and time otherwise display on break string
+            determineIfShowOnAir();
+            if (isOnAir()) {
+                showTime = "Airs: " + getAirDay() + " at " + getAirTime();
+            } else {
+                showTime = context.getString(R.string.show_on_break);
+            }
+        } else if (getStatus().equalsIgnoreCase("cancelled")) {
+            showTime = context.getString(R.string.show_cancelled);
+        } else if (getStatus().equalsIgnoreCase("returning series")) {
+            showTime = context.getString(R.string.show_in_production);
+        }
+        return showTime;
+    }
+
+    private void determineIfShowOnAir() {
+        boolean onAir = false;
+        final ArrayList<String> ids = new ArrayList<>();
+        int numDays = 7;
+        final String requestTag = "calendar_query";
+        String query = TraktApiHelper.getShowCalendar(numDays);
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String resultString) {
+                try {
+                    setOnAir(TraktApiHelper.isOnAir(resultString, getImdbId()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 }

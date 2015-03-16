@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class TraktApiHelper {
@@ -131,30 +132,35 @@ public class TraktApiHelper {
     }
 
     /**
-     * Determine if a show is currently on air
+     * Get the TV show calendar
      *
      * @return String
      */
-    public static String getCurrentlyOnAirQuery(String apiKey) {
+    public static String getShowCalendar(int numDays) {
         String date = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-        String days = "7";
-        return API_BASE_URL + API_METHOD_CALENDAR + API_ARGUMENT_SHOWS + API_FORMAT + apiKey + "/" + date + "/" + days;
+        String days = Integer.toString(numDays);
+        return API_BASE_URL + "calendars/shows/" + date + "/" + days;
     }
-    
-    public static boolean getCurrentlyOnAirResult(JSONArray result, String id) throws JSONException {
-        boolean currentlyOnAir = false;
-        for (int i = 0; i < result.length(); i++) {
-            JSONObject calendarObject = result.getJSONObject(i);
-            JSONArray episodes = calendarObject.getJSONArray(API_KEY_EPISODES);
-            for (int j = 0; j < episodes.length(); j++) {
-                JSONObject show = episodes.getJSONObject(j).getJSONObject(API_KEY_SHOW);
-                String showId = show.getString(API_KEY_TVDBID);
-                if (id.equals(showId)) {
-                    currentlyOnAir = true;
-                }
+
+    public static boolean isOnAir(String resultString, String imdbid) throws JSONException {
+        ArrayList<String> ids = buildIdListFromCalendar(resultString);
+        return ids.contains((String) imdbid);
+    }
+
+    private static ArrayList<String> buildIdListFromCalendar(String resultString) throws JSONException {
+        ArrayList<String> ids = new ArrayList<>();
+        JSONObject calendarObject = new JSONObject(resultString);
+        Iterator<String> datesKeysIterator = calendarObject.keys();
+        while (datesKeysIterator.hasNext()) {
+            String dateKey = datesKeysIterator.next();
+            JSONArray dateArray = calendarObject.getJSONArray(dateKey);
+            for (int i = 0; i < dateArray.length(); i++) {
+                JSONObject calendarItemObject = dateArray.getJSONObject(i);
+                String imdbid = calendarItemObject.getJSONObject("show").getJSONObject("ids").getString("imdb");
+                ids.add(imdbid);
             }
         }
-        return currentlyOnAir;
+        return ids;
     }
 
     public static String getEpisodesQuery(String tvdbid, String season, String apiKey, String requestTag) {

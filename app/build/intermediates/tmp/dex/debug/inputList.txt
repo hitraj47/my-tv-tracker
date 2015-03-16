@@ -1,7 +1,7 @@
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/classes/debug
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-c33fdbfb4008684303c685dc270ab6b0adca007c.jar
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/classes-78cea6d327c28fcfaf0511eb0424326bd6dcd82c.jar
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/classes-dcc0d325310a8b58ecef93e58acd9b39e983be99.jar
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-e3e705ad086485a0a088c7ddc6c54d7a99bb4db5.jar
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/joda-time-2.7-no-tzdb-7af48f020c007174d26484f3b144797de2bca1a4.jar
-/home/raj/Android studioProjects/my-tv-tracker/app/build/intermediates/pre-dexed/debug/classes-c564a6e81a484379b19abfb1830600e04199d0e2.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\classes\debug
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-37f7b52d122ca74371ae7c175d6e469bec5669d6.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\classes-056e5fdd34011229324b3c22415b02e682a459ba.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\classes-37e8ff5cf7078abf07316aac07fee927b8459fe8.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-9a30a421fda71de9a0b08eb8ca0d8ff171a31019.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\joda-time-2.7-no-tzdb-706160c8037f5b4f953fab5d80c0e41ff7de3d05.jar
+C:\Users\Rajesh\AndroidStudioProjects\MyTVTracker\app\build\intermediates\pre-dexed\debug\classes-1f4d4b159a5a9fe5e38c2bb48cffe910baf78eb2.jar

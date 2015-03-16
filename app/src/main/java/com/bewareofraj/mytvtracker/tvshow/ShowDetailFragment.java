@@ -66,7 +66,7 @@ public class ShowDetailFragment extends Fragment {
         
         if ( (savedInstanceState != null) && savedInstanceState.getSerializable("show") != null) {
             mShow = (Show) savedInstanceState.getSerializable("show");
-            populateUi(mShow, rootView);
+            populateUi(rootView);
         } else {
             final String requestTag = "get_show";
             String query = TraktApiHelper.getShowQuery(ShowListActivity.getShowId());
@@ -89,7 +89,7 @@ public class ShowDetailFragment extends Fragment {
                 public void onResponse(String stringResponse) {
                     try {
                         mShow = TraktApiHelper.getShowFromResult(stringResponse);
-                        populateUi(mShow, rootView);
+                        populateUi(rootView);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } finally {
@@ -114,33 +114,32 @@ public class ShowDetailFragment extends Fragment {
         outState.putSerializable("show", mShow);
     }
 
-    private void populateUi(final Show show, View rootView) {
+    private void populateUi(View rootView) {
         ImageLoader imageLoader = MyApplication.getInstance().getImageLoader();
         NetworkImageView imgPoster = (NetworkImageView) rootView.findViewById(R.id.imgPoster);
-        imgPoster.setImageUrl(show.getPosterUrl(), imageLoader);
+        imgPoster.setImageUrl(mShow.getPosterUrl(), imageLoader);
 
         TextView lblShowName = (TextView) rootView.findViewById(R.id.lblShowName);
-        lblShowName.setText(show.getTitle());
+        lblShowName.setText(mShow.getTitle());
 
         TextView lblShowYear = (TextView) rootView.findViewById(R.id.lblShowYear);
-        String year = (show.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer.toString(show.getYear());
+        String year = (mShow.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer.toString(mShow.getYear());
         lblShowYear.setText(year);
 
         TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-        //TODO: determine show time and if the show is on air
-        String showTime = "Airs: " + show.getAirDay() + " at " + show.getAirTime() + " (" + show.getAirTimeZone() + ")";
+        String showTime = mShow.makeShowTimeString(getActivity());
         lblShowTime.setText(showTime);
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
-        lblShowNetwork.setText(show.getNetwork());
+        lblShowNetwork.setText(mShow.getNetwork());
 
         TextView lblShowCountry = (TextView) rootView.findViewById(R.id.lblShowCountry);
-        lblShowCountry.setText(show.getCountry());
+        lblShowCountry.setText(mShow.getCountry());
 
         TextView lblFirstAired = (TextView) rootView.findViewById(R.id.lblFirstAired);
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MMMM d, yyyy");
         String firstAired = "First aired: ";
-        firstAired = firstAired + show.getFirstAired().toString(dtf);
+        firstAired = firstAired + mShow.getFirstAired().toString(dtf);
         lblFirstAired.setText(firstAired);
 
         final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
@@ -153,13 +152,13 @@ public class ShowDetailFragment extends Fragment {
             public void onClick(View v) {
                 MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());
                 if (mIsOnWatchList) {
-                    String[] ids = { show.getTvdbId() };
+                    String[] ids = { mShow.getTvdbId() };
                     db.removeFromWatchList(ids);
                     Toast.makeText(getActivity(), getString(R.string.watchlist_removed), Toast.LENGTH_LONG).show();
                     btnWatchList.setText(getString(R.string.watchlist_add));
                     mIsOnWatchList = false;
                 } else {
-                    db.addToWatchList(show);
+                    db.addToWatchList(mShow);
                     Toast.makeText(getActivity(), getString(R.string.watchlist_added), Toast.LENGTH_LONG).show();
                     btnWatchList.setText(getString(R.string.watchlist_remove));
                     mIsOnWatchList = true;
@@ -168,7 +167,7 @@ public class ShowDetailFragment extends Fragment {
         });
 
         TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
-        lblOverviewBody.setText(show.getOverview());
+        lblOverviewBody.setText(mShow.getOverview());
     }
 
     @SuppressWarnings("deprecation")
