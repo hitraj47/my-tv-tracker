@@ -13,6 +13,7 @@ import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -35,7 +36,9 @@ public class SplashActivity extends Activity {
 	}
 
     private boolean isShowCalendarOld(DateTime showCalendarLastUpdated) {
-        return false;
+        DateTime now = new DateTime();
+        Period period = new Period(showCalendarLastUpdated, now);
+        return period.getDays() > 1;
     }
 
     public void updateShowCalendarIds() {
