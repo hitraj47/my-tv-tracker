@@ -2,19 +2,11 @@ package com.bewareofraj.mytvtracker.traktapi;
 
 import android.content.Context;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.util.CustomRequest;
-import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
-import org.json.JSONException;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * A Show class represents a TV show.
@@ -40,7 +32,7 @@ public class Show implements Serializable {
     private String mShowTime;
     private String mImdbId;
     private int mRunTimeMinutes;
-    private boolean mIsOnAir;
+    private Boolean mIsOnAir;
 	
 	public String getTitle() {
 		return mTitle;
@@ -144,44 +136,6 @@ public class Show implements Serializable {
 		return baseUrl + size + ext;
 	}
 
-    /*
-	public void determineShowTime(final Context context) {
-		if (mStatus.equals("Ended")) {
-            mShowTime = context.getString(R.string.show_ended);
-		} else if (mFirstAiredTimestamp == 0) {
-			mShowTime = context.getString(R.string.show_in_production);
-		} else {
-            final String requestTag = "on_air";
-			String query = TraktApiHelper.getCurrentlyOnAirQuery(context.getString(R.string.trakt_api_key));
-            
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
-                }
-            };
-            
-            Response.Listener<JSONArray> responseListener = new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray jsonArray) {
-                    try {
-                        boolean currentlyOnAir = TraktApiHelper.getCurrentlyOnAirResult(jsonArray, mTvdbId);
-                        if (currentlyOnAir) {
-                            mShowTime = mAirDay + ", " + mAirTime;
-                        } else {
-                            mShowTime = context.getString(R.string.show_on_break);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(query, responseListener, errorListener);
-            MyApplication.getInstance().addToRequestQueue(jsonArrayRequest, requestTag);
-		}
-	}*/
-    
     public String getShowTime() {
         return mShowTime;
     }
@@ -222,8 +176,26 @@ public class Show implements Serializable {
         mIsOnAir = isOnAir;
     }
 
-    public boolean isOnAir() {
+    public Boolean isOnAir() {
         return mIsOnAir;
+    }
+
+    public String makeShowTimeString(Context context) {
+        String showTime = "";
+        if (getStatus().equalsIgnoreCase("ended")) {
+            showTime = context.getString(R.string.show_ended);
+        } else if (getStatus().equalsIgnoreCase("returning series")) {
+            if (isOnAir()) {
+                showTime = "Airs: " + getAirDay() + " at " + getAirTime();
+            } else {
+                showTime = context.getString(R.string.show_on_break);
+            }
+        } else if (getStatus().equalsIgnoreCase("cancelled")) {
+            showTime = context.getString(R.string.show_cancelled);
+        } else if (getStatus().equalsIgnoreCase("returning series")) {
+            showTime = context.getString(R.string.show_in_production);
+        }
+        return showTime;
     }
 
 }
