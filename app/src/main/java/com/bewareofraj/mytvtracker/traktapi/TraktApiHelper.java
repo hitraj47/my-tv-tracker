@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -19,24 +18,10 @@ public class TraktApiHelper {
     public static final String API_FORMAT = ".json/";
     public static final String API_POSTER_SIZE_MEDIUM = "-300";
     public static final String API_POSTER_SIZE_SMALL = "-138";
-    public static final String API_ARGUMENT_SHOWS = "shows";
-    public static final String API_METHOD_CALENDAR = "calendar/";
     public static final String API_ARGUMENT_SHOW_SEASON = "season";
     public static final String API_KEY_TITLE = "title";
-    public static final String API_KEY_YEAR = "year";
-    public static final String API_KEY_FIRST_AIRED_UTC = "first_aired_utc";
-    public static final String API_KEY_COUNTRY = "country";
     public static final String API_KEY_OVERVIEW = "overview";
-    public static final String API_KEY_STATUS = "status";
-    public static final String API_KEY_NETWORK = "network";
-    public static final String API_KEY_AIR_DAY = "air_day";
-    public static final String API_KEY_AIR_TIME = "air_time";
-    public static final String API_KEY_TVDBID = "tvdb_id";
-    public static final String API_KEY_POSTER_URL = "poster";
     public static final String API_KEY_FIRST_AIRED = "first_aired";
-    public static final String API_KEY_IMAGES_OBJECT = "images";
-    public static final String API_KEY_EPISODES = "episodes";
-    public static final String API_KEY_SHOW = "show";
     public static final String API_KEY_EPISODE = "episode";
     public static final String API_KEY_SCREEN = "screen";
 
@@ -92,10 +77,6 @@ public class TraktApiHelper {
         return resultsArray.length()-1;
     }
 
-    private static Date getDateFromUnixTimestamp(int timestamp) {
-        return new Date((long) timestamp * 1000);
-    }
-    
     public static String getSearchQuery(String terms, String type, int limit) {
        return API_BASE_URL + "/search" + "?query=" + terms + "&type=" + type + "&limit=" + Integer.toString(limit);
     }
