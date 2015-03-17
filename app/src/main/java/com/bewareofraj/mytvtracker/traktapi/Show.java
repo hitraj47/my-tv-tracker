@@ -2,10 +2,13 @@ package com.bewareofraj.mytvtracker.traktapi;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
+import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -228,7 +231,6 @@ public class Show implements Serializable {
         if (getStatus().equalsIgnoreCase("ended")) {
             showTime = context.getString(R.string.show_ended);
         } else if (getStatus().equalsIgnoreCase("returning series")) {
-            //TODO: determine if show is currently airing and display day and time otherwise display on break string
             determineIfShowOnAir();
             if (isOnAir()) {
                 showTime = "Airs: " + getAirDay() + " at " + getAirTime();
@@ -244,7 +246,6 @@ public class Show implements Serializable {
     }
 
     private void determineIfShowOnAir() {
-        boolean onAir = false;
         final ArrayList<String> ids = new ArrayList<>();
         int numDays = 7;
         final String requestTag = "calendar_query";
@@ -267,5 +268,8 @@ public class Show implements Serializable {
                 }
             }
         };
+
+        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().addToRequestQueue(request, requestTag);
     }
 }
