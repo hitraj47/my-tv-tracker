@@ -101,7 +101,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		values.put(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL, show.getPosterUrl());
 		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
 		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
-		values.put(WatchListEntry.COLUMN_NAME_IMDB_ID, show.getTvdbId());
+		values.put(WatchListEntry.COLUMN_NAME_IMDB_ID, show.getImdbId());
 		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP, show.getFirstAiredTimeStamp());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
