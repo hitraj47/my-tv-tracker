@@ -33,9 +33,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * A fragment representing a single Show detail screen. This fragment is either
@@ -234,14 +231,5 @@ public class ShowDetailFragment extends Fragment {
 	private boolean isOnWatchList(String showId) {
 		MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());
 		return db.isOnWatchList(showId);
-	}
-
-	private String makeFirstAiredDate(Date date) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		String month = c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
-		String dayOfMonth = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
-		String year = Integer.toString(c.get(Calendar.YEAR));
-		return month + " " + dayOfMonth + ", " + year;
 	}
 }
