@@ -93,7 +93,7 @@ public class WatchListFragment extends Fragment {
 			show.setStatus(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_STATUS)));
 			show.setAirTime(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_TIME)));
 			show.setAirDay(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY)));
-			show.setTvdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID)));
+			show.setTvdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_IMDB_ID)));
 			show.setFirstAiredTimeStamp(c.getInt(c.getColumnIndex(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP)));
 
             //TODO: determine show time

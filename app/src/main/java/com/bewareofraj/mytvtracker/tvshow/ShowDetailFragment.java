@@ -147,7 +147,7 @@ public class ShowDetailFragment extends Fragment {
         lblFirstAired.setText(firstAired);
 
         final Button btnWatchList = (Button) rootView.findViewById(R.id.btnWatchList);
-        mIsOnWatchList = isOnWatchList(ShowListActivity.getShowId());
+        mIsOnWatchList = isOnWatchList(mShow.getImdbId());
         String buttonText = mIsOnWatchList ? getString(R.string.watchlist_remove) : getString(R.string.watchlist_add);
         btnWatchList.setText(buttonText);
         btnWatchList.setOnClickListener(new OnClickListener() {
@@ -156,7 +156,7 @@ public class ShowDetailFragment extends Fragment {
             public void onClick(View v) {
                 MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());
                 if (mIsOnWatchList) {
-                    String[] ids = { mShow.getTvdbId() };
+                    String[] ids = { mShow.getImdbId() };
                     db.removeFromWatchList(ids);
                     Toast.makeText(getActivity(), getString(R.string.watchlist_removed), Toast.LENGTH_LONG).show();
                     btnWatchList.setText(getString(R.string.watchlist_add));

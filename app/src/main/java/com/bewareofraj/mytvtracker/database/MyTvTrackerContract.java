@@ -12,7 +12,7 @@ public final class MyTvTrackerContract {
 	 */
 	public static abstract class WatchListEntry implements BaseColumns {
 		public static final String TABLE_NAME_WATCH_LIST = "watch_list_entry";
-		public static final String COLUMN_NAME_TVDB_ID = "tvdb_id";
+		public static final String COLUMN_NAME_IMDB_ID = "imdb_id";
 		public static final String COLUMN_NAME_POSTER_URL_SMALL = "poster_url_small";
 		public static final String COLUMN_NAME_STATUS = "status";
 		public static final String COLUMN_NAME_AIR_DAY = "air_day";

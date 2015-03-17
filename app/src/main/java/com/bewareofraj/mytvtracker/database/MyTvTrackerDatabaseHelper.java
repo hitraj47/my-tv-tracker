@@ -1,13 +1,13 @@
 package com.bewareofraj.mytvtracker.database;
 
-import com.bewareofraj.mytvtracker.traktapi.Show;
-import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
+import com.bewareofraj.mytvtracker.traktapi.Show;
 
 public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
@@ -24,7 +24,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ WatchListEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_SHOW_NAME + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_TVDB_ID + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_IMDB_ID + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_STATUS + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_DAY + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE + COMMA_SEP
@@ -54,7 +54,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		String[] projection = { WatchListEntry.COLUMN_NAME_STATUS,
 				WatchListEntry.COLUMN_NAME_AIR_DAY,
 				WatchListEntry.COLUMN_NAME_AIR_TIME,
-				WatchListEntry.COLUMN_NAME_TVDB_ID,
+				WatchListEntry.COLUMN_NAME_IMDB_ID,
 				WatchListEntry.COLUMN_NAME_SHOW_NAME,
 				WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL,
 				WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP };
@@ -81,7 +81,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 	public boolean isOnWatchList(String showId) {
 		Cursor cursor = getWatchList();
 		while(cursor.moveToNext()) {
-			String id = cursor.getString(cursor.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID));
+			String id = cursor.getString(cursor.getColumnIndex(WatchListEntry.COLUMN_NAME_IMDB_ID));
 			if (id.equals(showId)) {
 				return true;
 			}
@@ -91,7 +91,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	public void removeFromWatchList(String[] ids) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_TVDB_ID + "=?", ids);
+		db.delete(WatchListEntry.TABLE_NAME_WATCH_LIST, WatchListEntry.COLUMN_NAME_IMDB_ID + "=?", ids);
 	}
 
 	public void addToWatchList(Show show) {
@@ -101,7 +101,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		values.put(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL, show.getPosterUrl());
 		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
 		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
-		values.put(WatchListEntry.COLUMN_NAME_TVDB_ID, show.getTvdbId());
+		values.put(WatchListEntry.COLUMN_NAME_IMDB_ID, show.getTvdbId());
 		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP, show.getFirstAiredTimeStamp());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
