@@ -32,6 +32,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -45,8 +46,9 @@ public class ShowDetailFragment extends Fragment {
 	
 	private boolean mIsOnWatchList;
     private Show mShow;
+    private TextView mLblShowTime;
 
-	/**
+    /**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
@@ -126,9 +128,23 @@ public class ShowDetailFragment extends Fragment {
         String year = (mShow.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer.toString(mShow.getYear());
         lblShowYear.setText(year);
 
-        TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-        String showTime = mShow.makeShowTimeString(getActivity());
-        lblShowTime.setText(showTime);
+        mLblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
+        String showTime = "";
+        if (mShow.getStatus().equalsIgnoreCase("ended")) {
+            showTime = getString(R.string.show_ended);
+        } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
+            determineIfShowOnAir();
+            if (mShow.isOnAir()) {
+                showTime = "Airs: " + mShow.getAirDay() + " at " + mShow.getAirTime();
+            } else {
+                showTime = getString(R.string.show_on_break);
+            }
+        } else if (mShow.getStatus().equalsIgnoreCase("cancelled")) {
+            showTime = getString(R.string.show_cancelled);
+        } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
+            showTime = getString(R.string.show_in_production);
+        }
+        mLblShowTime.setText(showTime);
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
         lblShowNetwork.setText(mShow.getNetwork());
@@ -168,6 +184,34 @@ public class ShowDetailFragment extends Fragment {
 
         TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
         lblOverviewBody.setText(mShow.getOverview());
+    }
+
+    private void determineIfShowOnAir() {
+        final ArrayList<String> ids = new ArrayList<>();
+        int numDays = 7;
+        final String requestTag = "calendar_query";
+        String query = TraktApiHelper.getShowCalendar(numDays);
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String resultString) {
+                try {
+                    mShow.setOnAir(TraktApiHelper.isOnAir(resultString, mShow.getImdbId()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().addToRequestQueue(request, requestTag);
     }
 
     @SuppressWarnings("deprecation")
