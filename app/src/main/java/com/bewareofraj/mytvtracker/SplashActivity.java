@@ -3,7 +3,19 @@ package com.bewareofraj.mytvtracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
+import com.bewareofraj.mytvtracker.util.MyApplication;
+
+import org.joda.time.DateTime;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
 
@@ -12,19 +24,50 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 
-        Handler handler;
-        handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this,
-                        MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, 1000);
-
+        DateTime showCalendarLastUpdated = MyApplication.getInstance().getShowCalendarLastUpdated();
+        if (showCalendarLastUpdated == null || isShowCalendarOld(showCalendarLastUpdated)) {
+            updateShowCalendarIds();
+        } else {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 	}
+
+    private boolean isShowCalendarOld(DateTime showCalendarLastUpdated) {
+        return false;
+    }
+
+    public void updateShowCalendarIds() {
+        int numDays = 7;
+        String query = TraktApiHelper.getShowCalendar(numDays);
+        final String requestTag = "update_show_calendar_ids";
+
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+            }
+        };
+
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String resultString) {
+                try {
+                    ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
+                    MyApplication.getInstance().setShowcalendarIds(ids);
+                    MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().addToRequestQueue(request, requestTag);
+    }
 
 }

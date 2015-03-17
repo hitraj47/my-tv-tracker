@@ -84,4 +84,17 @@ public class MyApplication extends Application {
         }
         return mShowCalendarIds;
     }
+
+    public void setShowcalendarIds(ArrayList<String> ids) {
+        mShowCalendarIds = ids;
+    }
+
+    public DateTime getShowCalendarLastUpdated() {
+        return mShowCalendarLastUpdated;
+    }
+
+    public void setShowCalendarLastUpdated(DateTime lastUpdated) {
+        mShowCalendarLastUpdated = lastUpdated;
+    }
+
 }
