@@ -95,8 +95,9 @@ public class WatchListFragment extends Fragment {
 			show.setAirDay(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY)));
 			show.setTvdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_TVDB_ID)));
 			show.setFirstAiredTimeStamp(c.getInt(c.getColumnIndex(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP)));
-			
-            String showTime = show.makeShowTimeString(getActivity());
+
+            //TODO: determine show time
+            String showTime = "Show time";
 			
 			WatchListChild child = createWatchListChild(show.getPosterUrl(), show.getTitle(), showTime, show.getTvdbId());
 			

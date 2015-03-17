@@ -2,10 +2,13 @@ package com.bewareofraj.mytvtracker.traktapi;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.util.CustomRequest;
+import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -223,49 +226,4 @@ public class Show implements Serializable {
         return mIsOnAir;
     }
 
-    public String makeShowTimeString(Context context) {
-        String showTime = "";
-        if (getStatus().equalsIgnoreCase("ended")) {
-            showTime = context.getString(R.string.show_ended);
-        } else if (getStatus().equalsIgnoreCase("returning series")) {
-            //TODO: determine if show is currently airing and display day and time otherwise display on break string
-            determineIfShowOnAir();
-            if (isOnAir()) {
-                showTime = "Airs: " + getAirDay() + " at " + getAirTime();
-            } else {
-                showTime = context.getString(R.string.show_on_break);
-            }
-        } else if (getStatus().equalsIgnoreCase("cancelled")) {
-            showTime = context.getString(R.string.show_cancelled);
-        } else if (getStatus().equalsIgnoreCase("returning series")) {
-            showTime = context.getString(R.string.show_in_production);
-        }
-        return showTime;
-    }
-
-    private void determineIfShowOnAir() {
-        boolean onAir = false;
-        final ArrayList<String> ids = new ArrayList<>();
-        int numDays = 7;
-        final String requestTag = "calendar_query";
-        String query = TraktApiHelper.getShowCalendar(numDays);
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
-            }
-        };
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String resultString) {
-                try {
-                    setOnAir(TraktApiHelper.isOnAir(resultString, getImdbId()));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-    }
 }
