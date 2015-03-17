@@ -128,7 +128,7 @@ public class TraktApiHelper {
         return ids.contains((String) imdbid);
     }
 
-    private static ArrayList<String> buildIdListFromCalendar(String resultString) throws JSONException {
+    public static ArrayList<String> buildIdListFromCalendar(String resultString) throws JSONException {
         ArrayList<String> ids = new ArrayList<>();
         JSONObject calendarObject = new JSONObject(resultString);
         Iterator<String> datesKeysIterator = calendarObject.keys();

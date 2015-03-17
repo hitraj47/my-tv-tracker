@@ -9,6 +9,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.bewareofraj.mytvtracker.R;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MyApplication extends Application {
@@ -17,6 +20,9 @@ public class MyApplication extends Application {
 
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+
+    private ArrayList<String> mShowCalendarIds;
+    private DateTime mShowCalendarLastUpdated;
 
     private static MyApplication mInstance;
 
@@ -70,5 +76,12 @@ public class MyApplication extends Application {
         headers.put("trakt-api-version", "2");
         headers.put("trakt-api-key", getString(R.string.trakt_client_id));
         return headers;
+    }
+
+    public ArrayList<String> getShowCalendarIds() {
+        if (mShowCalendarIds == null) {
+            mShowCalendarIds = new ArrayList<>();
+        }
+        return mShowCalendarIds;
     }
 }
