@@ -46,7 +46,6 @@ public class ShowDetailFragment extends Fragment {
 	
 	private boolean mIsOnWatchList;
     private Show mShow;
-    private TextView mLblShowTime;
 
     /**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -128,23 +127,8 @@ public class ShowDetailFragment extends Fragment {
         String year = (mShow.getYear() == 0) ? getString(R.string.show_year_unknown) : Integer.toString(mShow.getYear());
         lblShowYear.setText(year);
 
-        mLblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-        String showTime = "";
-        if (mShow.getStatus().equalsIgnoreCase("ended")) {
-            showTime = getString(R.string.show_ended);
-        } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
-            determineIfShowOnAir();
-            if (mShow.isOnAir()) {
-                showTime = "Airs: " + mShow.getAirDay() + " at " + mShow.getAirTime();
-            } else {
-                showTime = getString(R.string.show_on_break);
-            }
-        } else if (mShow.getStatus().equalsIgnoreCase("cancelled")) {
-            showTime = getString(R.string.show_cancelled);
-        } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
-            showTime = getString(R.string.show_in_production);
-        }
-        mLblShowTime.setText(showTime);
+        TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
+        createShowTimeLabel(lblShowTime);
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
         lblShowNetwork.setText(mShow.getNetwork());
@@ -186,7 +170,7 @@ public class ShowDetailFragment extends Fragment {
         lblOverviewBody.setText(mShow.getOverview());
     }
 
-    private void determineIfShowOnAir() {
+    private void createShowTimeLabel(final TextView lblShowTime) {
         final ArrayList<String> ids = new ArrayList<>();
         int numDays = 7;
         final String requestTag = "calendar_query";
@@ -204,6 +188,21 @@ public class ShowDetailFragment extends Fragment {
             public void onResponse(String resultString) {
                 try {
                     mShow.setOnAir(TraktApiHelper.isOnAir(resultString, mShow.getImdbId()));
+                    String showTime = "";
+                    if (mShow.getStatus().equalsIgnoreCase("ended")) {
+                        showTime = getString(R.string.show_ended);
+                    } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
+                        if (mShow.isOnAir()) {
+                            showTime = "Airs: " + mShow.getAirDay() + " at " + mShow.getAirTime();
+                        } else {
+                            showTime = getString(R.string.show_on_break);
+                        }
+                    } else if (mShow.getStatus().equalsIgnoreCase("cancelled")) {
+                        showTime = getString(R.string.show_cancelled);
+                    } else if (mShow.getStatus().equalsIgnoreCase("returning series")) {
+                        showTime = getString(R.string.show_in_production);
+                    }
+                    lblShowTime.setText(showTime);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
