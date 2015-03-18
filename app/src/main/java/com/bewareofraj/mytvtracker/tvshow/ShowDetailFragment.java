@@ -179,8 +179,7 @@ public class ShowDetailFragment extends Fragment {
 		}
 		
 		if (width > 500) {
-			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-') + 1));
-			return posterSize;
+            return Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-') + 1));
 		} else if (width > 300) {
 			return 100;
 		} else {

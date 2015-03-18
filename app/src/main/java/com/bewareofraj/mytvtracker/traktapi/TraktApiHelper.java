@@ -148,8 +148,8 @@ public class TraktApiHelper {
         return ids;
     }
 
-    public static String getEpisodesQuery(String tvdbid, String season, String apiKey, String requestTag) {
-        return API_BASE_URL + API_METHOD_SHOW + API_ARGUMENT_SHOW_SEASON + API_FORMAT + apiKey + "/" + tvdbid + "/" + season;
+    public static String getEpisodesQuery(String id, int seasonNumber) {
+        return API_BASE_URL + "shows/" + id + "/" + "seasons/" + Integer.toString(seasonNumber) + "?extended=full,images";
     }
     
     public static ArrayList<Episode> getEpisodesResult(JSONArray resultsArray, String season) throws JSONException {
