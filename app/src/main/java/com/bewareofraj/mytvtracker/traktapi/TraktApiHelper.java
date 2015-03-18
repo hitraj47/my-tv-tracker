@@ -154,6 +154,21 @@ public class TraktApiHelper {
 
     public static ArrayList<Episode> getEpisodesFromResult(String stringResults) throws JSONException {
         ArrayList<Episode> episodes = new ArrayList<>();
+        JSONArray episodesArray = new JSONArray(stringResults);
+
+        for (int i = 0; i < episodesArray.length(); i++) {
+            JSONObject episodeObject = episodesArray.getJSONObject(i);
+
+            Episode episode = new Episode(episodeObject.getInt("season"));
+            episode.setEpisodeNumber(episodeObject.getInt("number"));
+            episode.setTitle(episodeObject.getString("title"));
+            episode.setOverview(episodeObject.getString("overview"));
+            episode.setFirstAired(new DateTime(episodeObject.getString("first_aired")));
+            episode.setImageUrl(episodeObject.getJSONObject("images").getJSONObject("screenshot").getString("full"));
+
+            episodes.add(episode);
+        }
+
         return episodes;
     }
 }
