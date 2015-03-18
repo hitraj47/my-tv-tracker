@@ -85,7 +85,7 @@ public class MyApplication extends Application {
         return mShowCalendarIds;
     }
 
-    public void setShowcalendarIds(ArrayList<String> ids) {
+    public void setShowCalendarIds(ArrayList<String> ids) {
         mShowCalendarIds = ids;
     }
 

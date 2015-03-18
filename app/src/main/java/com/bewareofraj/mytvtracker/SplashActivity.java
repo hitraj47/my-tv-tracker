@@ -58,7 +58,7 @@ public class SplashActivity extends Activity {
             public void onResponse(String resultString) {
                 try {
                     ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
-                    MyApplication.getInstance().setShowcalendarIds(ids);
+                    MyApplication.getInstance().setShowCalendarIds(ids);
                     MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -70,6 +70,7 @@ public class SplashActivity extends Activity {
         };
 
         CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+        MyApplication.getInstance().getRequestQueue().getCache().clear();
         MyApplication.getInstance().addToRequestQueue(request, requestTag);
     }
 
