@@ -61,7 +61,7 @@ public class SeasonEpisodeFragment extends Fragment {
 				container, false);
         
 		final String requestTag = "get_episodes";
-        String query = TraktApiHelper.getEpisodesQuery(ShowListActivity.getShowId(), Integer.toString(mSeason), getString(R.string.trakt_api_key), requestTag);
+        String query = TraktApiHelper.getEpisodesForSeason(ShowListActivity.getShowId(), Integer.toString(mSeason), getString(R.string.trakt_api_key), requestTag);
         
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override

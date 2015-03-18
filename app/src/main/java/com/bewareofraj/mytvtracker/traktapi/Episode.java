@@ -1,6 +1,6 @@
 package com.bewareofraj.mytvtracker.traktapi;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Episode {
 	
@@ -8,7 +8,7 @@ public class Episode {
 	private int mEpisodeNumber;
 	private String mTitle;
 	private String mImageUrl;
-	private Date mFirstAired;
+	private DateTime mFirstAired;
 	private String mOverview;
 	
 	public Episode(int season) {
@@ -46,12 +46,12 @@ public class Episode {
 		this.mImageUrl = mImageUrl;
 	}
 
-	public Date getFirstAired() {
+	public DateTime getFirstAired() {
 		return mFirstAired;
 	}
 
-	public void setFirstAired(int timestamp) {
-		this.mFirstAired = getDateFromUnixTimestamp(timestamp);
+	public void setFirstAired(DateTime firstAired) {
+		this.mFirstAired = firstAired;
 	}
 
 	public String getOverview() {
@@ -60,10 +60,5 @@ public class Episode {
 
 	public void setOverview(String mOverview) {
 		this.mOverview = mOverview;
-	}
-	
-	private Date getDateFromUnixTimestamp(int timestamp) {
-		Date date = new Date((long) timestamp * 1000);
-		return date;
 	}
 }

@@ -148,22 +148,12 @@ public class TraktApiHelper {
         return ids;
     }
 
-    public static String getEpisodesQuery(String id, int seasonNumber) {
+    public static String getEpisodesForSeason(String id, int seasonNumber) {
         return API_BASE_URL + "shows/" + id + "/" + "seasons/" + Integer.toString(seasonNumber) + "?extended=full,images";
     }
-    
-    public static ArrayList<Episode> getEpisodesResult(JSONArray resultsArray, String season) throws JSONException {
+
+    public static ArrayList<Episode> getEpisodesFromResult(String stringResults) throws JSONException {
         ArrayList<Episode> episodes = new ArrayList<>();
-        for (int i = 0; i < resultsArray.length(); i++) {
-            Episode episode = new Episode(Integer.parseInt(season));
-            JSONObject object = resultsArray.getJSONObject(i);
-            episode.setEpisodeNumber(object.getInt(API_KEY_EPISODE));
-            episode.setFirstAired(object.getInt(API_KEY_FIRST_AIRED));
-            episode.setImageUrl(object.getString(API_KEY_SCREEN));
-            episode.setOverview(object.getString(API_KEY_OVERVIEW));
-            episode.setTitle(object.getString(API_KEY_TITLE));
-            episodes.add(i, episode);
-        }
         return episodes;
     }
 }
