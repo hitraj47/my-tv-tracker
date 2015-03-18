@@ -1,5 +1,7 @@
 package com.bewareofraj.mytvtracker.traktapi;
 
+import com.bewareofraj.mytvtracker.util.MyApplication;
+
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +64,8 @@ public class TraktApiHelper {
         show.setAirDay(airsObject.getString("day"));
         show.setAirTime(airsObject.getString("time"));
         show.setAirTimeZone(airsObject.getString("timezone"));
+
+        show.setOnAir(MyApplication.getInstance().getShowCalendarIds().contains(show.getImdbId()));
 
         return show;
     }

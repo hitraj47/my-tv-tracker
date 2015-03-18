@@ -32,7 +32,7 @@ public class Show implements Serializable {
     private String mShowTime;
     private String mImdbId;
     private int mRunTimeMinutes;
-    private Boolean mIsOnAir;
+    private boolean mIsOnAir;
 	
 	public String getTitle() {
 		return mTitle;
@@ -176,7 +176,7 @@ public class Show implements Serializable {
         mIsOnAir = isOnAir;
     }
 
-    public Boolean isOnAir() {
+    public boolean isOnAir() {
         return mIsOnAir;
     }
 

@@ -32,8 +32,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-
 /**
  * A fragment representing a single Show detail screen. This fragment is either
  * contained in a {@link ShowListActivity} in two-pane mode (on tablets) or a
@@ -125,11 +123,7 @@ public class ShowDetailFragment extends Fragment {
         lblShowYear.setText(year);
 
         TextView lblShowTime = (TextView) rootView.findViewById(R.id.lblShowTime);
-        if (mShow.isOnAir() == null) {
-            createShowTimeLabel(lblShowTime);
-        } else {
-            setShowTimeLabel(lblShowTime);
-        }
+        lblShowTime.setText(mShow.makeShowTimeString(getActivity()));
 
         TextView lblShowNetwork = (TextView) rootView.findViewById(R.id.lblShowNetwork);
         lblShowNetwork.setText(mShow.getNetwork());
@@ -169,40 +163,6 @@ public class ShowDetailFragment extends Fragment {
 
         TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
         lblOverviewBody.setText(mShow.getOverview());
-    }
-
-    private void setShowTimeLabel(TextView lblShowTime) {
-        String showTimeString = mShow.makeShowTimeString(getActivity());
-        lblShowTime.setText(showTimeString);
-    }
-
-    private void createShowTimeLabel(final TextView lblShowTime) {
-        final ArrayList<String> ids = new ArrayList<>();
-        int numDays = 7;
-        final String requestTag = "calendar_query";
-        String query = TraktApiHelper.getShowCalendar(numDays);
-
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
-            }
-        };
-
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String resultString) {
-                try {
-                    mShow.setOnAir(TraktApiHelper.isOnAir(resultString, mShow.getImdbId()));
-                    setShowTimeLabel(lblShowTime);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
-        MyApplication.getInstance().addToRequestQueue(request, requestTag);
     }
 
     @SuppressWarnings("deprecation")
