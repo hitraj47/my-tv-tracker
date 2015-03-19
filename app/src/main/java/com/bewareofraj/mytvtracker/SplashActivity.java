@@ -49,7 +49,7 @@ public class SplashActivity extends Activity {
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+                VolleyLog.v(requestTag, "Error: " + volleyError.getMessage());
             }
         };
 
