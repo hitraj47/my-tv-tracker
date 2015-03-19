@@ -1,12 +1,8 @@
 package com.bewareofraj.mytvtracker.tvshow;
 
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +38,8 @@ public class ShowDetailFragment extends Fragment {
 	private boolean mIsOnWatchList;
     private Show mShow;
 
+    private static final String BUNDLE_SHOW_OBJECT = "show";
+
     /**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -60,8 +58,8 @@ public class ShowDetailFragment extends Fragment {
 		final View rootView = inflater.inflate(R.layout.fragment_show_detail,
 				container, false);
         
-        if ( (savedInstanceState != null) && savedInstanceState.getSerializable("show") != null) {
-            mShow = (Show) savedInstanceState.getSerializable("show");
+        if ( (savedInstanceState != null) && savedInstanceState.getSerializable(BUNDLE_SHOW_OBJECT) != null) {
+            mShow = (Show) savedInstanceState.getSerializable(BUNDLE_SHOW_OBJECT);
             populateUi(rootView);
         } else {
             final String requestTag = "get_show";
@@ -107,7 +105,7 @@ public class ShowDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("show", mShow);
+        outState.putSerializable(BUNDLE_SHOW_OBJECT, mShow);
     }
 
     private void populateUi(View rootView) {
@@ -164,28 +162,6 @@ public class ShowDetailFragment extends Fragment {
         TextView lblOverviewBody = (TextView) rootView.findViewById(R.id.lblOverviewBody);
         lblOverviewBody.setText(mShow.getOverview());
     }
-
-    @SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-	private int determineBestImageWidth() {
-		Display display = getActivity().getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		int width;
-		if (android.os.Build.VERSION.SDK_INT >= 13) {
-			display.getSize(size);
-			width = size.x;
-		} else {
-			width = display.getWidth();
-		}
-		
-		if (width > 500) {
-            return Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_MEDIUM.substring(TraktApiHelper.API_POSTER_SIZE_MEDIUM.lastIndexOf('-') + 1));
-		} else if (width > 300) {
-			return 100;
-		} else {
-			return 60;
-		}
-	}
 
 	private boolean isOnWatchList(String showId) {
 		MyTvTrackerDatabaseHelper db = new MyTvTrackerDatabaseHelper(getActivity());

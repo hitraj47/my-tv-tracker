@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -15,8 +14,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
 import com.bewareofraj.mytvtracker.traktapi.Episode;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
@@ -35,11 +34,12 @@ public class SeasonEpisodeFragment extends Fragment {
 	
 	private Spinner mSpnEpisodes;
 	private TextView mLblEpisodeTitle;
-	private ImageView mImgEpisodeImage;
 	private TextView mLblFirstAired;
 	private TextView mLblOverview;
 	
 	private ArrayList<Episode> mEpisodes;
+
+    private static final String BUNDLE_EPISODES_ARRAY = "episodes";
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,31 +58,36 @@ public class SeasonEpisodeFragment extends Fragment {
 			Bundle savedInstanceState) {
 		final View rootView = inflater.inflate(R.layout.fragment_season_episode,
 				container, false);
-        
-		final String requestTag = "get_episodes";
-        String query = TraktApiHelper.getEpisodesForSeason(ShowListActivity.getShowId(), mSeason);
-        
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
-            }
-        };
-        
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String resultString) {
-                try {
-                    mEpisodes = TraktApiHelper.getEpisodesFromResult(resultString);
-                    populateUi(rootView);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
 
-        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
-        MyApplication.getInstance().addToRequestQueue(request, requestTag);
+        if ( (savedInstanceState != null) && (savedInstanceState.getSerializable(BUNDLE_EPISODES_ARRAY)) != null) {
+            mEpisodes = (ArrayList<Episode>) savedInstanceState.getSerializable(BUNDLE_EPISODES_ARRAY);
+            populateUi(rootView);
+        } else {
+            final String requestTag = "get_episodes";
+            String query = TraktApiHelper.getEpisodesForSeason(ShowListActivity.getShowId(), mSeason);
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    VolleyLog.d(requestTag, "Error: " + volleyError.getMessage());
+                }
+            };
+
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String resultString) {
+                    try {
+                        mEpisodes = TraktApiHelper.getEpisodesFromResult(resultString);
+                        populateUi(rootView);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+            MyApplication.getInstance().addToRequestQueue(request, requestTag);
+        }
 
 		// set action bar title
 		getActivity().setTitle("Season " + mSeason);
@@ -90,6 +95,12 @@ public class SeasonEpisodeFragment extends Fragment {
 		return rootView;
 		
 	}
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(BUNDLE_EPISODES_ARRAY, mEpisodes);
+    }
 
     private void populateUi(final View rootView) {
         // episode list spinner
@@ -116,7 +127,6 @@ public class SeasonEpisodeFragment extends Fragment {
 
         // init other gui elements
         mLblEpisodeTitle = (TextView) rootView.findViewById(R.id.lblEpisodeTitle);
-        mImgEpisodeImage = (ImageView) rootView.findViewById(R.id.imgEpisodeImage);
         mLblFirstAired = (TextView) rootView.findViewById(R.id.lblEpisodeFirstAired);
         mLblOverview = (TextView) rootView.findViewById(R.id.lblEpisodeOverview);
 
@@ -138,10 +148,6 @@ public class SeasonEpisodeFragment extends Fragment {
 		
 		mLblOverview.setText(episode.getOverview());
 		
-	}
-
-	public int getSeason() {
-		return mSeason;
 	}
 
 	public void setSeason(int mSeason) {
