@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.images.ImageLoader;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
+import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import java.util.List;
 
@@ -63,12 +64,11 @@ public class SearchResultListAdapter extends BaseAdapter {
 		
 		TextView lblDescription = (TextView) convertView.findViewById(R.id.lblSearchDescription);
 		lblDescription.setText(result.getDescription());
-		
-		ImageView imgPoster = (ImageView) convertView.findViewById(R.id.imgSearchPoster);
-		ImageLoader imgLoader = new ImageLoader(parent.getContext(), determineBestImageWidth(parent.getContext()));
-		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
-		imgLoader.DisplayImage(result.getImageUrl(), loadingImage, imgPoster);
-		
+
+        ImageLoader imageloader = MyApplication.getInstance().getImageLoader();
+        NetworkImageView imgPoster = (NetworkImageView) convertView.findViewById(R.id.imgSearchPoster);
+        imgPoster.setImageUrl(result.getImageUrl(), imageloader);
+
 		return convertView;
 	}
 
