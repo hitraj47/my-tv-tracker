@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
 public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database
@@ -23,12 +26,12 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 			+ WatchListEntry.TABLE_NAME_WATCH_LIST + " ("
 			+ WatchListEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_SHOW_NAME + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL + TEXT_TYPE + COMMA_SEP
+			+ WatchListEntry.COLUMN_NAME_POSTER + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_IMDB_ID + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_STATUS + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_DAY + TEXT_TYPE + COMMA_SEP
 			+ WatchListEntry.COLUMN_NAME_AIR_TIME + TEXT_TYPE + COMMA_SEP
-			+ WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP + " INTEGER"
+			+ WatchListEntry.COLUMN_NAME_FIRST_AIRED + TEXT_TYPE
 			+ " )";
 	
 	private static final String SQL_DELETE_WATCH_LIST = "DROP TABLE IF EXISTS "
@@ -56,8 +59,8 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 				WatchListEntry.COLUMN_NAME_AIR_TIME,
 				WatchListEntry.COLUMN_NAME_IMDB_ID,
 				WatchListEntry.COLUMN_NAME_SHOW_NAME,
-				WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL,
-				WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP };
+				WatchListEntry.COLUMN_NAME_POSTER,
+				WatchListEntry.COLUMN_NAME_FIRST_AIRED};
 
 		String sortOrder = WatchListEntry.COLUMN_NAME_SHOW_NAME + " ASC";
 
@@ -98,11 +101,13 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		ContentValues values = new ContentValues();
 		values.put(WatchListEntry.COLUMN_NAME_AIR_DAY, show.getAirDay());
 		values.put(WatchListEntry.COLUMN_NAME_AIR_TIME, show.getAirTime());
-		values.put(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL, show.getPosterUrl());
+		values.put(WatchListEntry.COLUMN_NAME_POSTER, show.getPosterUrl());
 		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
 		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
 		values.put(WatchListEntry.COLUMN_NAME_IMDB_ID, show.getImdbId());
-		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP, show.getFirstAiredTimeStamp());
+
+        DateTimeFormatter dtf = ISODateTimeFormat.basicDateTime();
+		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED, show.getFirstAired().toString(dtf));
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(WatchListEntry.TABLE_NAME_WATCH_LIST, null, values);

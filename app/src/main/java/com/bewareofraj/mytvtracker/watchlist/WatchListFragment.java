@@ -15,11 +15,13 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
+import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -89,12 +91,12 @@ public class WatchListFragment extends Fragment {
 			
 			String firstLetter = show.getTitle().substring(0, 1).toUpperCase(Locale.ENGLISH);	// used for expandable list headers
 			
-			show.setPosterUrl(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_POSTER_URL_SMALL)));
+			show.setPosterUrl(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_POSTER)));
 			show.setStatus(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_STATUS)));
 			show.setAirTime(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_TIME)));
 			show.setAirDay(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY)));
-			show.setTvdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_IMDB_ID)));
-			show.setFirstAiredTimeStamp(c.getInt(c.getColumnIndex(WatchListEntry.COLUMN_NAME_FIRST_AIRED_TIMESTAMP)));
+			show.setImdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_IMDB_ID)));
+			show.setFirstAired(new DateTime(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_FIRST_AIRED))));
 
             //TODO: determine show time
             String showTime = "Show time";
