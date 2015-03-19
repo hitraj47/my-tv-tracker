@@ -1,17 +1,18 @@
 package com.bewareofraj.mytvtracker.watchlist;
 
-import java.util.ArrayList;
-
-import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.images.ImageLoader;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.util.MyApplication;
+
+import java.util.ArrayList;
 
 public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -52,15 +53,14 @@ public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 			convertView = inf.inflate(R.layout.watch_list_item, null);
 		}
 		TextView lblShowName = (TextView) convertView.findViewById(R.id.lblSearchTitle);
-		ImageView imgBoxArt = (ImageView) convertView.findViewById(R.id.imgSearchPoster);
+		NetworkImageView imgBoxArt = (NetworkImageView) convertView.findViewById(R.id.imgSearchPoster);
 		TextView lblShowTime = (TextView) convertView.findViewById(R.id.show_time);
 
 		lblShowName.setText(child.getName().toString());
-		
-		ImageLoader imgLoader = new ImageLoader(parent.getContext(), 100);
-		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
-		imgLoader.DisplayImage(child.getImage(), loadingImage, imgBoxArt);
-		
+
+        ImageLoader imageLoader = MyApplication.getInstance().getImageLoader();
+        imgBoxArt.setImageUrl(child.getImage(), imageLoader);
+
 		lblShowTime.setText(child.getShowTime().toString());
 
 		return convertView;
