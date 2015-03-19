@@ -54,6 +54,7 @@ public class WatchListExpandableListAdapter extends BaseExpandableListAdapter {
 		}
 		TextView lblShowName = (TextView) convertView.findViewById(R.id.lblSearchTitle);
 		NetworkImageView imgBoxArt = (NetworkImageView) convertView.findViewById(R.id.imgSearchPoster);
+
 		TextView lblShowTime = (TextView) convertView.findViewById(R.id.show_time);
 
 		lblShowName.setText(child.getName().toString());

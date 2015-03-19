@@ -16,16 +16,6 @@ import java.util.Locale;
 public class TraktApiHelper {
 
     public static final String API_BASE_URL = "https://api-v2launch.trakt.tv/";
-    public static final String API_METHOD_SHOW = "show/";
-    public static final String API_FORMAT = ".json/";
-    public static final String API_POSTER_SIZE_MEDIUM = "-300";
-    public static final String API_POSTER_SIZE_SMALL = "-138";
-    public static final String API_ARGUMENT_SHOW_SEASON = "season";
-    public static final String API_KEY_TITLE = "title";
-    public static final String API_KEY_OVERVIEW = "overview";
-    public static final String API_KEY_FIRST_AIRED = "first_aired";
-    public static final String API_KEY_EPISODE = "episode";
-    public static final String API_KEY_SCREEN = "screen";
 
     /**
      * Private constructor, this is a utility class

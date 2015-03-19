@@ -20,6 +20,7 @@ import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 import com.bewareofraj.mytvtracker.tvshow.ShowListActivity;
+import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
 
@@ -97,11 +98,13 @@ public class WatchListFragment extends Fragment {
 			show.setAirDay(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_AIR_DAY)));
 			show.setImdbId(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_IMDB_ID)));
 			show.setFirstAired(new DateTime(c.getString(c.getColumnIndex(WatchListEntry.COLUMN_NAME_FIRST_AIRED))));
+            show.setOnAir(MyApplication.getInstance().getShowCalendarIds().contains(show.getImdbId()));
 
-            //TODO: determine show time
-            String showTime = "Show time";
-			
-			WatchListChild child = createWatchListChild(show.getPosterUrl(), show.getTitle(), showTime, show.getTvdbId());
+            WatchListChild child = new WatchListChild();
+            child.setApiId(show.getImdbId());
+            child.setImage(show.getPosterUrl());
+            child.setName(show.getTitle());
+            child.setShowTime(show.makeShowTimeString(getActivity()));
 			
 			WatchListGroup watchListGroup;
 			
@@ -152,15 +155,5 @@ public class WatchListFragment extends Fragment {
 				return false;
 			}
 		});
-	}
-
-	private WatchListChild createWatchListChild(String imageUrl, String name,
-			String time, String apiId) {
-		WatchListChild child = new WatchListChild();
-		child.setImage(imageUrl);
-		child.setName(name);
-		child.setShowTime(time);
-		child.setApiId(apiId);
-		return child;
 	}
 }

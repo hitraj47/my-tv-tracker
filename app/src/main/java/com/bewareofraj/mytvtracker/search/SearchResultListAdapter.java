@@ -2,7 +2,6 @@ package com.bewareofraj.mytvtracker.search;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import java.util.List;
@@ -70,18 +68,6 @@ public class SearchResultListAdapter extends BaseAdapter {
         imgPoster.setImageUrl(result.getImageUrl(), imageloader);
 
 		return convertView;
-	}
-
-	private int determineBestImageWidth(Context context) {
-		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-		int width = metrics.widthPixels;
-		
-		if (width > 300) {
-			int posterSize = Integer.parseInt(TraktApiHelper.API_POSTER_SIZE_SMALL.substring(TraktApiHelper.API_POSTER_SIZE_SMALL.lastIndexOf('-') + 1));
-			return posterSize;
-		} else {
-			return 60;
-		}
 	}
 
 }
