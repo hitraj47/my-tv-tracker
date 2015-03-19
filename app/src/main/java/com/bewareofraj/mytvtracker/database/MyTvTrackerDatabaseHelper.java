@@ -9,9 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.traktapi.Show;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
 public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 
 	// If you change the database schema, you must increment the database
@@ -105,9 +102,7 @@ public class MyTvTrackerDatabaseHelper extends SQLiteOpenHelper {
 		values.put(WatchListEntry.COLUMN_NAME_SHOW_NAME, show.getTitle());
 		values.put(WatchListEntry.COLUMN_NAME_STATUS, show.getStatus());
 		values.put(WatchListEntry.COLUMN_NAME_IMDB_ID, show.getImdbId());
-
-        DateTimeFormatter dtf = ISODateTimeFormat.basicDateTime();
-		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED, show.getFirstAired().toString(dtf));
+		values.put(WatchListEntry.COLUMN_NAME_FIRST_AIRED, show.getFirstAired().toString());
 		
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.insert(WatchListEntry.TABLE_NAME_WATCH_LIST, null, values);
