@@ -38,8 +38,10 @@ public class SeasonEpisodeFragment extends Fragment {
 	private TextView mLblOverview;
 	
 	private ArrayList<Episode> mEpisodes;
+    private int mEpisodeNumber = -1;
 
     private static final String BUNDLE_EPISODES_ARRAY = "episodes";
+    private static final String BUNDLE_EPISODE_NUMBER = "episode_number";
 	
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,6 +63,7 @@ public class SeasonEpisodeFragment extends Fragment {
 
         if ( (savedInstanceState != null) && (savedInstanceState.getSerializable(BUNDLE_EPISODES_ARRAY)) != null) {
             mEpisodes = (ArrayList<Episode>) savedInstanceState.getSerializable(BUNDLE_EPISODES_ARRAY);
+            mEpisodeNumber = savedInstanceState.getInt(BUNDLE_EPISODE_NUMBER);
             populateUi(rootView);
         } else {
             final String requestTag = "get_episodes";
@@ -78,6 +81,7 @@ public class SeasonEpisodeFragment extends Fragment {
                 public void onResponse(String resultString) {
                     try {
                         mEpisodes = TraktApiHelper.getEpisodesFromResult(resultString);
+                        mEpisodeNumber = 0; // display the first episode initially
                         populateUi(rootView);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -100,6 +104,7 @@ public class SeasonEpisodeFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(BUNDLE_EPISODES_ARRAY, mEpisodes);
+        outState.putInt(BUNDLE_EPISODE_NUMBER, mEpisodeNumber);
     }
 
     private void populateUi(final View rootView) {
@@ -117,7 +122,8 @@ public class SeasonEpisodeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                displayEpisode(position, rootView);
+                mEpisodeNumber = position;
+                displayEpisode(mEpisodeNumber, rootView);
             }
 
             @Override
@@ -130,8 +136,7 @@ public class SeasonEpisodeFragment extends Fragment {
         mLblFirstAired = (TextView) rootView.findViewById(R.id.lblEpisodeFirstAired);
         mLblOverview = (TextView) rootView.findViewById(R.id.lblEpisodeOverview);
 
-        // display the first episode initially
-        displayEpisode(0, rootView);
+        displayEpisode(mEpisodeNumber, rootView);
     }
 
     protected void displayEpisode(int position, View rootView) {
