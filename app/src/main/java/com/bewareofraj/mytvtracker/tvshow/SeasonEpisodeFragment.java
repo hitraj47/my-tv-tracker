@@ -38,7 +38,7 @@ public class SeasonEpisodeFragment extends Fragment {
 	private TextView mLblOverview;
 	
 	private ArrayList<Episode> mEpisodes;
-    private int mEpisodeNumber = -1;
+    private int mEpisodeNumber;
 
     private static final String BUNDLE_EPISODES_ARRAY = "episodes";
     private static final String BUNDLE_EPISODE_NUMBER = "episode_number";
