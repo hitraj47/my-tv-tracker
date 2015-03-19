@@ -15,8 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.ImageLoader;
 import com.bewareofraj.mytvtracker.R;
-import com.bewareofraj.mytvtracker.images.ImageLoader;
 import com.bewareofraj.mytvtracker.traktapi.Episode;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.util.CustomRequest;
@@ -90,7 +91,7 @@ public class SeasonEpisodeFragment extends Fragment {
 		
 	}
 
-    private void populateUi(View rootView) {
+    private void populateUi(final View rootView) {
         // episode list spinner
         mSpnEpisodes = (Spinner) rootView.findViewById(R.id.spnEpisode);
         String[] spinnerItems = new String[mEpisodes.size()];
@@ -105,7 +106,7 @@ public class SeasonEpisodeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                displayEpisode(position);
+                displayEpisode(position, rootView);
             }
 
             @Override
@@ -120,18 +121,17 @@ public class SeasonEpisodeFragment extends Fragment {
         mLblOverview = (TextView) rootView.findViewById(R.id.lblEpisodeOverview);
 
         // display the first episode initially
-        displayEpisode(0);
+        displayEpisode(0, rootView);
     }
 
-    protected void displayEpisode(int position) {
+    protected void displayEpisode(int position, View rootView) {
 		Episode episode = mEpisodes.get(position);
 		
 		mLblEpisodeTitle.setText("Episode " + episode.getEpisodeNumber() + ": " + episode.getTitle());
 		
-		//TODO: set appropriate image size instead of 900
-		ImageLoader imgLoader = new ImageLoader(getActivity(), 900);
-		int loadingImage = R.drawable.ic_launcher;	// loading image, use logo temporarily for now
-		imgLoader.DisplayImage(episode.getImageUrl(), loadingImage, mImgEpisodeImage);
+		ImageLoader imageLoader = MyApplication.getInstance().getImageLoader();
+        NetworkImageView imgPoster = (NetworkImageView) rootView.findViewById(R.id.imgEpisodeImage);
+        imgPoster.setImageUrl(episode.getImageUrl(), imageLoader);
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MMMM d, yyyy");
 		mLblFirstAired.setText("First aired: " + episode.getFirstAired().toString(dtf));

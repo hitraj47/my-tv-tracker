@@ -70,7 +70,6 @@ public class SplashActivity extends Activity {
         };
 
         CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
-        MyApplication.getInstance().getRequestQueue().getCache().clear();
         MyApplication.getInstance().addToRequestQueue(request, requestTag);
     }
 
