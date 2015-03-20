@@ -23,8 +23,6 @@ The 'master' branch contains the latest development edition.
 
 When the app is released, the 'production' branch will contain the latest version added to the Play Store.
 
-The 'volley' branch is currently being used as the app in converted to use the Volley library.
-
 ## Notes/Instructions
 
 This project is updated to be imported into Android Studio. **DO NOT** import the project into Eclipse.
