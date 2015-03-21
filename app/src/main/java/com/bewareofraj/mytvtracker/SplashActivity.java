@@ -13,7 +13,6 @@ import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.util.CachedCustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
-import org.joda.time.DateTime;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
@@ -75,7 +74,6 @@ public class SplashActivity extends Activity {
     private void updateCalendarAndLaunchMainActivity(String resultString) throws JSONException {
         ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
         MyApplication.getInstance().setShowCalendarIds(ids);
-        MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

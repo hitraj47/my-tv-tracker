@@ -9,8 +9,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.bewareofraj.mytvtracker.R;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,7 +20,6 @@ public class MyApplication extends Application {
     private ImageLoader mImageLoader;
 
     private ArrayList<String> mShowCalendarIds;
-    private DateTime mShowCalendarLastUpdated;
 
     private static MyApplication mInstance;
 
@@ -87,14 +84,6 @@ public class MyApplication extends Application {
 
     public void setShowCalendarIds(ArrayList<String> ids) {
         mShowCalendarIds = ids;
-    }
-
-    public DateTime getShowCalendarLastUpdated() {
-        return mShowCalendarLastUpdated;
-    }
-
-    public void setShowCalendarLastUpdated(DateTime lastUpdated) {
-        mShowCalendarLastUpdated = lastUpdated;
     }
 
 }
