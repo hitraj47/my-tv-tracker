@@ -22,33 +22,33 @@ import java.util.ArrayList;
 public class SplashActivity extends Activity {
 
     public static final String EXTRA_LAUNCH_ACTIVITY = "launch_activity";
-    public static final String EXTRA_ACTIVITY_MAIN = "main_activity";
-    public static final String EXTRA_ACTIVITY_SHOW_DETAIL = "show_detail_activity";
+    public static final int EXTRA_ACTIVITY_MAIN = 1;
+    public static final int EXTRA_ACTIVITY_SHOW_DETAIL = 2;
     public static final String EXTRA_SHOW_ID = "show_id";
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) {
+        Intent intent = getIntent();
+        int activityToLaunch = intent.getIntExtra(EXTRA_LAUNCH_ACTIVITY, 0);
+        if (activityToLaunch == 0) {
             if (MyApplication.getInstance().isShowCalendarUpdated()) {
                 launchActivity(EXTRA_ACTIVITY_MAIN);
             } else {
                 updateShowCalendarAndLaunchActivity(EXTRA_ACTIVITY_MAIN);
             }
         } else {
-            String activityToLaunch = extras.getString(EXTRA_LAUNCH_ACTIVITY);
             updateShowCalendarAndLaunchActivity(activityToLaunch);
         }
 	}
 
-    private void launchActivity(String activityToLaunch) {
-        if (activityToLaunch.equals(EXTRA_ACTIVITY_MAIN)) {
+    private void launchActivity(int activityToLaunch) {
+        if (activityToLaunch == EXTRA_ACTIVITY_MAIN) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
-        } else if (activityToLaunch.equals(EXTRA_ACTIVITY_SHOW_DETAIL)) {
+        } else if (activityToLaunch == EXTRA_ACTIVITY_SHOW_DETAIL) {
             Intent intent = new Intent(SplashActivity.this, ShowListActivity.class);
             intent.putExtra(ShowListActivity.EXTRA_SHOW_ID, (String) getIntent().getExtras().get(EXTRA_SHOW_ID));
             startActivity(intent);
@@ -56,7 +56,7 @@ public class SplashActivity extends Activity {
         finish();
     }
 
-    private void updateShowCalendarAndLaunchActivity(final String activityToLaunch) {
+    private void updateShowCalendarAndLaunchActivity(final int activityToLaunch) {
         int numDays = 7;
         String query = TraktApiHelper.getShowCalendar(numDays);
         final String requestTag = "update_show_calendar_ids";
@@ -76,7 +76,7 @@ public class SplashActivity extends Activity {
                     MyApplication.getInstance().setShowCalendarIds(ids);
                     SharedPreferences.Editor editor = getSharedPreferences(MyApplication.SHARED_PREFERENCES_FILE, MODE_PRIVATE).edit();
                     editor.putString(MyApplication.KEY_SHOW_CAL_LAST_UPDATED, new DateTime().toString());
-                    editor.commit();
+                    editor.apply();
                     launchActivity(activityToLaunch);
                 } catch (JSONException e) {
                     e.printStackTrace();
