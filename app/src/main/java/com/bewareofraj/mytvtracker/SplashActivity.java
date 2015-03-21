@@ -3,7 +3,6 @@ package com.bewareofraj.mytvtracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -15,7 +14,6 @@ import com.bewareofraj.mytvtracker.util.CachedCustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.json.JSONException;
 
 import java.io.UnsupportedEncodingException;
@@ -29,23 +27,7 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.activity_splash);
 
         updateShowCalendarIds();
-
-        /*
-        DateTime showCalendarLastUpdated = MyApplication.getInstance().getShowCalendarLastUpdated();
-        if (showCalendarLastUpdated == null || isShowCalendarOld(showCalendarLastUpdated)) {
-            updateShowCalendarIds();
-        } else {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }*/
 	}
-
-    private boolean isShowCalendarOld(DateTime showCalendarLastUpdated) {
-        DateTime now = new DateTime();
-        Period period = new Period(showCalendarLastUpdated, now);
-        return period.getDays() > 1;
-    }
 
     public void updateShowCalendarIds() {
         int numDays = 7;
@@ -63,12 +45,7 @@ public class SplashActivity extends Activity {
             @Override
             public void onResponse(String resultString) {
                 try {
-                    ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
-                    MyApplication.getInstance().setShowCalendarIds(ids);
-                    MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    updateCalendarAndLaunchMainActivity(resultString);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -80,14 +57,8 @@ public class SplashActivity extends Activity {
         if (entry != null) {
             String resultString = null;
             try {
-                Log.d("test", "cached entry exists");
                 resultString = new String(entry.data, "UTF-8");
-                ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
-                MyApplication.getInstance().setShowCalendarIds(ids);
-                MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                updateCalendarAndLaunchMainActivity(resultString);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -99,6 +70,15 @@ public class SplashActivity extends Activity {
             MyApplication.getInstance().addToRequestQueue(request, requestTag);
         }
 
+    }
+
+    private void updateCalendarAndLaunchMainActivity(String resultString) throws JSONException {
+        ArrayList<String> ids = TraktApiHelper.buildIdListFromCalendar(resultString);
+        MyApplication.getInstance().setShowCalendarIds(ids);
+        MyApplication.getInstance().setShowCalendarLastUpdated(new DateTime());
+        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
