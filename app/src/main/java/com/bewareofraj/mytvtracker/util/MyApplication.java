@@ -16,6 +16,9 @@ public class MyApplication extends Application {
 
     public static final String TAG = MyApplication.class.getSimpleName();
 
+    public static final String SHARED_PREFERENCES_FILE = "mytvtracker_shared_prefs";
+    public static final String KEY_SHOW_CAL_LAST_UPDATED = "show_cal_last_updated";
+
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
 
