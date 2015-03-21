@@ -15,7 +15,6 @@ import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
 import org.json.JSONException;
 
 import java.util.ArrayList;
@@ -34,19 +33,10 @@ public class SplashActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            SharedPreferences preferences = getSharedPreferences(MyApplication.SHARED_PREFERENCES_FILE, MODE_PRIVATE);
-            String lastUpdatedString = preferences.getString(MyApplication.KEY_SHOW_CAL_LAST_UPDATED, null);
-            if (lastUpdatedString == null) {
-                updateShowCalendarAndLaunchActivity(EXTRA_ACTIVITY_MAIN);
+            if (MyApplication.getInstance().isShowCalendarUpdated()) {
+                launchActivity(EXTRA_ACTIVITY_MAIN);
             } else {
-                DateTime now = new DateTime();
-                DateTime lastUpdated = new DateTime(lastUpdatedString);
-                Period period = new Period(lastUpdated, now);
-                if (period.getDays() > 1) {
-                    updateShowCalendarAndLaunchActivity(EXTRA_ACTIVITY_MAIN);
-                } else {
-                    launchActivity(EXTRA_ACTIVITY_MAIN);
-                }
+                updateShowCalendarAndLaunchActivity(EXTRA_ACTIVITY_MAIN);
             }
         } else {
             String activityToLaunch = extras.getString(EXTRA_LAUNCH_ACTIVITY);

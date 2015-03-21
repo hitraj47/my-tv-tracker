@@ -1,6 +1,7 @@
 package com.bewareofraj.mytvtracker.util;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -8,6 +9,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.bewareofraj.mytvtracker.R;
+
+import org.joda.time.DateTime;
+import org.joda.time.Period;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +91,19 @@ public class MyApplication extends Application {
 
     public void setShowCalendarIds(ArrayList<String> ids) {
         mShowCalendarIds = ids;
+    }
+
+    public boolean isShowCalendarUpdated() {
+        SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES_FILE, MODE_PRIVATE);
+        String lastUpdatedString = preferences.getString(KEY_SHOW_CAL_LAST_UPDATED, null);
+        if (lastUpdatedString == null) {
+            return false;
+        } else {
+            DateTime now = new DateTime();
+            DateTime lastUpdated = new DateTime(lastUpdatedString);
+            Period period = new Period(lastUpdated, now);
+            return (period.getDays() > 1);
+        }
     }
 
 }
