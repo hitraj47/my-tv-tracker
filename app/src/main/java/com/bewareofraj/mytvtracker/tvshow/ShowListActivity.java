@@ -11,6 +11,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.SplashActivity;
 import com.bewareofraj.mytvtracker.traktapi.TraktApiHelper;
 import com.bewareofraj.mytvtracker.util.CustomRequest;
 import com.bewareofraj.mytvtracker.util.MyApplication;
@@ -64,35 +65,42 @@ public class ShowListActivity extends Activity implements
 		Intent intent = getIntent();
 		mShowId = intent.getStringExtra(EXTRA_SHOW_ID);
 
-        final String tag = "get_seasons";
-        String query = TraktApiHelper.getNumberOfSeasonsQuery(mShowId);
-        
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                VolleyLog.d(tag, "Error: " + volleyError.getMessage());
-            }
-        };
-        
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String stringResponse) {
-                try {
-                    mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(stringResponse);
-                    displayListLayout();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        // Check if show calendar needs to be updated
+        if (!MyApplication.getInstance().isShowCalendarUpdated()) {
+            Intent splashIntent = new Intent(ShowListActivity.this, SplashActivity.class);
+            splashIntent.putExtra(SplashActivity.EXTRA_LAUNCH_ACTIVITY, SplashActivity.EXTRA_ACTIVITY_SHOW_DETAIL);
+            splashIntent.putExtra(SplashActivity.EXTRA_SHOW_ID, mShowId);
+            startActivity(splashIntent);
+            finish();
+        } else {
+            final String tag = "get_seasons";
+            String query = TraktApiHelper.getNumberOfSeasonsQuery(mShowId);
+
+            Response.ErrorListener errorListener = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    VolleyLog.d(tag, "Error: " + volleyError.getMessage());
                 }
-            }
-        };
+            };
 
-        CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
-        MyApplication.getInstance().addToRequestQueue(request, tag);
-        
-		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String stringResponse) {
+                    try {
+                        mNumberOfSeasons = TraktApiHelper.getNumberOfSeasonsFromResult(stringResponse);
+                        displayListLayout();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
 
-		
+            CustomRequest request = new CustomRequest(Request.Method.GET, query, responseListener, errorListener, MyApplication.getInstance().getTraktHeaders());
+            MyApplication.getInstance().addToRequestQueue(request, tag);
+
+            // Show the Up button in the action bar.
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 	}
 
     private void displayListLayout() {
