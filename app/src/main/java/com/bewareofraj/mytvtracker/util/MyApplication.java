@@ -102,7 +102,7 @@ public class MyApplication extends Application {
             DateTime now = new DateTime();
             DateTime lastUpdated = new DateTime(lastUpdatedString);
             Period period = new Period(lastUpdated, now);
-            return (period.getDays() > 1);
+            return !(period.getDays() > 1);
         }
     }
 
