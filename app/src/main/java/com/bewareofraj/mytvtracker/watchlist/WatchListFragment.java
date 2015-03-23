@@ -15,6 +15,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.bewareofraj.mytvtracker.MainActivity;
 import com.bewareofraj.mytvtracker.R;
+import com.bewareofraj.mytvtracker.SplashActivity;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerContract.WatchListEntry;
 import com.bewareofraj.mytvtracker.database.MyTvTrackerDatabaseHelper;
 import com.bewareofraj.mytvtracker.search.SearchFragment;
@@ -38,6 +39,17 @@ public class WatchListFragment extends Fragment {
 	 * Database helper object
 	 */
 	private MyTvTrackerDatabaseHelper mDbHelper;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (!MyApplication.getInstance().isShowCalendarUpdated()) {
+            Intent intent = new Intent(getActivity(), SplashActivity.class);
+            intent.putExtra(SplashActivity.EXTRA_LAUNCH_ACTIVITY, SplashActivity.EXTRA_ACTIVITY_MAIN);
+            startActivity(intent);
+            getActivity().finish();
+        }
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
